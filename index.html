@@ -34,6 +34,22 @@
 
   <!-- Menghubungkan file CSS untuk mengatur tampilan overlay atau lapisan popup. -->
   <link rel="stylesheet" href="css/shared/overlays.css">
+
+  <!-- Mengatur tampilan pesan kesalahan pada formulir login tanpa mengubah desain utama. -->
+  <style>
+    .login-error {
+      display: block;
+      margin: 7px 0 0;
+      font-size: 11px;
+      font-weight: 500;
+      line-height: 16px;
+      color: #b34e3a;
+    }
+
+    .login-error[hidden] {
+      display: none;
+    }
+  </style>
 </head>
 
 <body>
@@ -159,8 +175,11 @@
             </svg>
 
             <!-- Kolom untuk memasukkan NPM Mahasiswa. -->
-            <input class="input-control" type="text" id="identity-mahasiswa" name="npm" placeholder="Masukkan NPM Anda" inputmode="numeric" autocomplete="username" pattern="[0-9]+" title="NPM hanya berisi angka." required>
+            <input class="input-control" type="text" id="identity-mahasiswa" name="npm" placeholder="Masukkan NPM Anda" inputmode="numeric" autocomplete="username" pattern="[0-9]+" title="NPM hanya berisi angka." aria-describedby="error-identity-mahasiswa" required>
           </div>
+
+          <!-- Pesan kesalahan untuk input NPM Mahasiswa. -->
+          <p class="login-error" id="error-identity-mahasiswa" role="alert" hidden></p>
 
           <!-- Petunjuk mengenai password awal akun Mahasiswa. -->
           <p class="form-hint">Password awal mahasiswa sama dengan NPM Anda.</p>
@@ -179,7 +198,7 @@
             </svg>
 
             <!-- Kolom untuk memasukkan password Mahasiswa. -->
-            <input class="input-control" type="password" id="password-mahasiswa" name="password" placeholder="Masukkan password Anda" autocomplete="current-password" required>
+            <input class="input-control" type="password" id="password-mahasiswa" name="password" placeholder="Masukkan password Anda" autocomplete="current-password" aria-describedby="error-password-mahasiswa" required>
 
             <!-- Ikon mata sebagai elemen tampilan password yang bersifat statis. -->
             <span class="password-toggle password-toggle--static" aria-hidden="true">
@@ -189,6 +208,9 @@
               </svg>
             </span>
           </div>
+
+          <!-- Pesan kesalahan untuk input password Mahasiswa. -->
+          <p class="login-error" id="error-password-mahasiswa" role="alert" hidden></p>
         </div>
 
         <!-- Tombol untuk mengirim formulir login Mahasiswa. -->
