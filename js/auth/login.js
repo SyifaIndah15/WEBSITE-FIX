@@ -141,4 +141,69 @@
 
     window.location.assign(query ? `${action}?${query}` : action);
   });
+
+  const NIDN_LENGTH = 10;
+
+  const dosenForm = document.querySelector(".login-form--dosen");
+
+  if (dosenForm) {
+    const nidnInput = dosenForm.querySelector("#nidn");
+    const dosenPasswordInput = dosenForm.querySelector("#password-dosen");
+    const nidnError = dosenForm.querySelector("#error-nidn");
+    const dosenPasswordError = dosenForm.querySelector("#error-password-dosen");
+
+    if (nidnInput && dosenPasswordInput && nidnError && dosenPasswordError) {
+      dosenForm.noValidate = true;
+
+      const validateNidn = () => {
+        const value = nidnInput.value;
+
+        if (!value) {
+          showError(nidnInput, nidnError, "NIDN wajib diisi.");
+          return false;
+        }
+
+        if (!/^[0-9]+$/.test(value)) {
+          showError(nidnInput, nidnError, "NIDN hanya boleh berisi angka 0–9.");
+          return false;
+        }
+
+        if (value.length !== NIDN_LENGTH) {
+          showError(nidnInput, nidnError, `NIDN harus terdiri dari ${NIDN_LENGTH} digit.`);
+          return false;
+        }
+
+        clearError(nidnInput, nidnError);
+        return true;
+      };
+
+      const validateDosenPassword = () => {
+        if (!dosenPasswordInput.value) {
+          showError(dosenPasswordInput, dosenPasswordError, "Password wajib diisi.");
+          return false;
+        }
+
+        clearError(dosenPasswordInput, dosenPasswordError);
+        return true;
+      };
+
+      revalidateOnInput(nidnInput, validateNidn);
+      revalidateOnInput(dosenPasswordInput, validateDosenPassword);
+
+      dosenForm.addEventListener("submit", (event) => {
+        const nidnValid = validateNidn();
+        const passwordValid = validateDosenPassword();
+
+        if (!nidnValid || !passwordValid) {
+          event.preventDefault();
+
+          if (!nidnValid) {
+            nidnInput.focus();
+          } else {
+            dosenPasswordInput.focus();
+          }
+        }
+      });
+    }
+  }
 })();

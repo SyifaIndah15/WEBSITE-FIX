@@ -236,8 +236,11 @@
             </svg>
 
             <!-- Kolom untuk memasukkan NIDN Dosen. -->
-            <input class="input-control" type="text" id="nidn" name="nidn" placeholder="Masukkan NIDN" inputmode="numeric" autocomplete="username" pattern="[0-9]+" title="NIDN hanya berisi angka." required>
+            <input class="input-control" type="text" id="nidn" name="nidn" placeholder="Masukkan NIDN" inputmode="numeric" autocomplete="username" pattern="[0-9]{10}" title="NIDN terdiri dari 10 angka." aria-describedby="error-nidn" required>
           </div>
+
+          <!-- Pesan kesalahan untuk input NIDN Dosen. -->
+          <p class="login-error" id="error-nidn" role="alert" hidden></p>
 
           <!-- Petunjuk mengenai identitas akun Dosen. -->
           <p class="form-hint">Gunakan NIDN Dosen yang terdaftar pada sistem.</p>
@@ -256,7 +259,7 @@
             </svg>
 
             <!-- Kolom untuk memasukkan password Dosen. -->
-            <input class="input-control" type="password" id="password-dosen" name="password" placeholder="Masukkan password Anda" autocomplete="current-password" required>
+            <input class="input-control" type="password" id="password-dosen" name="password" placeholder="Masukkan password Anda" autocomplete="current-password" aria-describedby="error-password-dosen" required>
 
             <!-- Ikon mata sebagai elemen tampilan password yang bersifat statis. -->
             <span class="password-toggle password-toggle--static" aria-hidden="true">
@@ -266,6 +269,9 @@
               </svg>
             </span>
           </div>
+
+          <!-- Pesan kesalahan untuk input password Dosen. -->
+          <p class="login-error" id="error-password-dosen" role="alert" hidden></p>
         </div>
 
         <!-- Tombol untuk mengirim formulir login Dosen. -->
