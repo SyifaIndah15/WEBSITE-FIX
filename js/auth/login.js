@@ -35,4 +35,36 @@
       togglePassword();
     });
   });
+
+  const forgotIdentityMahasiswa = document.getElementById("forgot-identity-mahasiswa");
+  const forgotSummaryIdentityMahasiswa = document.getElementById("forgot-summary-identity-mahasiswa");
+  const forgotMahasiswaSuccess = document.getElementById("forgot-mahasiswa-success");
+
+  const updateForgotSummaryIdentityMahasiswa = () => {
+    if (!forgotIdentityMahasiswa || !forgotSummaryIdentityMahasiswa) {
+      return;
+    }
+
+    forgotSummaryIdentityMahasiswa.textContent = forgotIdentityMahasiswa.value.trim();
+  };
+
+  if (forgotMahasiswaSuccess) {
+    forgotMahasiswaSuccess.addEventListener("change", updateForgotSummaryIdentityMahasiswa);
+  }
+
+  const forgotIdentityDosen = document.getElementById("forgot-identity-dosen");
+  const forgotSummaryIdentityDosen = document.getElementById("forgot-summary-identity-dosen");
+  const forgotDosenSuccess = document.getElementById("forgot-dosen-success");
+
+  const updateForgotSummaryIdentityDosen = () => {
+    if (!forgotIdentityDosen || !forgotSummaryIdentityDosen) {
+      return;
+    }
+
+    forgotSummaryIdentityDosen.textContent = forgotIdentityDosen.value.trim();
+  };
+
+  if (forgotDosenSuccess) {
+    forgotDosenSuccess.addEventListener("change", updateForgotSummaryIdentityDosen);
+  }
 })();
