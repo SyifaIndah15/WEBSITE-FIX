@@ -1,0 +1,815 @@
+/* =========================================================
+   ATURAN ELEMEN TERSEMBUNYI
+   Elemen dengan atribut hidden tidak akan ditampilkan.
+   !important memastikan aturan ini tetap diprioritaskan.
+   ========================================================= */
+[hidden] {
+  display: none !important;
+}
+
+/* =========================================================
+   SR-ONLY (SCREEN READER ONLY)
+   Menyembunyikan elemen secara visual, tetapi informasinya
+   tetap dapat dibaca oleh teknologi pembaca layar.
+   Berguna untuk aksesibilitas.
+   ========================================================= */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* =========================================================
+   AREA KONTEN RIWAYAT PRESTASI
+   Mengatur jarak bagian atas konten utama.
+   ========================================================= */
+.history-content {
+  padding-top: 30px;
+}
+
+/* Membuat area pembungkus riwayat memenuhi lebar tersedia */
+.history-shell {
+  width: 100%;
+}
+
+/* Mengatur jarak bagian judul dengan konten di bawahnya */
+.history-heading {
+  margin-bottom: 7px;
+}
+
+/* Tampilan judul halaman Riwayat Prestasi */
+.history-title {
+  position: relative;
+  top: 1px;
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 25px;
+  letter-spacing: -0.05px;
+  color: #30291f;
+}
+
+/* =========================================================
+   CARD RIWAYAT PRESTASI
+   Mengatur tampilan kotak utama yang membungkus tabel.
+   ========================================================= */
+.history-card {
+  overflow: hidden;
+  background: #fbf6eb;
+  border: 1px solid #e0d1b5;
+  border-radius: 11px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 253, 247, 0.72),
+    0 1px 2px rgba(94, 71, 36, 0.035);
+}
+
+/* =========================================================
+   TABEL RIWAYAT PRESTASI
+   Mengatur ukuran dan susunan tabel secara keseluruhan.
+   ========================================================= */
+.history-table {
+  width: 100%;
+  border-spacing: 0;
+  border-collapse: separate;
+  table-layout: fixed;
+}
+
+/* Mengatur proporsi lebar masing-masing kolom tabel */
+.col-number {
+  width: 4.2%;
+}
+
+.col-achievement {
+  width: 31.8%;
+}
+
+.col-type {
+  width: 13.4%;
+}
+
+.col-rank {
+  width: 11.2%;
+}
+
+.col-year {
+  width: 7.6%;
+}
+
+.col-status {
+  width: 15%;
+}
+
+.col-actions {
+  width: 16.8%;
+}
+
+/* =========================================================
+   HEADER TABEL
+   Mengatur tampilan judul kolom pada bagian thead.
+   ========================================================= */
+.history-table thead th {
+  height: 41px;
+  padding: 1px 12px 0;
+  font-size: 10.7px;
+  font-weight: 600;
+  line-height: 15px;
+  text-align: left;
+  color: #30291f;
+  white-space: nowrap;
+  background: #e9dcc2;
+  border-bottom: 1px solid rgba(211, 191, 157, 0.42);
+}
+
+/* Menambahkan jarak pada sisi kiri kolom pertama */
+.history-table thead th:first-child {
+  padding-left: 15px;
+}
+
+/* Mengatur jarak dan posisi teks kolom terakhir */
+.history-table thead th:last-child {
+  padding-right: 15px;
+  text-align: center;
+}
+
+/* =========================================================
+   BARIS DATA TABEL
+   Mengatur warna dasar, efek selang-seling, dan hover.
+   ========================================================= */
+
+/* Tampilan dasar setiap baris data */
+.history-table tbody tr {
+  background: #fbf6eb;
+  transition: background-color 0.16s ease;
+}
+
+/* Memberikan warna berbeda pada baris genap */
+.history-table tbody tr:nth-child(even) {
+  background: #f8f0e1;
+}
+
+/* Mengubah warna baris ketika diarahkan kursor */
+.history-table tbody tr:hover {
+  background: #f5ead6;
+}
+
+/* Mengatur ukuran, jarak, dan posisi isi setiap sel tabel */
+.history-table tbody td {
+  height: 54px;
+  padding: 7px 12px;
+  vertical-align: middle;
+  border-top: 1px solid rgba(235, 224, 204, 0.82);
+}
+
+/* Menghilangkan garis atas pada baris data pertama */
+.history-table tbody tr:first-child td {
+  border-top: 0;
+}
+
+/* =========================================================
+   KOLOM NOMOR
+   Mengatur posisi dan tampilan nomor urut prestasi.
+   ========================================================= */
+.history-cell--number {
+  padding-left: 15px !important;
+  text-align: center;
+}
+
+/* Tampilan angka nomor urut */
+.row-number {
+  display: inline-block;
+  font-size: 9.8px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.35px;
+  color: #9b8c75;
+}
+
+/* =========================================================
+   KOLOM INFORMASI PRESTASI
+   Menampilkan nama prestasi dan nama penyelenggara.
+   ========================================================= */
+.history-cell--achievement {
+  padding-right: 14px !important;
+}
+
+/* Nama atau judul prestasi */
+.history-name {
+  display: block;
+  font-size: 11.1px;
+  font-weight: 600;
+  line-height: 15px;
+  letter-spacing: -0.02px;
+  color: #30291f;
+  overflow-wrap: anywhere;
+}
+
+/* Nama penyelenggara yang ditampilkan di bawah nama prestasi */
+.history-organizer {
+  display: block;
+  margin-top: 2px;
+  font-size: 9.4px;
+  font-weight: 400;
+  line-height: 12px;
+  color: #8b7f6e;
+  overflow-wrap: anywhere;
+}
+
+/* Teks informasi utama dalam sel tabel */
+.cell-primary {
+  display: block;
+  font-size: 10.5px;
+  font-weight: 500;
+  line-height: 15px;
+  color: #3b3125;
+  overflow-wrap: anywhere;
+}
+
+/* Teks informasi tambahan di bawah informasi utama */
+.cell-secondary {
+  display: block;
+  margin-top: 2px;
+  font-size: 9.3px;
+  font-weight: 400;
+  line-height: 12px;
+  color: #8d8170;
+}
+
+/* =========================================================
+   KOLOM STATUS PRESTASI
+   Mengatur posisi dan tampilan badge status pengajuan.
+   ========================================================= */
+.history-cell--status {
+  padding-right: 8px !important;
+  padding-left: 5px !important;
+}
+
+/* Bentuk dasar badge status */
+.history-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 26px;
+  padding: 1px 8px 0;
+  font-size: 9.3px;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  border: 1px solid transparent;
+  border-radius: 999px;
+}
+
+/* Mengatur ukuran ikon di dalam badge status */
+.history-status svg {
+  flex: 0 0 11px;
+  width: 11px;
+  height: 11px;
+}
+
+/* Status prestasi yang sudah terverifikasi */
+.history-status--verified {
+  color: #0d7655;
+  background: #e8fcf3;
+  border-color: #8cdfc2;
+}
+
+/* Status prestasi yang masih diajukan atau menunggu proses */
+.history-status--submitted {
+  color: #a16a0b;
+  background: #fff4d7;
+  border-color: #e5c16a;
+}
+
+/* Status prestasi yang perlu diperbaiki */
+.history-status--revision {
+  color: #a94737;
+  background: #fdece8;
+  border-color: #e5af9f;
+}
+
+/* =========================================================
+   KOLOM AKSI
+   Mengatur area tombol tindakan pada setiap baris data.
+   ========================================================= */
+.history-cell--actions {
+  padding-right: 13px !important;
+  padding-left: 6px !important;
+}
+
+/* Menyusun tombol aksi secara horizontal */
+.row-actions {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+/* Tampilan dasar tombol aksi */
+.action-button {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  height: 28px;
+  padding: 0 9px;
+  font-family: inherit;
+  font-size: 9.8px;
+  font-weight: 500;
+  line-height: 1;
+  color: inherit;
+  white-space: nowrap;
+  text-decoration: none;
+  appearance: none;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color 0.16s ease, background-color 0.16s ease, border-color 0.16s ease;
+}
+
+/* Mengatur ukuran ikon di dalam tombol aksi */
+.action-button svg {
+  flex: 0 0 12px;
+  width: 12px;
+  height: 13px;
+}
+
+/* Tampilan khusus tombol untuk mengunduh atau melihat PDF */
+.action-button--pdf {
+  color: #493d2c;
+  background: #f8f0e1;
+  border-color: #d9c08c;
+  cursor: pointer;
+}
+
+/* Mengatur warna ikon pada tombol PDF */
+.action-button--pdf svg {
+  color: #b88f46;
+}
+
+/* Efek hover pada tombol PDF */
+.action-button--pdf:hover {
+  background: #f2e4c8;
+  border-color: #c9a75f;
+}
+
+/* Tampilan tombol ketika dinyatakan tidak dapat digunakan */
+.action-button[aria-disabled="true"] {
+  color: #a49783;
+  background: #f3ebdd;
+  border-color: #e5d9c5;
+  cursor: not-allowed;
+  opacity: 0.72;
+}
+
+/* Mengubah warna ikon pada tombol yang tidak aktif */
+.action-button[aria-disabled="true"] svg {
+  color: #b8ab97;
+}
+
+/* Mempertahankan tampilan tombol tidak aktif ketika diarahkan kursor */
+.action-button[aria-disabled="true"]:hover {
+  background: #f3ebdd;
+  border-color: #e5d9c5;
+}
+
+/* Garis fokus ketika tombol dipilih menggunakan keyboard */
+.action-button:focus-visible {
+  outline: 2px solid #b18c4c;
+  outline-offset: 2px;
+}
+
+/* =========================================================
+   TAMPILAN KETIKA RIWAYAT KOSONG
+   Digunakan ketika belum ada data prestasi yang ditampilkan.
+   ========================================================= */
+.history-empty {
+  padding: 48px 24px 46px;
+  text-align: center;
+  background: #fbf6eb;
+}
+
+/* Area ikon pada tampilan riwayat kosong */
+.history-empty-icon {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  margin: 0 auto 12px;
+  color: #ad8b50;
+  background: #f3e6cb;
+  border: 1px solid #e7d5b2;
+  border-radius: 50%;
+}
+
+/* Ukuran ikon pada tampilan riwayat kosong */
+.history-empty-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* Judul pesan ketika riwayat masih kosong */
+.history-empty-title {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 19px;
+  color: #3a3024;
+}
+
+/* Deskripsi tambahan pada tampilan riwayat kosong */
+.history-empty-text {
+  max-width: 390px;
+  margin: 4px auto 0;
+  font-size: 10.5px;
+  font-weight: 400;
+  line-height: 16px;
+  color: #817565;
+}
+
+/* =========================================================
+   PESAN NOSCRIPT
+   Mengatur tampilan pesan apabila JavaScript tidak aktif.
+   ========================================================= */
+.history-noscript {
+  margin: 0;
+  padding: 22px 24px;
+  font-size: 11px;
+  line-height: 17px;
+  color: #7b7164;
+  text-align: center;
+}
+
+/* Garis pembatas pada bagian footer riwayat */
+.history-footer {
+  border-top: 1px solid rgba(213, 195, 161, 0.18);
+}
+
+/* =========================================================
+   RESPONSIVE: LAYAR MAKSIMAL 1400px
+   Menyesuaikan ukuran tombol dan jarak isi tabel
+   agar tetap sesuai pada layar yang lebih kecil.
+   ========================================================= */
+@media (max-width: 1400px) {
+
+  /* Mengecilkan jarak dan ukuran teks tombol aksi */
+  .action-button {
+    gap: 4px;
+    padding: 0 8px;
+    font-size: 9.4px;
+  }
+
+  /* Mengurangi jarak horizontal pada header dan isi tabel */
+  .history-table thead th,
+  .history-table tbody td {
+    padding-right: 9px;
+    padding-left: 9px;
+  }
+
+  /* Mengizinkan teks judul kolom berpindah baris */
+  .history-table thead th {
+    line-height: 13px;
+    white-space: normal;
+  }
+
+  /* Menyesuaikan jarak kolom nomor */
+  .history-cell--number {
+    padding-left: 12px !important;
+  }
+
+  /* Menyesuaikan jarak kolom tombol aksi */
+  .history-cell--actions {
+    padding-right: 9px !important;
+    padding-left: 4px !important;
+  }
+
+  /* Mengecilkan jarak dan ukuran teks badge status */
+  .history-status {
+    gap: 4px;
+    padding-right: 7px;
+    padding-left: 7px;
+    font-size: 9px;
+  }
+}
+
+/* =========================================================
+   RESPONSIVE: LAYAR MAKSIMAL 1279px
+   Mengubah tampilan tabel menjadi kumpulan card.
+   Header tabel disembunyikan dan informasi setiap baris
+   disusun dalam layout grid dua kolom.
+   ========================================================= */
+@media (max-width: 1279px) {
+
+  /* Menghilangkan tampilan card pembungkus tabel */
+  .history-card {
+    overflow: visible;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  /* Mempertahankan tampilan card pada bagian riwayat kosong */
+  .history-empty {
+    background: #fbf6eb;
+    border: 1px solid #e1d2b8;
+    border-radius: 11px;
+  }
+
+  /* Mengubah elemen tabel menjadi elemen blok */
+  .history-table,
+  .history-table tbody,
+  .history-table tr,
+  .history-table td {
+    display: block;
+    width: 100%;
+  }
+
+  /* Mengatur ulang jarak antarbagian tabel */
+  .history-table {
+    border-spacing: 0;
+  }
+
+  /* Menyembunyikan pengaturan kolom dan header tabel */
+  .history-table colgroup,
+  .history-table thead {
+    display: none;
+  }
+
+  /* Menyusun setiap baris data secara vertikal */
+  .history-table tbody {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  /* Mengubah setiap baris menjadi card dengan dua kolom */
+  .history-table tbody tr {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 18px;
+    padding: 13px 16px 14px;
+    background: #fbf6eb;
+    border: 1px solid #e1d2b8;
+    border-radius: 11px;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 253, 247, 0.72),
+      0 1px 2px rgba(94, 71, 36, 0.035);
+  }
+
+  /* Warna berbeda untuk card pada urutan genap */
+  .history-table tbody tr:nth-child(even) {
+    background: #f8f0e1;
+  }
+
+  /* Efek perubahan warna ketika card diarahkan kursor */
+  .history-table tbody tr:hover {
+    background: #f5ead6;
+  }
+
+  /* Menghilangkan tinggi dan garis tabel bawaan */
+  .history-table tbody td {
+    height: auto;
+    padding: 0;
+    border: 0;
+  }
+
+  /* Mengatur nomor urut agar memenuhi seluruh lebar card */
+  .history-cell--number {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0 0 4px !important;
+    text-align: left;
+  }
+
+  /* Membentuk nomor urut menjadi lingkaran kecil */
+  .history-cell--number .row-number {
+    display: grid;
+    place-items: center;
+    width: 21px;
+    height: 21px;
+    font-size: 8.8px;
+    color: #8f7446;
+    background: #f0e2c5;
+    border: 1px solid #e3cfab;
+    border-radius: 50%;
+  }
+
+  /* Membuat informasi prestasi menggunakan seluruh lebar card */
+  .history-cell--achievement {
+    grid-column: 1 / -1;
+    padding: 0 0 10px !important;
+  }
+
+  /* Menyesuaikan ukuran nama prestasi pada tampilan card */
+  .history-name {
+    font-size: 12px;
+    line-height: 17px;
+  }
+
+  /* Menyesuaikan ukuran nama penyelenggara */
+  .history-organizer {
+    margin-top: 2px;
+    font-size: 9.8px;
+    line-height: 14px;
+  }
+
+  /* Memberikan jarak dan garis pemisah pada informasi card */
+  .history-cell--type,
+  .history-cell--rank,
+  .history-cell--year,
+  .history-cell--status {
+    padding-top: 9px !important;
+    border-top: 1px solid rgba(229, 216, 194, 0.7) !important;
+  }
+
+  /* Mengatur ulang jarak pada bagian status */
+  .history-cell--status {
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+  }
+
+  /* Menampilkan label informasi berdasarkan atribut data-label */
+  .history-cell--type::before,
+  .history-cell--rank::before,
+  .history-cell--year::before,
+  .history-cell--status::before {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 8.2px;
+    font-weight: 600;
+    line-height: 11px;
+    letter-spacing: 0.45px;
+    text-transform: uppercase;
+    color: #998971;
+    content: attr(data-label);
+  }
+
+  /* Membuat area tombol aksi memenuhi seluruh lebar card */
+  .history-cell--actions {
+    grid-column: 1 / -1;
+    justify-content: flex-start;
+    padding: 11px 0 0 !important;
+    margin-top: 10px;
+    border-top: 1px solid rgba(229, 216, 194, 0.8) !important;
+  }
+
+  /* Menempatkan tombol aksi di sisi kiri */
+  .row-actions {
+    justify-content: flex-start;
+  }
+
+  /* Menyesuaikan ukuran tombol aksi pada tampilan card */
+  .action-button {
+    gap: 5px;
+    min-height: 31px;
+    padding: 0 12px;
+    font-size: 9.7px;
+  }
+
+  /* Mencegah label informasi berpindah baris */
+  .history-cell--type::before,
+  .history-cell--rank::before,
+  .history-cell--year::before,
+  .history-cell--status::before {
+    white-space: nowrap;
+  }
+}
+
+/* =========================================================
+   RESPONSIVE: LAYAR MAKSIMAL 960px
+   Mengurangi jarak bagian atas konten riwayat.
+   ========================================================= */
+@media (max-width: 960px) {
+  .history-content {
+    padding-top: 28px;
+  }
+}
+
+/* =========================================================
+   RESPONSIVE: LAYAR MAKSIMAL 760px
+   Menyesuaikan jarak card, ukuran teks, dan tombol aksi
+   untuk perangkat dengan layar lebih kecil.
+   ========================================================= */
+@media (max-width: 760px) {
+
+  /* Mengurangi jarak antar kolom dan padding card */
+  .history-table tbody tr {
+    column-gap: 14px;
+    padding: 13px 14px 14px;
+  }
+
+  /* Menyesuaikan ukuran teks nama prestasi */
+  .history-name {
+    font-size: 11.4px;
+    line-height: 16px;
+  }
+
+  /* Menyesuaikan ukuran teks penyelenggara */
+  .history-organizer {
+    font-size: 9.4px;
+    line-height: 13px;
+  }
+
+  /* Membuat tombol aksi menyesuaikan lebar ruang tersedia */
+  .action-button {
+    flex: 1;
+    height: 32px;
+  }
+}
+
+/* =========================================================
+   RESPONSIVE: LAYAR MAKSIMAL 640px
+   Penyesuaian tampilan untuk perangkat mobile.
+   ========================================================= */
+@media (max-width: 640px) {
+
+  /* Mengecilkan judul halaman */
+  .history-title {
+    font-size: 17px;
+    line-height: 24px;
+  }
+
+  /* Menyesuaikan sudut card */
+  .history-table tbody tr {
+    border-radius: 10px;
+  }
+
+  /* Mengecilkan ukuran lingkaran nomor urut */
+  .history-cell--number .row-number {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* Menghilangkan garis atas footer pada tampilan mobile */
+  .history-footer {
+    border-top: 0;
+  }
+}
+
+/* =========================================================
+   RESPONSIVE: LAYAR MAKSIMAL 480px
+   Mengurangi jarak antar kolom dan padding tombol.
+   ========================================================= */
+@media (max-width: 480px) {
+
+  /* Mengurangi jarak antar kolom card */
+  .history-table tbody tr {
+    column-gap: 12px;
+  }
+
+  /* Mengurangi padding horizontal tombol aksi */
+  .action-button {
+    padding: 0 8px;
+  }
+}
+
+/* =========================================================
+   RESPONSIVE: LAYAR MAKSIMAL 380px
+   Penyesuaian tambahan untuk layar ponsel yang sangat kecil.
+   ========================================================= */
+@media (max-width: 380px) {
+
+  /* Mengecilkan teks label informasi card */
+  .history-cell--type::before,
+  .history-cell--rank::before,
+  .history-cell--year::before,
+  .history-cell--status::before {
+    font-size: 7.8px;
+  }
+
+  /* Mengurangi jarak antar tombol aksi */
+  .row-actions {
+    gap: 5px;
+  }
+
+  /* Mengecilkan tombol agar muat pada layar sempit */
+  .action-button {
+    gap: 3px;
+    padding: 0 6px;
+    font-size: 9.1px;
+  }
+}
+
+/* =========================================================
+   PENGATURAN AKSESIBILITAS ANIMASI
+   Mengurangi animasi apabila pengguna mengaktifkan
+   preferensi reduced motion pada perangkatnya.
+   ========================================================= */
+@media (prefers-reduced-motion: reduce) {
+
+  /* Menghilangkan transisi pada badge status dan tombol aksi */
+  .history-status,
+  .action-button {
+    transition: none;
+  }
+}

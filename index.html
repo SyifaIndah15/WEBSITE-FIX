@@ -1,0 +1,595 @@
+﻿<!DOCTYPE html>
+<!-- Menentukan bahwa dokumen menggunakan HTML5. -->
+<html lang="id">
+<!-- Menentukan bahasa utama halaman adalah Bahasa Indonesia. -->
+
+<head>
+  <!-- Mengatur karakter agar teks dan simbol dapat ditampilkan dengan benar. -->
+  <meta charset="UTF-8">
+
+  <!-- Mengatur tampilan halaman agar menyesuaikan ukuran layar perangkat. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Memberikan deskripsi singkat mengenai halaman login SIPRESMA. -->
+  <meta name="description" content="Halaman login SIPRESMA untuk Mahasiswa, Dosen, dan Admin.">
+
+  <!-- Menentukan judul halaman yang tampil pada tab browser. -->
+  <title>Login - SIPRESMA</title>
+
+  <!-- Menghubungkan browser ke server Google Fonts lebih awal. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- Mengambil jenis dan ketebalan font yang digunakan pada halaman. -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Menghubungkan file CSS untuk mengatur animasi halaman. -->
+  <link rel="stylesheet" href="css/shared/motion.css">
+
+  <!-- Menghubungkan file CSS khusus untuk tampilan halaman login. -->
+  <link rel="stylesheet" href="css/auth/login.css">
+
+  <!-- Menghubungkan file CSS untuk tampilan popup lupa password. -->
+  <link rel="stylesheet" href="css/auth/lupa-password.css">
+
+  <!-- Menghubungkan file CSS untuk mengatur tampilan overlay atau lapisan popup. -->
+  <link rel="stylesheet" href="css/shared/overlays.css">
+</head>
+
+<body>
+  <!-- Bagian latar belakang halaman yang berisi ilustrasi gelombang SVG. -->
+  <div class="page-background" aria-hidden="true">
+    <!-- SVG digunakan untuk membuat ilustrasi dekorasi pada latar belakang. -->
+    <svg viewBox="0 0 1536 857" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Definisi warna gradasi yang digunakan pada ilustrasi gelombang. -->
+      <defs>
+        <!-- Gradasi pertama dengan perubahan warna dan tingkat transparansi. -->
+        <linearGradient id="wave-a" x1="0" y1="610" x2="0" y2="900" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#e8d4ae" stop-opacity="0"/>
+          <stop offset="1" stop-color="#e4cda5" stop-opacity=".32"/>
+        </linearGradient>
+
+        <!-- Gradasi kedua dengan warna dan tingkat transparansi berbeda. -->
+        <linearGradient id="wave-b" x1="0" y1="740" x2="0" y2="900" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#dfc79d" stop-opacity="0"/>
+          <stop offset="1" stop-color="#dcc296" stop-opacity=".18"/>
+        </linearGradient>
+      </defs>
+
+      <!-- Membuat dua bentuk gelombang sebagai dekorasi bagian bawah halaman. -->
+      <path d="M-100 640C200 610 430 740 760 740C1090 740 1290 640 1636 690V980H-100Z" fill="url(#wave-a)"/>
+      <path d="M-100 770C240 730 480 850 800 840C1120 830 1340 760 1636 800V980H-100Z" fill="url(#wave-b)"/>
+
+      <!-- Membuat kumpulan garis lengkung sebagai dekorasi tambahan. -->
+      <g fill="none" stroke="#d3b77e" stroke-width="1.2" vector-effect="non-scaling-stroke">
+        <path d="M-20 150C150 160 300 214 470 220C630 226 770 184 900 163C1030 143 1110 122 1190 126C1320 131 1445 147 1556 153" stroke-opacity=".42"/>
+        <path d="M-20 205C150 220 320 250 490 264" stroke-opacity=".3" stroke-dasharray="3 6"/>
+        <path d="M950 186C1110 166 1270 152 1556 178" stroke-opacity=".18"/>
+        <path d="M-20 690C220 700 400 766 690 762C930 759 1080 700 1250 692C1380 686 1470 700 1556 708" stroke-opacity=".4"/>
+        <path d="M-20 744C200 748 370 792 650 794C910 796 1080 736 1250 732C1390 729 1480 742 1556 748" stroke-opacity=".22"/>
+      </g>
+    </svg>
+  </div>
+
+  <!-- Pembungkus utama yang menampung logo, formulir login, dan footer. -->
+  <div class="page-shell">
+
+    <!-- Bagian identitas aplikasi SIPRESMA. -->
+    <header class="brand">
+
+      <!-- Tempat ikon logo aplikasi. -->
+      <div class="brand-logo" aria-hidden="true">
+        <!-- SVG digunakan untuk menggambar ikon penghargaan pada logo. -->
+        <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="8" r="6"/>
+          <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>
+        </svg>
+      </div>
+
+      <!-- Menampilkan nama aplikasi. -->
+      <h1 class="brand-title">SIPRESMA</h1>
+
+      <!-- Menampilkan kepanjangan nama aplikasi. -->
+      <p class="brand-subtitle">Sistem Informasi Prestasi Mahasiswa</p>
+    </header>
+
+    <!-- Kartu utama yang berisi pilihan peran dan formulir login. -->
+    <main class="login-card" id="login-card">
+
+      <!-- Judul bagian pemilihan jenis pengguna. -->
+      <h2 class="card-title">Pilihan Jenis Pengguna:</h2>
+
+      <!-- Bagian untuk memilih peran pengguna yang akan melakukan login. -->
+      <div class="role-selector" role="group" aria-label="Pilihan jenis pengguna">
+
+        <!-- Radio button untuk memilih peran Mahasiswa dan menjadi pilihan awal. -->
+        <input class="role-radio" type="radio" name="role" id="role-mahasiswa" value="mahasiswa" checked>
+
+        <!-- Label yang menampilkan ikon dan tulisan Mahasiswa. -->
+        <label class="role-option" for="role-mahasiswa">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+          <span>Mahasiswa</span>
+        </label>
+
+        <!-- Radio button untuk memilih peran Dosen. -->
+        <input class="role-radio" type="radio" name="role" id="role-dosen" value="dosen">
+
+        <!-- Label yang menampilkan ikon dan tulisan Dosen. -->
+        <label class="role-option" for="role-dosen">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.084a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/>
+            <path d="M22 10v6"/>
+            <path d="M6 12v4.5c0 1.933 2.686 3.5 6 3.5s6-1.567 6-3.5V12"/>
+          </svg>
+          <span>Dosen</span>
+        </label>
+
+        <!-- Radio button untuk memilih peran Admin. -->
+        <input class="role-radio" type="radio" name="role" id="role-admin" value="admin">
+
+        <!-- Label yang menampilkan ikon dan tulisan Admin. -->
+        <label class="role-option" for="role-admin">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/>
+            <path d="m9 12 2 2 4-4"/>
+          </svg>
+          <span>Admin</span>
+        </label>
+      </div>
+
+      <!-- Formulir login khusus Mahasiswa. -->
+      <form class="login-form login-form--mahasiswa" action="pages/mahasiswa/dashboard.html" method="get">
+
+        <!-- Menyimpan informasi peran Mahasiswa saat formulir dikirim. -->
+        <input type="hidden" name="role" value="mahasiswa">
+
+        <!-- Bagian untuk memasukkan NPM Mahasiswa. -->
+        <div class="form-group">
+          <label class="form-label" for="identity-mahasiswa">NPM</label>
+
+          <!-- Pembungkus kolom input NPM dan ikon identitas. -->
+          <div class="input-field">
+            <!-- Ikon identitas yang ditampilkan di sebelah kolom NPM. -->
+            <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/>
+              <circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/>
+            </svg>
+
+            <!-- Kolom untuk memasukkan NPM Mahasiswa. -->
+            <input class="input-control" type="text" id="identity-mahasiswa" name="npm" placeholder="Masukkan NPM Anda" inputmode="numeric" autocomplete="username" pattern="[0-9]+" title="NPM hanya berisi angka." required>
+          </div>
+
+          <!-- Petunjuk mengenai password awal akun Mahasiswa. -->
+          <p class="form-hint">Password awal mahasiswa sama dengan NPM Anda.</p>
+        </div>
+
+        <!-- Bagian untuk memasukkan password Mahasiswa. -->
+        <div class="form-group form-group--password">
+          <label class="form-label" for="password-mahasiswa">Password</label>
+
+          <!-- Pembungkus kolom password dan ikon. -->
+          <div class="input-field">
+            <!-- Ikon gembok sebagai penanda kolom password. -->
+            <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="5" y="11" width="14" height="10" rx="2"/>
+              <path d="M8 11V7a4 4 0 0 1 8 0v4"/>
+            </svg>
+
+            <!-- Kolom untuk memasukkan password Mahasiswa. -->
+            <input class="input-control" type="password" id="password-mahasiswa" name="password" placeholder="Masukkan password Anda" autocomplete="current-password" required>
+
+            <!-- Ikon mata sebagai elemen tampilan password yang bersifat statis. -->
+            <span class="password-toggle password-toggle--static" aria-hidden="true">
+              <svg class="eye-open" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2.8 10c1.2-2.9 3.8-5.8 7.2-5.8s6 2.9 7.2 5.8c-1.2 2.9-3.8 5.8-7.2 5.8S4 12.9 2.8 10Z"/>
+                <circle cx="10" cy="10" r="2.3"/>
+              </svg>
+            </span>
+          </div>
+        </div>
+
+        <!-- Tombol untuk mengirim formulir login Mahasiswa. -->
+        <button class="login-button" type="submit">Login</button>
+      </form>
+
+      <!-- Formulir login khusus Dosen. -->
+      <form class="login-form login-form--dosen" action="pages/dosen/dashboard.html" method="get">
+
+        <!-- Menyimpan informasi peran Dosen saat formulir dikirim. -->
+        <input type="hidden" name="role" value="dosen">
+
+        <!-- Bagian untuk memasukkan NIDN Dosen. -->
+        <div class="form-group">
+          <label class="form-label" for="nidn">NIDN</label>
+
+          <!-- Pembungkus kolom input NIDN dan ikon identitas. -->
+          <div class="input-field">
+            <!-- Ikon identitas pengguna. -->
+            <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+
+            <!-- Kolom untuk memasukkan NIDN Dosen. -->
+            <input class="input-control" type="text" id="nidn" name="nidn" placeholder="Masukkan NIDN" inputmode="numeric" autocomplete="username" pattern="[0-9]+" title="NIDN hanya berisi angka." required>
+          </div>
+
+          <!-- Petunjuk mengenai identitas akun Dosen. -->
+          <p class="form-hint">Gunakan NIDN Dosen yang terdaftar pada sistem.</p>
+        </div>
+
+        <!-- Bagian untuk memasukkan password Dosen. -->
+        <div class="form-group form-group--password">
+          <label class="form-label" for="password-dosen">Password</label>
+
+          <!-- Pembungkus kolom password dan ikon. -->
+          <div class="input-field">
+            <!-- Ikon gembok sebagai penanda kolom password. -->
+            <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="5" y="11" width="14" height="10" rx="2"/>
+              <path d="M8 11V7a4 4 0 0 1 8 0v4"/>
+            </svg>
+
+            <!-- Kolom untuk memasukkan password Dosen. -->
+            <input class="input-control" type="password" id="password-dosen" name="password" placeholder="Masukkan password Anda" autocomplete="current-password" required>
+
+            <!-- Ikon mata sebagai elemen tampilan password yang bersifat statis. -->
+            <span class="password-toggle password-toggle--static" aria-hidden="true">
+              <svg class="eye-open" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2.8 10c1.2-2.9 3.8-5.8 7.2-5.8s6 2.9 7.2 5.8c-1.2 2.9-3.8 5.8-7.2 5.8S4 12.9 2.8 10Z"/>
+                <circle cx="10" cy="10" r="2.3"/>
+              </svg>
+            </span>
+          </div>
+        </div>
+
+        <!-- Tombol untuk mengirim formulir login Dosen. -->
+        <button class="login-button" type="submit">Login</button>
+      </form>
+
+      <!-- Formulir login khusus Admin. -->
+      <form class="login-form login-form--admin" action="pages/admin/dashboard.html" method="get">
+
+        <!-- Menyimpan informasi peran Admin saat formulir dikirim. -->
+        <input type="hidden" name="role" value="admin">
+
+        <!-- Bagian untuk memasukkan username Admin. -->
+        <div class="form-group">
+          <label class="form-label" for="identity-admin">Username Admin</label>
+
+          <!-- Pembungkus kolom input username dan ikon identitas. -->
+          <div class="input-field">
+            <!-- Ikon identitas pengguna. -->
+            <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/>
+              <circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/>
+            </svg>
+
+            <!-- Kolom untuk memasukkan username Admin. -->
+            <input class="input-control" type="text" id="identity-admin" name="username" placeholder="Masukkan Username Admin, cth: admin" autocomplete="username" required>
+          </div>
+
+          <!-- Informasi bahwa akun Admin disediakan oleh pengelola sistem. -->
+          <p class="form-hint">Akun Administrator disediakan oleh pengelola sistem.</p>
+        </div>
+
+        <!-- Bagian untuk memasukkan password Admin. -->
+        <div class="form-group form-group--password">
+          <label class="form-label" for="password-admin">Password</label>
+
+          <!-- Pembungkus kolom password dan ikon. -->
+          <div class="input-field">
+            <!-- Ikon gembok sebagai penanda kolom password. -->
+            <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="5" y="11" width="14" height="10" rx="2"/>
+              <path d="M8 11V7a4 4 0 0 1 8 0v4"/>
+            </svg>
+
+            <!-- Kolom untuk memasukkan password Admin. -->
+            <input class="input-control" type="password" id="password-admin" name="password" placeholder="Masukkan password Anda" autocomplete="current-password" required>
+
+            <!-- Ikon mata sebagai elemen tampilan password yang bersifat statis. -->
+            <span class="password-toggle password-toggle--static" aria-hidden="true">
+              <svg class="eye-open" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2.8 10c1.2-2.9 3.8-5.8 7.2-5.8s6 2.9 7.2 5.8c-1.2 2.9-3.8 5.8-7.2 5.8S4 12.9 2.8 10Z"/>
+                <circle cx="10" cy="10" r="2.3"/>
+              </svg>
+            </span>
+          </div>
+        </div>
+
+        <!-- Tombol untuk mengirim formulir login Admin. -->
+        <button class="login-button" type="submit">Login</button>
+      </form>
+
+      <!-- Bagian tautan lupa password untuk Mahasiswa dan Dosen. -->
+      <div class="card-footer" id="forgot-footer">
+
+        <!-- Label untuk membuka popup pemulihan password Mahasiswa. -->
+        <label class="forgot-link forgot-link--mahasiswa" for="forgot-mahasiswa-form" aria-haspopup="dialog">Lupa Password?</label>
+
+        <!-- Label untuk membuka popup pemulihan password Dosen. -->
+        <label class="forgot-link forgot-link--dosen" for="forgot-dosen-form" aria-haspopup="dialog">Lupa Password?</label>
+      </div>
+    </main>
+
+    <!-- Bagian footer yang menampilkan hak cipta dan nama aplikasi. -->
+    <footer class="site-footer">
+      <p>&copy; 2026 SIPRESMA <span class="footer-separator">&middot;</span> Sistem Informasi Prestasi Mahasiswa</p>
+    </footer>
+  </div>
+
+  <!-- Kumpulan radio button untuk mengatur tampilan popup lupa password menggunakan CSS. -->
+
+  <!-- Mengatur kondisi popup Mahasiswa saat tertutup. -->
+  <input class="forgot-state" type="radio" name="forgot-mahasiswa-view" id="forgot-mahasiswa-closed" checked>
+
+  <!-- Mengatur kondisi popup Mahasiswa saat menampilkan formulir pemulihan. -->
+  <input class="forgot-state" type="radio" name="forgot-mahasiswa-view" id="forgot-mahasiswa-form">
+
+  <!-- Mengatur kondisi popup Mahasiswa saat menampilkan pesan berhasil. -->
+  <input class="forgot-state" type="radio" name="forgot-mahasiswa-view" id="forgot-mahasiswa-success">
+
+  <!-- Mengatur kondisi popup Dosen saat tertutup. -->
+  <input class="forgot-state" type="radio" name="forgot-dosen-view" id="forgot-dosen-closed" checked>
+
+  <!-- Mengatur kondisi popup Dosen saat menampilkan formulir pemulihan. -->
+  <input class="forgot-state" type="radio" name="forgot-dosen-view" id="forgot-dosen-form">
+
+  <!-- Mengatur kondisi popup Dosen saat menampilkan pesan berhasil. -->
+  <input class="forgot-state" type="radio" name="forgot-dosen-view" id="forgot-dosen-success">
+
+  <!-- Popup pemulihan password khusus Mahasiswa. -->
+  <div class="forgot-modal" id="forgot-mahasiswa" data-role="Mahasiswa">
+
+    <!-- Latar belakang popup yang dapat digunakan untuk menutup popup. -->
+    <label class="forgot-backdrop" for="forgot-mahasiswa-closed" aria-label="Tutup popup lupa password"></label>
+
+    <!-- Kotak utama yang menampung isi popup Mahasiswa. -->
+    <section class="forgot-dialog" role="dialog" aria-modal="true" aria-labelledby="forgot-title-mahasiswa" aria-describedby="forgot-description-mahasiswa" tabindex="-1">
+
+      <!-- Bagian kepala popup Mahasiswa. -->
+      <header class="forgot-header">
+
+        <!-- Ikon pengguna pada bagian kepala popup. -->
+        <span class="forgot-header-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="8" r="3.7"/>
+            <path d="M5.3 20c.5-3.9 3-6.1 6.7-6.1s6.2 2.2 6.7 6.1"/>
+          </svg>
+        </span>
+
+        <!-- Bagian judul popup. -->
+        <div class="forgot-header-copy">
+          <h2 class="forgot-title" id="forgot-title-mahasiswa">Lupa Password</h2>
+
+        </div>
+
+        <!-- Tombol untuk menutup popup Mahasiswa. -->
+        <label class="forgot-close" for="forgot-mahasiswa-closed" aria-label="Tutup popup lupa password">
+          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+            <path d="m2 2 10 10M12 2 2 12"/>
+          </svg>
+        </label>
+      </header>
+
+      <!-- Bagian isi popup pemulihan password Mahasiswa. -->
+      <div class="forgot-body">
+
+        <!-- Formulir untuk mengajukan permintaan pemulihan akun Mahasiswa. -->
+        <form class="forgot-form">
+
+          <!-- Penjelasan mengenai proses pemulihan akun Mahasiswa. -->
+          <p class="forgot-description" id="forgot-description-mahasiswa">Pemulihan akun Mahasiswa. Masukkan NPM Anda untuk memvalidasi data akun.</p>
+
+          <!-- Bagian untuk memasukkan NPM Mahasiswa. -->
+          <div class="forgot-field">
+            <label class="forgot-label" for="forgot-identity-mahasiswa">NPM Mahasiswa</label>
+
+            <!-- Pembungkus kolom NPM dan ikon pesan. -->
+            <div class="forgot-control">
+              <!-- Ikon amplop sebagai penanda kolom identitas. -->
+              <svg class="forgot-control-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.45" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="3" y="5.5" width="18" height="13" rx="2"/>
+                <path d="m3.5 7 8.5 6 8.5-6"/>
+              </svg>
+
+              <!-- Kolom untuk memasukkan NPM Mahasiswa. -->
+              <input class="forgot-input" id="forgot-identity-mahasiswa" name="identity" type="text" placeholder="Masukkan NPM" inputmode="numeric" autocomplete="username" pattern="[0-9]+" title="NPM hanya berisi angka." required aria-describedby="forgot-identity-error-mahasiswa">
+            </div>
+
+            <!-- Pesan kesalahan jika NPM Mahasiswa belum diisi. -->
+            <p class="forgot-error" id="forgot-identity-error-mahasiswa" role="alert">NPM Mahasiswa wajib diisi.</p>
+          </div>
+
+          <!-- Kumpulan tombol tindakan pada formulir pemulihan Mahasiswa. -->
+          <div class="forgot-actions">
+
+            <!-- Tombol untuk membatalkan dan menutup popup. -->
+            <label class="forgot-button forgot-button--secondary" for="forgot-mahasiswa-closed">Batal</label>
+
+            <!-- Tombol untuk menuju tampilan permintaan berhasil dikirim. -->
+            <label class="forgot-button forgot-button--primary" for="forgot-mahasiswa-success">Lanjutkan</label>
+          </div>
+        </form>
+
+        <!-- Tampilan informasi setelah permintaan pemulihan Mahasiswa dikirim. -->
+        <div class="forgot-success">
+
+          <!-- Ikon informasi untuk menandai status permintaan. -->
+          <span class="forgot-success-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="9"/>
+              <path d="M12 16v-5"/>
+              <path d="M12 8h.01"/>
+            </svg>
+          </span>
+
+          <!-- Judul pemberitahuan bahwa permintaan berhasil dikirim. -->
+          <h3 class="forgot-success-title" id="forgot-success-title-mahasiswa" tabindex="-1">Permintaan Berhasil Dikirim</h3>
+
+          <!-- Ringkasan informasi permintaan pemulihan akun Mahasiswa. -->
+          <div class="forgot-summary">
+
+            <!-- Menampilkan peran pengguna yang mengajukan permintaan. -->
+            <div class="forgot-summary-row">
+              <span>Peran Pengguna:</span>
+              <strong>Mahasiswa</strong>
+            </div>
+
+            <!-- Menampilkan contoh NPM Mahasiswa. -->
+            <div class="forgot-summary-row">
+              <span>NPM:</span>
+              <strong>07352411036</strong>
+            </div>
+
+            <!-- Menampilkan status permintaan pemulihan akun. -->
+            <div class="forgot-summary-row">
+              <span>Status:</span>
+              <strong>
+                <span class="forgot-status">
+                  <!-- Titik kecil sebagai penanda status permintaan. -->
+                  <span class="forgot-status-dot" aria-hidden="true"></span>
+                  Menunggu Konfirmasi Admin
+                </span>
+              </strong>
+            </div>
+          </div>
+
+          <!-- Tombol untuk menutup popup dan kembali ke halaman login. -->
+          <label class="forgot-button forgot-button--primary forgot-button--back" for="forgot-mahasiswa-closed">Kembali ke Login</label>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Popup pemulihan password khusus Dosen. -->
+  <div class="forgot-modal" id="forgot-dosen" data-role="Dosen">
+
+    <!-- Latar belakang popup yang dapat digunakan untuk menutup popup. -->
+    <label class="forgot-backdrop" for="forgot-dosen-closed" aria-label="Tutup popup lupa password"></label>
+
+    <!-- Kotak utama yang menampung isi popup Dosen. -->
+    <section class="forgot-dialog" role="dialog" aria-modal="true" aria-labelledby="forgot-title-dosen" aria-describedby="forgot-description-dosen" tabindex="-1">
+
+      <!-- Bagian kepala popup Dosen. -->
+      <header class="forgot-header">
+
+        <!-- Ikon pengguna pada bagian kepala popup. -->
+        <span class="forgot-header-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="8" r="3.7"/>
+            <path d="M5.3 20c.5-3.9 3-6.1 6.7-6.1s6.2 2.2 6.7 6.1"/>
+          </svg>
+        </span>
+
+        <!-- Bagian judul popup. -->
+        <div class="forgot-header-copy">
+          <h2 class="forgot-title" id="forgot-title-dosen">Lupa Password</h2>
+
+        </div>
+
+        <!-- Tombol untuk menutup popup Dosen. -->
+        <label class="forgot-close" for="forgot-dosen-closed" aria-label="Tutup popup lupa password">
+          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+            <path d="m2 2 10 10M12 2 2 12"/>
+          </svg>
+        </label>
+      </header>
+
+      <!-- Bagian isi popup pemulihan password Dosen. -->
+      <div class="forgot-body">
+
+        <!-- Formulir untuk mengajukan permintaan pemulihan akun Dosen. -->
+        <form class="forgot-form">
+
+          <!-- Penjelasan mengenai proses pemulihan akun Dosen. -->
+          <p class="forgot-description" id="forgot-description-dosen">Pemulihan akun Dosen. Masukkan NIDN Anda untuk memvalidasi data akun.</p>
+
+          <!-- Bagian untuk memasukkan NIDN Dosen. -->
+          <div class="forgot-field">
+            <label class="forgot-label" for="forgot-identity-dosen">NIDN Dosen</label>
+
+            <!-- Pembungkus kolom NIDN dan ikon pesan. -->
+            <div class="forgot-control">
+              <!-- Ikon amplop sebagai penanda kolom identitas. -->
+              <svg class="forgot-control-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.45" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="3" y="5.5" width="18" height="13" rx="2"/>
+                <path d="m3.5 7 8.5 6 8.5-6"/>
+              </svg>
+
+              <!-- Kolom untuk memasukkan NIDN Dosen. -->
+              <input class="forgot-input" id="forgot-identity-dosen" name="identity" type="text" placeholder="Masukkan NIDN" inputmode="numeric" autocomplete="username" pattern="[0-9]+" title="NIDN hanya berisi angka." required aria-describedby="forgot-identity-error-dosen">
+            </div>
+
+            <!-- Pesan kesalahan jika NIDN Dosen belum diisi. -->
+            <p class="forgot-error" id="forgot-identity-error-dosen" role="alert">NIDN Dosen wajib diisi.</p>
+          </div>
+
+          <!-- Kumpulan tombol tindakan pada formulir pemulihan Dosen. -->
+          <div class="forgot-actions">
+
+            <!-- Tombol untuk membatalkan dan menutup popup. -->
+            <label class="forgot-button forgot-button--secondary" for="forgot-dosen-closed">Batal</label>
+
+            <!-- Tombol untuk menuju tampilan permintaan berhasil dikirim. -->
+            <label class="forgot-button forgot-button--primary" for="forgot-dosen-success">Lanjutkan</label>
+          </div>
+        </form>
+
+        <!-- Tampilan informasi setelah permintaan pemulihan Dosen dikirim. -->
+        <div class="forgot-success">
+
+          <!-- Ikon informasi untuk menandai status permintaan. -->
+          <span class="forgot-success-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="9"/>
+              <path d="M12 16v-5"/>
+              <path d="M12 8h.01"/>
+            </svg>
+          </span>
+
+          <!-- Judul pemberitahuan bahwa permintaan berhasil dikirim. -->
+          <h3 class="forgot-success-title" id="forgot-success-title-dosen" tabindex="-1">Permintaan Berhasil Dikirim</h3>
+
+          <!-- Ringkasan informasi permintaan pemulihan akun Dosen. -->
+          <div class="forgot-summary">
+
+            <!-- Menampilkan peran pengguna yang mengajukan permintaan. -->
+            <div class="forgot-summary-row">
+              <span>Peran Pengguna:</span>
+              <strong>Dosen</strong>
+            </div>
+
+            <!-- Menampilkan contoh NIDN Dosen. -->
+            <div class="forgot-summary-row">
+              <span>NIDN:</span>
+              <strong>0012058201</strong>
+            </div>
+
+            <!-- Menampilkan status permintaan pemulihan akun. -->
+            <div class="forgot-summary-row">
+              <span>Status:</span>
+              <strong>
+                <span class="forgot-status">
+                  <!-- Titik kecil sebagai penanda status permintaan. -->
+                  <span class="forgot-status-dot" aria-hidden="true"></span>
+                  Menunggu Konfirmasi Admin
+                </span>
+              </strong>
+            </div>
+          </div>
+
+          <!-- Tombol untuk menutup popup dan kembali ke halaman login. -->
+          <label class="forgot-button forgot-button--primary forgot-button--back" for="forgot-dosen-closed">Kembali ke Login</label>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="js/auth/login.js"></script>
+</body>
+</html>

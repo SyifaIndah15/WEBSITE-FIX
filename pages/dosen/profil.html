@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<!-- Menentukan bahwa dokumen menggunakan HTML5 -->
+<html lang="id">
+<head>
+  <!-- Mengatur karakter agar mendukung berbagai simbol dan huruf -->
+  <meta charset="UTF-8">
+
+  <!-- Mengatur tampilan halaman agar menyesuaikan ukuran perangkat -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Memberikan deskripsi singkat mengenai halaman profil dosen -->
+  <meta name="description" content="Profil dosen SIPRESMA beserta informasi identitas dan pengelolaan keamanan akun.">
+
+  <!-- Mengatur judul halaman pada tab browser -->
+  <title>Profil Dosen - SIPRESMA</title>
+
+  <!-- Menghubungkan halaman dengan Google Fonts untuk mengambil jenis huruf -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Roboto:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+
+  <!-- Menghubungkan halaman dengan file CSS untuk animasi dan tampilan umum -->
+  <link rel="stylesheet" href="../../css/shared/motion.css">
+
+  <!-- Menghubungkan halaman dengan CSS dashboard dan sidebar dosen -->
+  <link rel="stylesheet" href="../../css/dosen/dashboard.css">
+  <link rel="stylesheet" href="../../css/dosen/sidebar.css">
+
+  <!-- Menghubungkan halaman dengan CSS bagian konten dosen -->
+  <link rel="stylesheet" href="../../css/dosen/content.css">
+
+  <!-- Menghubungkan halaman dengan CSS untuk popup atau lapisan tampilan -->
+  <link rel="stylesheet" href="../../css/shared/overlays.css">
+
+  <!-- Menghubungkan halaman dengan CSS khusus halaman profil dosen -->
+  <link rel="stylesheet" href="../../css/dosen/profil.css">
+</head>
+
+<!-- Bagian utama halaman dengan class profile-page -->
+<body class="profile-page">
+
+  <!-- Pembungkus seluruh tata letak dashboard -->
+  <div class="dashboard-layout">
+
+    <!-- Checkbox untuk mengatur buka dan tutup sidebar tanpa JavaScript -->
+    <input class="sidebar-toggle-input" type="checkbox" id="sidebar-toggle" aria-controls="sidebar" aria-label="Buka atau tutup menu navigasi">
+
+    <!-- Bagian sidebar atau menu navigasi di sebelah kiri -->
+    <aside class="sidebar" id="sidebar">
+
+      <!-- Logo dan nama aplikasi SIPRESMA -->
+      <a class="sidebar-brand" href="dashboard.html" aria-label="SIPRESMA Dashboard Dosen">
+
+        <!-- Ikon logo SIPRESMA menggunakan SVG -->
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="8" r="5.6"/>
+            <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>
+          </svg>
+        </span>
+
+        <!-- Tulisan nama dan slogan aplikasi -->
+        <span class="brand-copy">
+          <span class="brand-name">SIPRESMA</span>
+          <span class="brand-tagline">Prestasi Mahasiswa</span>
+        </span>
+      </a>
+
+      <!-- Informasi hak akses pengguna yang sedang login -->
+      <div class="access-row">
+
+        <!-- Ikon keamanan hak akses menggunakan SVG -->
+        <svg class="access-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/>
+          <path d="m9 12 2 2 4-4"/>
+        </svg>
+
+        <!-- Keterangan hak akses dan peran pengguna -->
+        <span class="access-label">Hak Akses:</span>
+        <span class="access-role">Dosen / Kaprodi</span>
+      </div>
+
+      <!-- Bagian daftar menu navigasi sidebar -->
+      <div class="sidebar-menu">
+        <p class="menu-label">Menu Utama</p>
+
+        <!-- Navigasi untuk berpindah antarhalaman dosen -->
+        <nav class="sidebar-nav" aria-label="Navigasi utama">
+
+          <!-- Menu menuju halaman dashboard -->
+          <a class="nav-link" href="dashboard.html">
+
+            <!-- Ikon dashboard menggunakan SVG -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="3" width="7" height="7" rx="1"/>
+              <rect x="14" y="3" width="7" height="7" rx="1"/>
+              <rect x="3" y="14" width="7" height="7" rx="1"/>
+              <rect x="14" y="14" width="7" height="7" rx="1"/>
+            </svg>
+            <span>Dashboard</span>
+          </a>
+
+          <!-- Menu menuju halaman data prestasi mahasiswa -->
+          <a class="nav-link" href="daftar-prestasi.html">
+
+            <!-- Ikon prestasi menggunakan SVG -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M8 4h8v5a4 4 0 0 1-8 0V4Z"/>
+              <path d="M8 5H5.6a2.4 2.4 0 0 0 0 4.8H8"/>
+              <path d="M16 5h2.4a2.4 2.4 0 0 1 0 4.8H16"/>
+              <path d="M12 13v3"/>
+              <path d="M9 20h6"/>
+              <path d="M9 20l3-3.4 3 3.4"/>
+            </svg>
+            <span>Data Prestasi Mahasiswa</span>
+          </a>
+
+          <!-- Menu profil dosen yang sedang aktif -->
+          <a class="nav-link is-active" href="profil.html" aria-current="page">
+
+            <!-- Ikon profil pengguna menggunakan SVG -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="8" r="3.7"/>
+              <path d="M5.3 20c.5-3.9 3-6.1 6.7-6.1s6.2 2.2 6.7 6.1"/>
+            </svg>
+            <span>Profil Dosen</span>
+          </a>
+        </nav>
+      </div>
+
+      <!-- Hiasan garis dekoratif pada bagian bawah sidebar -->
+      <div class="sidebar-decoration" aria-hidden="true">
+        <svg viewBox="0 0 253 42" preserveAspectRatio="none">
+          <g fill="none" stroke="#b99555" stroke-width="1" vector-effect="non-scaling-stroke">
+            <path d="M-4 23C35 12 66 12 104 18C142 24 166 35 204 30C226 27 241 18 257 12" stroke-opacity=".38"/>
+            <path d="M-4 33C38 22 72 23 110 29C148 35 172 41 210 36C231 33 244 27 257 22" stroke-opacity=".24"/>
+          </g>
+        </svg>
+      </div>
+
+      <!-- Bagian bawah sidebar yang berisi tombol logout -->
+      <div class="sidebar-footer">
+
+        <!-- Tautan untuk keluar dari akun dan kembali ke halaman awal -->
+        <a class="logout-link" href="../../index.html">
+
+          <!-- Ikon logout menggunakan SVG -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M10 20.5H6.5A2.5 2.5 0 0 1 4 18V6a2.5 2.5 0 0 1 2.5-2.5H10"/>
+            <path d="M14.5 16.5 19 12l-4.5-4.5"/>
+            <path d="M19 12H9.5"/>
+          </svg>
+          <span>Keluar (Logout)</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- Lapisan transparan untuk menutup sidebar ketika area luar diklik -->
+    <label class="sidebar-overlay" for="sidebar-toggle" aria-label="Tutup menu navigasi"></label>
+
+    <!-- Pembungkus bagian utama halaman di sebelah kanan sidebar -->
+    <div class="main-shell">
+
+      <!-- Bagian header atau bar navigasi atas halaman -->
+      <header class="topbar">
+
+        <!-- Tombol untuk membuka dan menutup sidebar pada tampilan desktop -->
+        <label class="menu-toggle menu-toggle--desktop" for="sidebar-toggle" aria-label="Buka atau tutup sidebar">
+          <svg viewBox="0 0 20 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+            <path d="M1 1h18M1 7h18M1 13h18"/>
+          </svg>
+        </label>
+
+        <!-- Tombol untuk membuka dan menutup sidebar pada tampilan mobile -->
+        <label class="menu-toggle menu-toggle--mobile" for="sidebar-toggle" aria-label="Buka atau tutup menu navigasi">
+          <svg viewBox="0 0 20 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+            <path d="M1 1h18M1 7h18M1 13h18"/>
+          </svg>
+        </label>
+
+        <!-- Bagian judul halaman dan breadcrumb -->
+        <div class="topbar-heading">
+
+          <!-- Breadcrumb menunjukkan posisi halaman saat ini -->
+          <nav class="breadcrumbs" aria-label="Breadcrumb">
+            <span class="crumb-brand">SIPRESMA</span>
+            <span class="crumb-sep" aria-hidden="true">/</span>
+            <span>Dosen</span>
+            <span class="crumb-sep" aria-hidden="true">/</span>
+            <span class="crumb-current" aria-current="page">Profil Dosen</span>
+          </nav>
+
+          <!-- Judul utama halaman -->
+          <h1 class="page-title">Profil Dosen</h1>
+        </div>
+
+        <!-- Hiasan garis bergelombang pada bagian header -->
+        <svg class="topbar-waves" viewBox="0 0 1228 64" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0 58C170 58 280 38 430 38C580 38 620 52 770 49C920 46 1010 18 1135 17C1180 17 1205 19 1228 21" fill="none" stroke="#c6a86f" stroke-width="1" vector-effect="non-scaling-stroke"/>
+        </svg>
+      </header>
+
+      <!-- Bagian konten utama halaman profil dosen -->
+      <main class="page-content profile-content" id="profile-content">
+
+        <!-- Pembungkus konten profil agar tersusun dalam satu area -->
+        <div class="profile-shell">
+
+          <!-- Judul dan deskripsi halaman profil -->
+          <header class="profile-heading">
+            <h2 class="profile-title" id="profile-title">Profil Dosen / Ketua Program Studi</h2>
+            <p class="profile-description">Identitas tenaga pengajar dan pengelolaan akun pada sistem SIPRESMA.</p>
+          </header>
+
+          <!-- Kartu yang menampilkan informasi identitas dosen -->
+          <section class="profile-card" aria-labelledby="profile-title">
+
+            <!-- Bagian sampul atau hiasan atas kartu profil -->
+            <div class="profile-cover" aria-hidden="true">
+
+              <!-- Garis dekoratif pada sampul profil menggunakan SVG -->
+              <svg class="profile-cover-waves" viewBox="0 0 768 113" preserveAspectRatio="none">
+                <g fill="none" stroke="#c8a667" stroke-width="1" vector-effect="non-scaling-stroke">
+                  <path d="M-12 41C84 22 153 22 245 37C337 52 402 78 497 69C584 61 642 29 780 16" stroke-opacity=".36"/>
+                  <path d="M-9 83C87 63 162 63 251 77C340 91 416 107 507 98C600 89 672 57 781 45" stroke-opacity=".22"/>
+                  <path d="M-6 108C88 93 168 94 256 105C345 116 421 127 512 119C605 111 681 88 782 73" stroke-opacity=".14"/>
+                </g>
+              </svg>
+            </div>
+
+            <!-- Bagian foto atau ilustrasi avatar dosen -->
+            <div class="profile-avatar" role="img" aria-label="Ilustrasi foto profil Amal Khairan">
+
+              <!-- Ilustrasi avatar dibuat menggunakan elemen SVG -->
+              <svg viewBox="0 0 64 64" aria-hidden="true">
+                <rect width="64" height="64" rx="7" fill="#fffaf2"/>
+                <path d="M7 65c1.1-12.8 10-19.9 25-19.9S56 52.2 57 65H7Z" fill="#86cfe2"/>
+                <path d="M26.1 40.5h11.8v9.9c0 3.2-2.6 5.2-5.9 5.2s-5.9-2-5.9-5.2v-9.9Z" fill="#efb083"/>
+                <path d="M25.8 54.1 32 59l6.2-4.9 5.5 2.8c1.8 1 2.9 2.7 3.3 5.6H7c.4-2.9 1.5-4.6 3.3-5.6l5.5-2.8Z" fill="#f8fcff"/>
+                <circle cx="17.6" cy="30.5" r="3.1" fill="#f2b184"/>
+                <circle cx="46.4" cy="30.5" r="3.1" fill="#f2b184"/>
+                <circle cx="32" cy="29.2" r="14.3" fill="#f4b88a"/>
+                <path d="M17.2 30.2c-.9-11 4.9-19.7 14.7-19.7 9.9 0 15.6 8.6 14.9 19.7-.1 2.2-.6 3.7-1.3 5 .1-6.2-1.3-10-4.9-11.8-4.6 3.2-11.8 4.4-17.2 2.3-3.2-1.2-4.5.9-4.8 4.8-.2 1.8-1.2 1.7-1.4-.3Z" fill="#e88a3e"/>
+                <path d="M19.1 20.2c2.2-5.8 7.1-9 13.5-9 6.5 0 11.2 3.4 13.1 9.2-2.6-2.7-6.1-4.1-10.5-4.1-5.6 0-10.1 1.4-16.1 3.9Z" fill="#f09a4d"/>
+                <path d="M27 29.2h.01M37 29.2h.01" stroke="#4a3327" stroke-width="2.2" stroke-linecap="round"/>
+                <path d="M27.1 35.3c2.6 2.7 7.2 2.7 9.8 0" fill="none" stroke="#b65f53" stroke-width="1.5" stroke-linecap="round"/>
+                <circle cx="22.8" cy="34.1" r="1.7" fill="#f19a91" opacity=".48"/>
+                <circle cx="41.2" cy="34.1" r="1.7" fill="#f19a91" opacity=".48"/>
+              </svg>
+            </div>
+
+            <!-- Bagian isi kartu profil dosen -->
+            <div class="profile-body">
+
+              <!-- Informasi nama, NIDN, dan jabatan dosen -->
+              <div class="profile-identity">
+                <div>
+                  <h3 class="profile-name">Amal Khairan</h3>
+                  <p class="profile-meta profile-nidn"><span>NIDN: 0012058201</span></p>
+                </div>
+
+                <!-- Label jabatan dosen atau ketua program studi -->
+                <span class="profile-role-badge" aria-label="Jabatan: Dosen Tetap / Kaprodi">
+
+                  <!-- Ikon jabatan akademik menggunakan SVG -->
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="m3 9 9-4 9 4-9 4-9-4Z"/>
+                    <path d="M7 11.2v4.3c0 1.6 2.2 2.8 5 2.8s5-1.2 5-2.8v-4.3"/>
+                    <path d="M21 9v5"/>
+                  </svg>
+                  <span>Dosen Tetap / Kaprodi</span>
+                </span>
+              </div>
+
+              <!-- Garis pemisah antara identitas dan detail profil -->
+              <div class="profile-divider" aria-hidden="true"></div>
+
+              <!-- Daftar informasi lengkap dosen -->
+              <dl class="profile-details">
+
+                <!-- Informasi program studi dosen -->
+                <div class="profile-detail">
+                  <dt>Program Studi:</dt>
+                  <dd>Teknik Informatika</dd>
+                </div>
+
+                <!-- Informasi alamat email kampus dosen -->
+                <div class="profile-detail">
+                  <dt>Email Kampus:</dt>
+                  <dd class="profile-email">amal.khairan@univ.ac.id</dd>
+                </div>
+
+                <!-- Informasi fakultas dosen -->
+                <div class="profile-detail">
+                  <dt>Fakultas:</dt>
+                  <dd>Fakultas Teknologi Informasi</dd>
+                </div>
+
+                <!-- Informasi batas kewenangan dosen dalam sistem -->
+                <div class="profile-detail">
+                  <dt>Hak Otorisasi Sistem:</dt>
+                  <dd>Monitoring Capaian Prestasi Mahasiswa (Read-Only)</dd>
+                </div>
+              </dl>
+            </div>
+          </section>
+
+          <!-- Bagian pengaturan keamanan akun dosen -->
+          <div class="profile-security" id="profile-security">
+
+            <!-- Pesan pemberitahuan ketika password berhasil diperbarui -->
+            <div class="profile-success" id="password-success" role="status" aria-live="polite" tabindex="-1">
+
+              <!-- Ikon tanda berhasil menggunakan SVG -->
+              <span class="profile-success-icon" aria-hidden="true">
+                <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="10" cy="10" r="7.4"/>
+                  <path d="m6.6 10.1 2.2 2.2 4.7-4.7"/>
+                </svg>
+              </span>
+
+              <!-- Judul dan keterangan pesan keberhasilan -->
+              <div class="profile-success-copy">
+                <strong>Password Berhasil Diperbarui!</strong>
+                <p>Kata sandi baru telah tersimpan dan akan digunakan pada saat Anda login berikutnya.</p>
+              </div>
+            </div>
+
+            <!-- Tautan untuk membuka popup ganti password -->
+            <a class="profile-password-button" id="open-password" href="#password-modal" aria-haspopup="dialog" aria-controls="password-modal">
+
+              <!-- Ikon gembok pada tombol ganti password -->
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M5.8 8.2V6.5a4.2 4.2 0 0 1 8.4 0v1.7"/>
+                <rect x="3.8" y="8.2" width="12.4" height="8.1" rx="1.5"/>
+                <path d="M10 11.5v2.1"/>
+              </svg>
+              <span>Ganti Password</span>
+            </a>
+          </div>
+        </div>
+      </main>
+
+      <!-- Bagian footer atau informasi hak cipta aplikasi -->
+      <footer class="page-footer profile-footer">
+        <p>&copy; 2026 SIPRESMA <span class="footer-separator">&middot;</span> Sistem Informasi Prestasi Mahasiswa</p>
+      </footer>
+    </div>
+  </div>
+
+  <!-- Popup atau modal untuk mengganti password akun dosen -->
+  <div class="password-modal" id="password-modal">
+
+    <!-- Latar belakang popup yang dapat digunakan untuk menutup modal -->
+    <a class="password-backdrop" id="password-backdrop" href="#profile-content" tabindex="-1" aria-label="Tutup popup ganti password"></a>
+
+    <!-- Kotak dialog yang berisi formulir penggantian password -->
+    <section class="password-dialog profile-password-dialog" id="password-dialog" role="dialog" aria-modal="true" aria-labelledby="password-title" aria-describedby="password-description" tabindex="-1">
+
+      <!-- Bagian header popup ganti password -->
+      <header class="password-dialog-header profile-password-header">
+
+        <!-- Ikon kunci pada bagian atas popup -->
+        <span class="profile-password-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/>
+            <circle cx="16.5" cy="7.5" r="1.5" fill="currentColor" stroke="none"/>
+          </svg>
+        </span>
+
+        <!-- Judul popup ganti password -->
+        <h2 class="password-dialog-title" id="password-title">Ganti Password Akun</h2>
+
+        <!-- Tombol untuk menutup popup -->
+        <a class="password-close" id="close-password" href="#profile-content" aria-label="Tutup popup ganti password">
+
+          <!-- Ikon silang untuk menutup popup -->
+          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.45" stroke-linecap="round" aria-hidden="true">
+            <path d="m2.2 2.2 9.6 9.6M11.8 2.2 2.2 11.8"/>
+          </svg>
+        </a>
+      </header>
+
+      <!-- Formulir untuk memasukkan password lama dan password baru -->
+      <form class="password-form" id="password-form" method="get" action="#password-success">
+
+        <!-- Petunjuk pengisian formulir penggantian password -->
+        <p class="password-description" id="password-description">Silakan masukkan password lama Anda, kemudian buat password baru dengan minimal 6 karakter.</p>
+
+        <!-- Tempat menampilkan pesan kesalahan formulir -->
+        <p class="password-form-error" id="password-form-error" role="alert" hidden></p>
+
+        <!-- Kolom untuk memasukkan password lama -->
+        <div class="password-field">
+          <label class="password-label" for="old-password">Password Lama</label>
+
+          <!-- Pembungkus input password lama beserta ikon -->
+          <div class="password-control">
+
+            <!-- Ikon gembok pada kolom password lama -->
+            <span class="password-control-icon" aria-hidden="true">
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="4.4" y="8.2" width="11.2" height="8" rx="1.8"/>
+                <path d="M6.8 8.2V6.4a3.2 3.2 0 0 1 6.4 0v1.8"/>
+              </svg>
+            </span>
+
+            <!-- Input untuk mengisi password lama -->
+            <input class="password-input" id="old-password" type="password" placeholder="Masukkan password saat ini" autocomplete="current-password" required aria-describedby="old-password-error">
+
+            <!-- Ikon mata sebagai hiasan pada kolom password lama -->
+            <span class="password-toggle password-toggle--static" aria-hidden="true">
+              <svg class="eye-open" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2.8 10c1.2-2.9 3.8-5.8 7.2-5.8s6 2.9 7.2 5.8c-1.2 2.9-3.8 5.8-7.2 5.8S4 12.9 2.8 10Z"/>
+                <circle cx="10" cy="10" r="2.3"/>
+              </svg>
+            </span>
+          </div>
+
+          <!-- Pesan kesalahan jika password lama belum diisi -->
+          <p class="password-error" id="old-password-error" role="alert" hidden>Password lama wajib diisi.</p>
+        </div>
+
+        <!-- Kolom untuk memasukkan password baru -->
+        <div class="password-field">
+          <label class="password-label" for="new-password">Password Baru</label>
+
+          <!-- Pembungkus input password baru beserta ikon -->
+          <div class="password-control">
+
+            <!-- Ikon gembok pada kolom password baru -->
+            <span class="password-control-icon" aria-hidden="true">
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="4.4" y="8.2" width="11.2" height="8" rx="1.8"/>
+                <path d="M6.8 8.2V6.4a3.2 3.2 0 0 1 6.4 0v1.8"/>
+              </svg>
+            </span>
+
+            <!-- Input password baru dengan batas minimal 6 karakter -->
+            <input class="password-input" id="new-password" type="password" placeholder="Minimal 6 karakter" autocomplete="new-password" minlength="6" required aria-describedby="new-password-error">
+
+            <!-- Ikon mata sebagai hiasan pada kolom password baru -->
+            <span class="password-toggle password-toggle--static" aria-hidden="true">
+              <svg class="eye-open" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2.8 10c1.2-2.9 3.8-5.8 7.2-5.8s6 2.9 7.2 5.8c-1.2 2.9-3.8 5.8-7.2 5.8S4 12.9 2.8 10Z"/>
+                <circle cx="10" cy="10" r="2.3"/>
+              </svg>
+            </span>
+          </div>
+
+          <!-- Pesan kesalahan jika password baru kurang dari 6 karakter -->
+          <p class="password-error" id="new-password-error" role="alert" hidden>Password baru minimal 6 karakter.</p>
+        </div>
+
+        <!-- Kolom untuk mengulangi password baru sebagai konfirmasi -->
+        <div class="password-field">
+          <label class="password-label" for="confirm-password">Konfirmasi Password Baru</label>
+
+          <!-- Pembungkus input konfirmasi password beserta ikon -->
+          <div class="password-control">
+
+            <!-- Ikon gembok pada kolom konfirmasi password -->
+            <span class="password-control-icon" aria-hidden="true">
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="4.4" y="8.2" width="11.2" height="8" rx="1.8"/>
+                <path d="M6.8 8.2V6.4a3.2 3.2 0 0 1 6.4 0v1.8"/>
+              </svg>
+            </span>
+
+            <!-- Input untuk mengulangi password baru -->
+            <input class="password-input" id="confirm-password" type="password" placeholder="Ulangi password baru" autocomplete="new-password" minlength="6" required aria-describedby="confirm-password-error">
+
+            <!-- Ikon mata sebagai hiasan pada kolom konfirmasi password -->
+            <span class="password-toggle password-toggle--static" aria-hidden="true">
+              <svg class="eye-open" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2.8 10c1.2-2.9 3.8-5.8 7.2-5.8s6 2.9 7.2 5.8c-1.2 2.9-3.8 5.8-7.2 5.8S4 12.9 2.8 10Z"/>
+                <circle cx="10" cy="10" r="2.3"/>
+              </svg>
+            </span>
+          </div>
+
+          <!-- Pesan kesalahan jika konfirmasi password belum diisi -->
+          <p class="password-error" id="confirm-password-error" role="alert" hidden>Konfirmasi password wajib diisi.</p>
+        </div>
+
+        <!-- Bagian tombol tindakan pada formulir -->
+        <div class="password-actions">
+
+          <!-- Tombol untuk membatalkan penggantian password -->
+          <a class="password-button password-button--secondary" id="cancel-password" href="#profile-content">Batal</a>
+
+          <!-- Tombol untuk mengirim formulir dan menyimpan perubahan -->
+          <button class="password-button password-button--primary" id="save-password" type="submit">Simpan Perubahan</button>
+        </div>
+      </form>
+    </section>
+  </div>
+</body>
+</html>

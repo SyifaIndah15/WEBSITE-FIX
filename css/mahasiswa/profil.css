@@ -1,0 +1,1093 @@
+/* =========================================================
+   ELEMEN TERSEMBUNYI
+   Menyembunyikan elemen yang memiliki atribut hidden.
+   !important memastikan elemen tetap tidak ditampilkan.
+   ========================================================= */
+[hidden] {
+  display: none !important;
+}
+
+/* Mencegah halaman digulir ketika modal sedang terbuka */
+body.modal-open,
+body:has(.password-modal:target) {
+  overflow: hidden;
+}
+
+/* =========================================================
+   KONTEN HALAMAN PROFIL
+   Mengatur jarak dan lebar area utama halaman profil.
+   ========================================================= */
+
+/* Memberikan jarak antara topbar dan konten profil */
+.profile-content {
+  padding-top: 30px;
+}
+
+/* Mengatur lebar maksimal area profil */
+.profile-shell {
+  width: 100%;
+  max-width: 768px;
+}
+
+/* Mengatur jarak bawah bagian heading profil */
+.profile-heading {
+  margin-bottom: 24px;
+}
+
+/* Mengatur tampilan judul halaman profil */
+.profile-title {
+  position: relative;
+  top: 1px;
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 25px;
+  letter-spacing: -0.05px;
+  color: #30291f;
+}
+
+/* Mengatur teks deskripsi di bawah judul profil */
+.profile-description {
+  margin: 6px 0 0;
+  font-size: 11.1px;
+  font-weight: 400;
+  line-height: 16px;
+  color: #7b7164;
+}
+
+/* =========================================================
+   KARTU PROFIL
+   Mengatur tampilan keseluruhan card yang berisi
+   informasi identitas dan detail mahasiswa.
+   ========================================================= */
+.profile-card {
+  position: relative;
+  overflow: hidden;
+  background: #fbf6eb;
+  border: 1px solid #e6d8be;
+  border-radius: 12px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 253, 247, 0.7),
+    0 1px 2px rgba(94, 71, 36, 0.035);
+}
+
+/* =========================================================
+   COVER PROFIL
+   Mengatur area dekoratif pada bagian atas kartu profil.
+   ========================================================= */
+.profile-cover {
+  position: relative;
+  height: 113px;
+  overflow: hidden;
+
+  /* Menggunakan efek radial dan linear gradient */
+  background:
+    radial-gradient(ellipse 42% 95% at 8% 100%, rgba(194, 164, 105, 0.17) 0%, rgba(194, 164, 105, 0) 100%),
+    linear-gradient(108deg, #eadcc2 0%, #eee2cb 48%, #f2e8d5 100%);
+
+  /* Garis pemisah antara cover dan isi profil */
+  border-bottom: 1px solid rgba(218, 201, 171, 0.5);
+}
+
+/* Dekorasi gelombang pada cover profil */
+.profile-cover-waves {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+/* =========================================================
+   FOTO / AVATAR PROFIL
+   Mengatur posisi, ukuran, dan tampilan avatar pengguna.
+   ========================================================= */
+.profile-avatar {
+  position: absolute;
+  top: 67px;
+  left: 30px;
+  z-index: 2;
+  width: 64px;
+  height: 64px;
+  overflow: hidden;
+  background: #fffaf2;
+  border: 3px solid #fbf6eb;
+  border-radius: 9px;
+  box-shadow:
+    0 1px 3px rgba(83, 61, 30, 0.16),
+    0 0 0 1px rgba(219, 198, 160, 0.4);
+}
+
+/* Memastikan ikon atau gambar SVG memenuhi area avatar */
+.profile-avatar svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* =========================================================
+   BAGIAN ISI PROFIL
+   Mengatur jarak bagian dalam kartu profil.
+   ========================================================= */
+.profile-body {
+  padding: 34px 30px 22px;
+}
+
+/* Menyusun identitas pengguna secara horizontal */
+.profile-identity {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  min-width: 0;
+}
+
+/* Mencegah elemen div di dalam identitas melebar tanpa batas */
+.profile-identity > div {
+  min-width: 0;
+}
+
+/* Mengatur tampilan nama mahasiswa */
+.profile-name {
+  margin: 0;
+  overflow-wrap: anywhere;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 23px;
+  letter-spacing: -0.25px;
+  color: #30291f;
+}
+
+/* Mengatur informasi tambahan seperti NPM dan program studi */
+.profile-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px;
+  margin: 3px 0 0;
+  font-size: 10.6px;
+  font-weight: 400;
+  line-height: 15px;
+  color: #8b7f6e;
+}
+
+/* Mengatur warna titik pemisah informasi profil */
+.profile-meta-dot {
+  color: #b4a58f;
+}
+
+/* Mengatur posisi badge status profil */
+.profile-status {
+  flex: 0 0 auto;
+  margin-top: 1px;
+  white-space: nowrap;
+}
+
+/* Garis pemisah antara identitas dan detail profil */
+.profile-divider {
+  height: 1px;
+  margin: 18px 0 20px;
+  background: #e8dbc4;
+}
+
+/* =========================================================
+   DETAIL INFORMASI PROFIL
+   Mengatur susunan informasi mahasiswa dalam dua kolom.
+   ========================================================= */
+.profile-details {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px 24px;
+  margin: 0;
+}
+
+/* Mengatur setiap bagian informasi profil */
+.profile-detail {
+  min-width: 0;
+}
+
+/* Mengatur label atau nama informasi profil */
+.profile-detail dt {
+  margin: 0;
+  font-size: 10.2px;
+  font-weight: 400;
+  line-height: 14px;
+  color: #8b7f6e;
+}
+
+/* Mengatur isi atau nilai informasi profil */
+.profile-detail dd {
+  margin: 3px 0 0;
+  overflow-wrap: anywhere;
+  font-size: 11.3px;
+  font-weight: 500;
+  line-height: 16px;
+  letter-spacing: -0.05px;
+  color: #3a3024;
+}
+
+/* Memberikan warna gold khusus pada informasi IPK */
+.profile-detail dd.profile-ipk {
+  font-weight: 600;
+  color: #b8934f;
+}
+
+/* =========================================================
+   BAGIAN KEAMANAN PROFIL
+   Mengatur area informasi keamanan dan tombol ubah password.
+   ========================================================= */
+.profile-security {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  margin-top: 18px;
+}
+
+/* =========================================================
+   NOTIFIKASI BERHASIL
+   Mengatur tampilan pesan keberhasilan pada profil.
+   ========================================================= */
+.profile-success {
+  display: none;
+  align-items: flex-start;
+  gap: 9px;
+  width: 100%;
+  padding: 14px 13px 12px;
+  background: #ecfdf5;
+  border: 1px solid #a7f0cc;
+  border-radius: 8px;
+  scroll-margin-top: 18px;
+}
+
+/* Menampilkan notifikasi hanya setelah formulir mengarah ke status berhasil */
+.profile-success:target {
+  display: flex;
+  margin-top: 4px;
+}
+
+/* Menghilangkan outline ketika notifikasi mendapatkan fokus */
+.profile-success:focus,
+.profile-success:focus-visible {
+  outline: 0;
+}
+
+/* Area pembungkus ikon notifikasi berhasil */
+.profile-success-icon {
+  display: grid;
+  flex: 0 0 19px;
+  place-items: center;
+  width: 19px;
+  height: 19px;
+  margin-top: 2px;
+  color: #32ae84;
+  background: transparent;
+  border: 0;
+}
+
+/* Mengatur ukuran ikon pada notifikasi berhasil */
+.profile-success-icon svg {
+  width: 19px;
+  height: 19px;
+}
+
+/* Mengatur area teks notifikasi */
+.profile-success-copy {
+  min-width: 0;
+}
+
+/* Mengatur judul notifikasi berhasil */
+.profile-success-copy strong {
+  display: block;
+  font-size: 12.2px;
+  font-weight: 600;
+  line-height: 19px;
+  color: #05533f;
+}
+
+/* Mengatur deskripsi notifikasi berhasil */
+.profile-success-copy p {
+  margin: 0;
+  font-size: 12.2px;
+  font-weight: 400;
+  line-height: 19px;
+  color: #077e5a;
+}
+
+/* =========================================================
+   TOMBOL UBAH PASSWORD
+   Mengatur tampilan tombol untuk membuka modal password.
+   ========================================================= */
+.profile-password-button {
+  display: inline-flex;
+  align-self: flex-start;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-width: 137px;
+  height: 33px;
+  padding: 0 15px;
+  font-family: inherit;
+  font-size: 10.6px;
+  font-weight: 500;
+  line-height: 1;
+  color: #fff9ed;
+  white-space: nowrap;
+  appearance: none;
+  cursor: pointer;
+  background: linear-gradient(90deg, #d4ae65 0%, #b89550 100%);
+  border: 1px solid rgba(173, 139, 73, 0.55);
+  border-radius: 5px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 248, 226, 0.25),
+    0 1px 2px rgba(93, 67, 29, 0.08);
+  transition: background 0.16s ease, box-shadow 0.16s ease, transform 0.16s ease;
+}
+
+/* Mengubah warna tombol ketika diarahkan kursor */
+.profile-password-button:hover {
+  background: linear-gradient(90deg, #cba55d 0%, #ad8b49 100%);
+}
+
+/* Memberikan efek tombol sedikit bergeser ketika ditekan */
+.profile-password-button:active {
+  transform: translateY(1px);
+}
+
+/* Memberikan indikator fokus pada tombol ketika menggunakan keyboard */
+.profile-password-button:focus-visible {
+  outline: 2px solid #a98443;
+  outline-offset: 2px;
+}
+
+/* Mengatur ukuran ikon pada tombol ubah password */
+.profile-password-button svg {
+  flex: 0 0 14px;
+  width: 14px;
+  height: 14px;
+}
+
+/* Mengatur tinggi area footer pada halaman profil */
+.profile-footer {
+  flex-basis: 70px;
+  height: 70px;
+  border-top: 0;
+}
+
+/* =========================================================
+   MODAL UBAH PASSWORD
+   Mengatur lapisan modal yang muncul di atas halaman profil.
+   ========================================================= */
+.password-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+
+  /* Animasi ketika modal dibuka atau ditutup */
+  transition:
+    opacity var(--motion-duration) var(--motion-ease),
+    visibility 0s linear var(--motion-duration);
+}
+
+/* Menampilkan modal ketika elemen menjadi target URL */
+.password-modal:target {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition:
+    opacity var(--motion-duration) var(--motion-ease),
+    visibility 0s linear 0s;
+}
+
+/* =========================================================
+   BACKDROP MODAL
+   Mengatur lapisan gelap di belakang kotak modal.
+   ========================================================= */
+.password-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(43, 34, 21, 0.52);
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  cursor: pointer;
+  transition: opacity var(--motion-duration) var(--motion-ease);
+}
+
+/* Menampilkan backdrop ketika modal aktif */
+.password-modal:target .password-backdrop {
+  opacity: 1;
+}
+
+/* =========================================================
+   KOTAK DIALOG PASSWORD
+   Mengatur ukuran, posisi, background, dan animasi kotak modal.
+   ========================================================= */
+.password-dialog {
+  position: relative;
+  width: min(508px, 100%);
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+  background: #fbf6eb;
+  border: 0;
+  border-radius: 15px;
+  box-shadow: 0 20px 55px rgba(42, 31, 17, 0.24);
+  outline: 0;
+  opacity: 0;
+  transform: translateY(6px) scale(0.985);
+  transition:
+    opacity var(--motion-duration) var(--motion-ease),
+    transform var(--motion-duration) var(--motion-ease);
+}
+
+/* Menampilkan kotak dialog dengan animasi ketika modal aktif */
+.password-modal:target .password-dialog {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* =========================================================
+   HEADER MODAL PASSWORD
+   Mengatur bagian atas modal yang berisi ikon,
+   judul, dan tombol untuk menutup modal.
+   ========================================================= */
+.password-dialog-header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 67px;
+  padding: 0 29px 0 27px;
+  background: #e9dcc2;
+  border-bottom: 0;
+  border-radius: 15px 15px 0 0;
+}
+
+/* Area pembungkus ikon pada header modal */
+.password-dialog-icon {
+  display: grid;
+  flex: 0 0 20px;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  color: #bfa25d;
+  background: transparent;
+}
+
+/* Mengatur ukuran ikon header modal */
+.password-dialog-icon svg {
+  width: 18.5px;
+  height: 18.5px;
+  transform: translateX(-0.5px);
+}
+
+/* Mengatur judul pada header modal */
+.password-dialog-title {
+  margin: 0;
+  position: relative;
+  top: 1px;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 20px;
+  letter-spacing: -0.05px;
+  color: #30291f;
+}
+
+/* =========================================================
+   TOMBOL TUTUP MODAL
+   Mengatur tombol X untuk menutup kotak dialog.
+   ========================================================= */
+.password-close {
+  display: grid;
+  flex: 0 0 26px;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  margin-left: auto;
+  padding: 0;
+  color: #7c7265;
+  text-decoration: none;
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: color 0.16s ease, background-color 0.16s ease;
+}
+
+/* Efek hover pada tombol tutup modal */
+.password-close:hover {
+  color: #4c4030;
+  background: rgba(122, 97, 56, 0.08);
+}
+
+/* Indikator fokus tombol tutup modal */
+.password-close:focus-visible {
+  outline: 2px solid #a98443;
+  outline-offset: 1px;
+}
+
+/* Mengatur ukuran ikon tombol tutup */
+.password-close svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* =========================================================
+   FORMULIR PASSWORD
+   Mengatur area dalam modal yang berisi deskripsi,
+   label, input, dan tombol aksi.
+   ========================================================= */
+.password-form {
+  padding: 27px 28px;
+}
+
+/* Mengatur teks penjelasan formulir password */
+.password-description {
+  margin: 0 0 17px;
+  font-size: 12.25px;
+  font-weight: 400;
+  line-height: 20px;
+  color: #837a6d;
+}
+
+/* Memberikan jarak antara dua field password yang berurutan */
+.password-field + .password-field {
+  margin-top: 19px;
+}
+
+/* Mengatur tampilan label setiap input password */
+.password-label {
+  display: block;
+  margin: 0 0 3px;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 20px;
+  color: #30291f;
+}
+
+/* Pembungkus input dan ikon password */
+.password-control {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Mengatur posisi dan ukuran ikon di dalam input password */
+.password-control-icon {
+  position: absolute;
+  left: 11.5px;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  color: #bfa25d;
+  pointer-events: none;
+  transform: translateY(-0.5px);
+}
+
+.password-control-icon::before,
+.password-control-icon::after {
+  display: none;
+}
+
+.password-control-icon svg {
+  width: 21px;
+  height: 21px;
+}
+
+/* =========================================================
+   INPUT PASSWORD
+   Mengatur tampilan kolom untuk memasukkan password.
+   ========================================================= */
+.password-input {
+  width: 100%;
+  height: 43px;
+  padding: 3px 42px 0 41px;
+  font-family: inherit;
+  font-size: 14.35px;
+  font-weight: 400;
+  line-height: normal;
+  color: #30291f;
+  appearance: none;
+  background: #f8f1e1;
+  border: 1px solid #e3d4ba;
+  border-radius: 10px;
+  box-shadow: inset 0 1px 1px rgba(104, 81, 47, 0.02);
+  transition: border-color 0.16s ease, box-shadow 0.16s ease, background-color 0.16s ease;
+}
+
+/* Mengatur tampilan teks petunjuk di dalam input */
+.password-input::placeholder {
+  font-size: 14.35px;
+  color: #a49b8c;
+  opacity: 1;
+}
+
+/* Mengubah warna border ketika input diarahkan kursor */
+.password-input:hover {
+  border-color: #d9c9ac;
+}
+
+/* Memberikan highlight ketika input sedang dipilih */
+.password-input:focus {
+  outline: 0;
+  background: #f8f1e1;
+  border-color: #bd9b58;
+  box-shadow: 0 0 0 2px rgba(193, 160, 90, 0.13);
+}
+
+/* Menampilkan tanda visual ketika input memiliki kesalahan */
+.password-input.is-invalid,
+.password-input:user-invalid {
+  background: #fbf4ec;
+  border-color: #cd7b68;
+  box-shadow: 0 0 0 2px rgba(181, 87, 67, 0.08);
+}
+
+/* =========================================================
+   TOMBOL LIHAT / SEMBUNYIKAN PASSWORD
+   Mengatur tombol ikon mata di sisi kanan input.
+   ========================================================= */
+.password-toggle {
+  position: absolute;
+  right: 7px;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  color: #bfa25d;
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: color 0.16s ease, background-color 0.16s ease;
+}
+
+/* Ikon mata statis karena versi HTML/CSS tidak mengubah tipe input */
+.password-toggle--static {
+  pointer-events: none;
+  cursor: default;
+}
+
+/* Efek hover pada tombol ikon mata */
+.password-toggle:hover {
+  color: #a98443;
+  background: #f1e7d5;
+}
+
+/* Indikator fokus tombol ikon mata */
+.password-toggle:focus-visible {
+  outline: 2px solid #b18c4c;
+  outline-offset: 1px;
+}
+
+/* Mengatur ukuran ikon mata */
+.password-toggle svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Menyembunyikan ikon mata tertutup pada kondisi awal */
+.password-toggle .eye-off {
+  display: none;
+}
+
+/* Menyembunyikan ikon mata terbuka ketika password ditampilkan */
+.password-toggle.is-visible .eye-open {
+  display: none;
+}
+
+/* Menampilkan ikon mata tertutup ketika password ditampilkan */
+.password-toggle.is-visible .eye-off {
+  display: block;
+}
+
+/* =========================================================
+   PESAN KESALAHAN PASSWORD
+   Mengatur teks peringatan yang muncul ketika input tidak valid.
+   ========================================================= */
+.password-error {
+  display: none;
+  margin: 4px 0 0;
+  font-size: 9.5px;
+  font-weight: 500;
+  line-height: 13px;
+  color: #b4523e;
+}
+
+/* Menampilkan pesan kesalahan ketika input tidak valid */
+.password-field:has(.password-input:user-invalid) .password-error {
+  display: block;
+}
+
+/* =========================================================
+   TOMBOL AKSI MODAL
+   Mengatur posisi tombol sekunder dan tombol utama.
+   ========================================================= */
+.password-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 11px;
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid #eee3cf;
+  box-shadow: none;
+}
+
+/* Tampilan dasar seluruh tombol pada modal password */
+.password-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 37px;
+  padding: 0 15px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+  text-decoration: none;
+  appearance: none;
+  border-radius: 9px;
+  cursor: pointer;
+  transition: background 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease, transform 0.16s ease;
+}
+
+/* =========================================================
+   TOMBOL SEKUNDER
+   Digunakan untuk tombol seperti Batal.
+   ========================================================= */
+.password-dialog .password-button--secondary {
+  min-width: 68px;
+  color: #30291f;
+  background: #e9dcc2;
+  border: 1px solid #e9dcc2;
+  box-shadow: none;
+}
+
+/* Efek hover pada tombol sekunder */
+.password-dialog .password-button--secondary:hover {
+  background: #e0d1b4;
+  border-color: #d4af65;
+}
+
+/* =========================================================
+   TOMBOL UTAMA
+   Digunakan untuk tombol aksi utama seperti Simpan Password.
+   ========================================================= */
+.password-dialog .password-button--primary {
+  min-width: 154px;
+  color: #fffdf8;
+  background: linear-gradient(90deg, #d2ad65 0%, #ba9753 100%);
+  border: 0;
+  box-shadow: 0 2px 4px rgba(121, 90, 38, 0.12);
+}
+
+/* Mengubah warna tombol utama ketika diarahkan kursor */
+.password-dialog .password-button--primary:hover {
+  background: linear-gradient(90deg, #c9a451 0%, #a98643 100%);
+}
+
+/* Memberikan efek tombol utama sedikit bergeser ketika ditekan */
+.password-dialog .password-button--primary:active {
+  transform: translateY(1px);
+}
+
+/* Memberikan indikator fokus pada seluruh tombol modal */
+.password-button:focus-visible {
+  outline: 2px solid #a98443;
+  outline-offset: 2px;
+}
+
+/* =========================================================
+   ANIMASI MODAL PASSWORD
+   Menentukan perubahan tampilan kotak dialog dari kondisi
+   awal menuju kondisi akhir ketika animasi dijalankan.
+   ========================================================= */
+@keyframes password-dialog-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* =========================================================
+   RESPONSIVE: LAYAR MAKSIMAL 960px
+   Menyesuaikan jarak konten dan lebar kartu profil
+   untuk perangkat dengan layar lebih kecil.
+   ========================================================= */
+@media (max-width: 960px) {
+
+  /* Menyesuaikan jarak atas konten profil */
+  .profile-content {
+    padding-top: 28px;
+  }
+
+  /* Mengurangi sedikit lebar maksimal kartu profil */
+  .profile-shell {
+    max-width: 760px;
+  }
+}
+
+/* =========================================================
+   RESPONSIVE: LAYAR MAKSIMAL 720px
+   Menyesuaikan jarak heading, isi kartu, dan avatar.
+   ========================================================= */
+@media (max-width: 720px) {
+
+  /* Mengurangi jarak atas halaman profil */
+  .profile-content {
+    padding-top: 24px;
+  }
+
+  /* Mengurangi jarak bawah heading */
+  .profile-heading {
+    margin-bottom: 20px;
+  }
+
+  /* Menyesuaikan padding kanan dan kiri isi kartu */
+  .profile-body {
+    padding-right: 24px;
+    padding-left: 24px;
+  }
+
+  /* Menggeser avatar agar sesuai dengan padding kartu */
+  .profile-avatar {
+    left: 24px;
+  }
+}
+
+/* =========================================================
+   RESPONSIVE: LAYAR MAKSIMAL 640px
+   Menyesuaikan tampilan halaman profil dan modal
+   agar nyaman digunakan pada smartphone.
+   ========================================================= */
+@media (max-width: 640px) {
+
+  /* Mengurangi jarak atas konten profil */
+  .profile-content {
+    padding-top: 16px;
+  }
+
+  /* Mengurangi jarak bawah heading profil */
+  .profile-heading {
+    margin-bottom: 16px;
+  }
+
+  /* Mengecilkan judul halaman profil */
+  .profile-title {
+    font-size: 17px;
+    line-height: 23px;
+  }
+
+  /* Menyesuaikan deskripsi halaman profil */
+  .profile-description {
+    margin-top: 3px;
+    font-size: 10.8px;
+  }
+
+  /* Sedikit mengurangi lengkungan sudut kartu profil */
+  .profile-card {
+    border-radius: 10px;
+  }
+
+  /* Mengurangi tinggi cover profil */
+  .profile-cover {
+    height: 101px;
+  }
+
+  /* Mengecilkan dan menyesuaikan posisi avatar */
+  .profile-avatar {
+    top: 59px;
+    left: 18px;
+    width: 58px;
+    height: 58px;
+    border-radius: 8px;
+  }
+
+  /* Menyesuaikan padding isi kartu profil */
+  .profile-body {
+    padding: 28px 18px 19px;
+  }
+
+  /* Mengurangi jarak antarbagian identitas */
+  .profile-identity {
+    gap: 10px;
+  }
+
+  /* Mengecilkan nama mahasiswa */
+  .profile-name {
+    font-size: 16px;
+    line-height: 22px;
+  }
+
+  /* Menyesuaikan jarak garis pemisah */
+  .profile-divider {
+    margin: 16px 0 17px;
+  }
+
+  /* Mengurangi jarak antar-detail profil */
+  .profile-details {
+    gap: 16px 18px;
+  }
+
+  /* Mengurangi jarak atas bagian keamanan profil */
+  .profile-security {
+    margin-top: 14px;
+  }
+
+  /* Membuat tombol ubah password memenuhi lebar area */
+  .profile-password-button {
+    align-self: stretch;
+    height: 37px;
+  }
+
+  /* Menyesuaikan tinggi footer pada smartphone */
+  .profile-footer {
+    flex-basis: 64px;
+    height: 64px;
+  }
+
+  /* Mengatur jarak luar modal pada smartphone */
+  .password-modal {
+    padding: 16px;
+  }
+
+  /* Menyesuaikan tinggi maksimal kotak dialog */
+  .password-dialog {
+    max-height: calc(100vh - 32px);
+  }
+
+  /* Mengurangi tinggi header modal */
+  .password-dialog-header {
+    min-height: 62px;
+    padding: 0 16px;
+  }
+
+  /* Menyesuaikan padding formulir modal */
+  .password-form {
+    padding: 17px 17px 18px;
+  }
+
+  /* Menyesuaikan tinggi dan ukuran teks input password */
+  .password-input {
+    height: 40px;
+    font-size: 11.2px;
+  }
+
+  /* Menyesuaikan tinggi tombol lihat password */
+  .password-toggle {
+    height: 32px;
+  }
+
+  /* Mengurangi jarak atas area tombol aksi */
+  .password-actions {
+    margin-top: 17px;
+  }
+
+  /* Membuat tombol aksi modal memiliki lebar yang seimbang */
+  .password-actions .password-button {
+    flex: 1;
+    min-width: 0;
+    height: 37px;
+  }
+}
+
+/* =========================================================
+   RESPONSIVE: LAYAR MAKSIMAL 540px
+   Mengubah susunan identitas dan detail profil
+   agar lebih sesuai dengan layar smartphone kecil.
+   ========================================================= */
+@media (max-width: 540px) {
+
+  /* Mengizinkan identitas profil berpindah ke baris berikutnya */
+  .profile-identity {
+    flex-wrap: wrap;
+  }
+
+  /* Mengatur ulang jarak atas badge status */
+  .profile-status {
+    margin-top: 0;
+  }
+
+  /* Mengubah detail profil menjadi satu kolom */
+  .profile-details {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+}
+
+/* =========================================================
+   RESPONSIVE: LAYAR MAKSIMAL 380px
+   Penyesuaian tambahan untuk smartphone dengan layar kecil.
+   ========================================================= */
+@media (max-width: 380px) {
+
+  /* Mengurangi padding isi kartu profil */
+  .profile-body {
+    padding-right: 14px;
+    padding-left: 14px;
+  }
+
+  /* Menyesuaikan posisi avatar dengan padding kartu */
+  .profile-avatar {
+    left: 14px;
+  }
+
+  /* Mengurangi padding notifikasi berhasil */
+  .profile-success {
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+
+  /* Mengurangi jarak luar modal */
+  .password-modal {
+    padding: 10px;
+  }
+
+  /* Menyesuaikan tinggi maksimal kotak dialog */
+  .password-dialog {
+    max-height: calc(100vh - 20px);
+  }
+
+  /* Mengurangi padding kanan dan kiri formulir modal */
+  .password-form {
+    padding-right: 14px;
+    padding-left: 14px;
+  }
+}
+
+/* =========================================================
+   AKSESIBILITAS: PREFERENSI REDUCED MOTION
+   Mengurangi atau menonaktifkan animasi bagi pengguna
+   yang memilih pengaturan minim gerakan pada perangkatnya.
+   ========================================================= */
+@media (prefers-reduced-motion: reduce) {
+
+  /* Menonaktifkan transisi pada tombol-tombol terkait */
+  .profile-password-button,
+  .password-button,
+  .password-toggle,
+  .password-close {
+    transition: none;
+  }
+
+  /* Menonaktifkan animasi kotak dialog password */
+  .password-dialog {
+    animation: none;
+  }
+}

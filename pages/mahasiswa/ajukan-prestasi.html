@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <!-- Mengatur karakter agar teks dan simbol dapat ditampilkan dengan benar -->
+  <meta charset="UTF-8">
+
+  <!-- Mengatur tampilan halaman agar menyesuaikan ukuran layar perangkat -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Deskripsi singkat halaman -->
+  <meta name="description" content="Formulir pengajuan prestasi mahasiswa SIPRESMA.">
+
+  <!-- Judul halaman yang tampil pada tab browser -->
+  <title>Ajukan Prestasi - SIPRESMA</title>
+
+  <!-- Menghubungkan Google Fonts untuk menggunakan font Roboto -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Menghubungkan file CSS untuk mengatur tampilan halaman -->
+  <link rel="stylesheet" href="../../css/shared/motion.css">
+  <link rel="stylesheet" href="../../css/mahasiswa/dashboard.css">
+  <link rel="stylesheet" href="../../css/mahasiswa/sidebar.css">
+  <link rel="stylesheet" href="../../css/mahasiswa/content.css">
+  <link rel="stylesheet" href="../../css/mahasiswa/ajukan-prestasi.css">
+  <link rel="stylesheet" href="../../css/shared/overlays.css">
+</head>
+
+<!-- Bagian utama halaman pengajuan prestasi -->
+<body class="apply-page">
+
+  <!-- Container utama yang membungkus sidebar dan konten halaman -->
+  <div class="dashboard-layout">
+
+    <!-- BAGIAN 1: SIDEBAR / MENU SAMPING -->
+    <aside class="sidebar" id="sidebar">
+
+      <!-- Logo dan identitas aplikasi SIPRESMA -->
+      <a class="sidebar-brand" href="dashboard.html" aria-label="SIPRESMA Dashboard">
+        <span class="brand-mark" aria-hidden="true">
+          <!-- SVG untuk ikon logo aplikasi -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="8" r="5.6"/>
+            <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>
+          </svg>
+        </span>
+
+        <!-- Nama dan slogan aplikasi -->
+        <span class="brand-copy">
+          <span class="brand-name">SIPRESMA</span>
+          <span class="brand-tagline">Prestasi Mahasiswa</span>
+        </span>
+      </a>
+
+      <!-- Menampilkan informasi hak akses pengguna -->
+      <div class="access-row">
+        <!-- Ikon hak akses -->
+        <svg class="access-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/>
+          <path d="m9 12 2 2 4-4"/>
+        </svg>
+
+        <span class="access-label">Hak Akses:</span>
+        <span class="access-role">Mahasiswa</span>
+      </div>
+
+      <!-- BAGIAN MENU NAVIGASI SIDEBAR -->
+      <div class="sidebar-menu">
+        <p class="menu-label">Menu Utama</p>
+
+        <!-- Daftar menu navigasi mahasiswa -->
+        <nav class="sidebar-nav" aria-label="Navigasi utama">
+
+          <!-- Menu menuju dashboard mahasiswa -->
+          <a class="nav-link" href="dashboard.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="3" width="7" height="7" rx="1"/>
+              <rect x="14" y="3" width="7" height="7" rx="1"/>
+              <rect x="3" y="14" width="7" height="7" rx="1"/>
+              <rect x="14" y="14" width="7" height="7" rx="1"/>
+            </svg>
+            <span>Dashboard</span>
+          </a>
+
+          <!-- Menu pengajuan prestasi yang sedang aktif -->
+          <a class="nav-link is-active" href="ajukan-prestasi.html" aria-current="page">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="8.5"/>
+              <path d="M12 8.5v7M8.5 12h7"/>
+            </svg>
+            <span>Ajukan Prestasi</span>
+          </a>
+
+          <!-- Menu untuk melihat riwayat pengajuan prestasi -->
+          <a class="nav-link" href="riwayat-prestasi.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="8.5"/>
+              <path d="M12 7.5V12l3 1.8"/>
+            </svg>
+            <span>Riwayat Prestasi</span>
+          </a>
+
+          <!-- Menu untuk membuka halaman profil mahasiswa -->
+          <a class="nav-link" href="profil.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="8" r="3.7"/>
+              <path d="M5.3 20c.5-3.9 3-6.1 6.7-6.1s6.2 2.2 6.7 6.1"/>
+            </svg>
+            <span>Profil Saya</span>
+          </a>
+        </nav>
+      </div>
+
+      <!-- Hiasan visual pada bagian bawah sidebar -->
+      <div class="sidebar-decoration" aria-hidden="true">
+        <svg viewBox="0 0 253 42" preserveAspectRatio="none">
+          <g fill="none" stroke="#b99555" stroke-width="1" vector-effect="non-scaling-stroke">
+            <path d="M-4 23C35 12 66 12 104 18C142 24 166 35 204 30C226 27 241 18 257 12" stroke-opacity=".38"/>
+            <path d="M-4 33C38 22 72 23 110 29C148 35 172 41 210 36C231 33 244 27 257 22" stroke-opacity=".24"/>
+          </g>
+        </svg>
+      </div>
+
+      <!-- Tombol untuk keluar dari halaman mahasiswa -->
+      <div class="sidebar-footer">
+        <a class="logout-link" href="../../index.html">
+          <!-- Ikon logout -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M10 20.5H6.5A2.5 2.5 0 0 1 4 18V6a2.5 2.5 0 0 1 2.5-2.5H10"/>
+            <path d="M14.5 16.5 19 12l-4.5-4.5"/>
+            <path d="M19 12H9.5"/>
+          </svg>
+          <span>Keluar (Logout)</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- Lapisan penutup sidebar ketika menu navigasi mobile dibuka -->
+    <label class="sidebar-overlay" for="mobile-sidebar-toggle" aria-label="Tutup menu navigasi"></label>
+
+    <!-- BAGIAN 2: AREA KONTEN UTAMA -->
+    <div class="main-shell">
+
+      <!-- BAGIAN 3: TOPBAR / HEADER HALAMAN -->
+      <header class="topbar">
+
+        <!-- Tombol untuk menampilkan atau menyembunyikan sidebar pada desktop -->
+        <label class="menu-toggle menu-toggle--desktop">
+          <input class="menu-toggle-input" type="checkbox" id="desktop-sidebar-toggle" aria-controls="sidebar" aria-label="Tampilkan atau sembunyikan menu navigasi">
+          <svg viewBox="0 0 20 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+            <path d="M1 1h18M1 7h18M1 13h18"/>
+          </svg>
+        </label>
+
+        <!-- Tombol untuk membuka atau menutup sidebar pada perangkat mobile -->
+        <label class="menu-toggle menu-toggle--mobile">
+          <input class="menu-toggle-input" type="checkbox" id="mobile-sidebar-toggle" aria-controls="sidebar" aria-label="Buka atau tutup menu navigasi">
+          <svg viewBox="0 0 20 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+            <path d="M1 1h18M1 7h18M1 13h18"/>
+          </svg>
+        </label>
+
+        <!-- Judul halaman dan breadcrumb sebagai penunjuk lokasi halaman -->
+        <div class="topbar-heading">
+          <nav class="breadcrumbs" aria-label="Breadcrumb">
+            <span class="crumb-brand">SIPRESMA</span>
+            <span class="crumb-sep" aria-hidden="true">/</span>
+            <span>Mahasiswa</span>
+            <span class="crumb-sep" aria-hidden="true">/</span>
+            <span class="crumb-current" aria-current="page">Ajukan Prestasi Baru</span>
+          </nav>
+
+          <!-- Judul utama pada bagian header -->
+          <h1 class="page-title">Ajukan Prestasi Baru</h1>
+        </div>
+
+        <!-- Hiasan garis bergelombang pada bagian header -->
+        <svg class="topbar-waves" viewBox="0 0 1228 64" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0 58C170 58 280 38 430 38C580 38 620 52 770 49C920 46 1010 18 1135 17C1180 17 1205 19 1228 21" fill="none" stroke="#c6a86f" stroke-width="1" vector-effect="non-scaling-stroke"/>
+        </svg>
+      </header>
+
+      <!-- BAGIAN 4: KONTEN FORMULIR PENGAJUAN PRESTASI -->
+      <main class="page-content apply-content">
+
+        <!-- Container yang membungkus judul dan formulir pengajuan -->
+        <div class="apply-shell">
+
+          <!-- Judul dan penjelasan formulir -->
+          <header class="apply-heading">
+            <h2 class="apply-title" id="apply-title">Formulir Pengajuan Prestasi &amp; Sertifikat</h2>
+            <p class="apply-description">Laporkan capaian kejuaraan atau kompetisi Anda untuk divalidasi oleh verifikator universitas dan dimasukkan ke dalam basis data prestasi.</p>
+          </header>
+
+          <!-- Card utama yang berisi informasi mahasiswa dan formulir -->
+          <section class="apply-card" id="form-card" aria-labelledby="apply-title">
+
+            <!-- Informasi mahasiswa yang mengajukan prestasi -->
+            <div class="student-bar">
+              <p>Mahasiswa Pengusul: <strong>Devanka Shankara</strong> <span>(07352411036)</span></p>
+              <p>Program Studi: <strong>Teknik Informatika</strong></p>
+            </div>
+
+            <!-- FORMULIR UNTUK MENGAJUKAN PRESTASI -->
+            <form class="apply-form" id="achievement-form" action="#success-panel" method="get">
+
+              <!-- Input untuk mengisi nama kompetisi atau kegiatan kejuaraan -->
+              <div class="form-field">
+                <label class="form-label" for="nama-kompetisi">Nama Kompetisi / Kegiatan Kejuaraan</label>
+                <input class="form-control" type="text" id="nama-kompetisi" name="nama_kompetisi" placeholder="Contoh: Gemastik XVII - Divisi Pemrograman Web / Hackathon Nasional" autocomplete="off" required aria-describedby="nama-kompetisi-error">
+                <!-- Pesan kesalahan jika nama kompetisi belum diisi -->
+                <p class="field-error" id="nama-kompetisi-error">Nama kompetisi atau kegiatan wajib diisi.</p>
+              </div>
+
+              <!-- Mengelompokkan beberapa input dalam satu baris/grid -->
+              <div class="form-grid">
+
+                <!-- Pilihan jenis prestasi -->
+                <div class="form-field">
+                  <span class="form-label" id="jenis-prestasi-label">Jenis Prestasi</span>
+                  <div class="select-field">
+                    <input class="select-input" type="radio" name="jenis_prestasi" id="jenis-prestasi-akademik" value="Akademik" tabindex="-1" checked aria-label="Akademik">
+                    <input class="select-input" type="radio" name="jenis_prestasi" id="jenis-prestasi-non-akademik" value="Non-Akademik" tabindex="-1" aria-label="Non-Akademik">
+
+                    <div class="select-trigger" id="jenis-prestasi" tabindex="0" role="group" aria-labelledby="jenis-prestasi-label" aria-haspopup="listbox">
+                      <span class="select-trigger-value" aria-hidden="true">
+                        <span class="select-value-label select-value-label--akademik">Akademik</span>
+                        <span class="select-value-label select-value-label--non-akademik">Non-Akademik</span>
+                      </span>
+
+                      <!-- Ikon panah pada dropdown -->
+                      <svg class="select-chevron" viewBox="0 0 12 8" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="m1 1.5 5 5 5-5"/>
+                      </svg>
+
+                      <div class="select-menu" role="listbox" aria-labelledby="jenis-prestasi-label">
+                        <label class="select-item select-item--akademik" for="jenis-prestasi-akademik">Akademik</label>
+                        <label class="select-item select-item--non-akademik" for="jenis-prestasi-non-akademik">Non-Akademik</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Pilihan tingkat kejuaraan -->
+                <div class="form-field">
+                  <span class="form-label" id="tingkat-kejuaraan-label">Tingkat Kejuaraan</span>
+                  <div class="select-field">
+                    <input class="select-input" type="radio" name="tingkat_kejuaraan" id="tingkat-kejuaraan-nasional" value="Tingkat Nasional" tabindex="-1" checked aria-label="Tingkat Nasional">
+                    <input class="select-input" type="radio" name="tingkat_kejuaraan" id="tingkat-kejuaraan-internasional" value="Tingkat Internasional" tabindex="-1" aria-label="Tingkat Internasional">
+                    <input class="select-input" type="radio" name="tingkat_kejuaraan" id="tingkat-kejuaraan-provinsi" value="Tingkat Provinsi" tabindex="-1" aria-label="Tingkat Provinsi">
+                    <input class="select-input" type="radio" name="tingkat_kejuaraan" id="tingkat-kejuaraan-kabupaten-kota" value="Tingkat Kabupaten / Kota" tabindex="-1" aria-label="Tingkat Kabupaten / Kota">
+                    <input class="select-input" type="radio" name="tingkat_kejuaraan" id="tingkat-kejuaraan-kampus" value="Tingkat Kampus" tabindex="-1" aria-label="Tingkat Kampus">
+
+                    <div class="select-trigger" id="tingkat-kejuaraan" tabindex="0" role="group" aria-labelledby="tingkat-kejuaraan-label" aria-haspopup="listbox">
+                      <span class="select-trigger-value" aria-hidden="true">
+                        <span class="select-value-label select-value-label--nasional">Tingkat Nasional</span>
+                        <span class="select-value-label select-value-label--internasional">Tingkat Internasional</span>
+                        <span class="select-value-label select-value-label--provinsi">Tingkat Provinsi</span>
+                        <span class="select-value-label select-value-label--kabupaten-kota">Tingkat Kabupaten / Kota</span>
+                        <span class="select-value-label select-value-label--kampus">Tingkat Kampus</span>
+                      </span>
+
+                      <!-- Ikon panah dropdown -->
+                      <svg class="select-chevron" viewBox="0 0 12 8" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="m1 1.5 5 5 5-5"/>
+                      </svg>
+
+                      <div class="select-menu" role="listbox" aria-labelledby="tingkat-kejuaraan-label">
+                        <label class="select-item select-item--nasional" for="tingkat-kejuaraan-nasional">Tingkat Nasional</label>
+                        <label class="select-item select-item--internasional" for="tingkat-kejuaraan-internasional">Tingkat Internasional</label>
+                        <label class="select-item select-item--provinsi" for="tingkat-kejuaraan-provinsi">Tingkat Provinsi</label>
+                        <label class="select-item select-item--kabupaten-kota" for="tingkat-kejuaraan-kabupaten-kota">Tingkat Kabupaten / Kota</label>
+                        <label class="select-item select-item--kampus" for="tingkat-kejuaraan-kampus">Tingkat Kampus</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Pilihan peringkat atau capaian penghargaan -->
+                <div class="form-field">
+                  <span class="form-label" id="peringkat-label">Peringkat / Capaian Penghargaan</span>
+                  <div class="select-field">
+                    <input class="select-input" type="radio" name="peringkat" id="peringkat-juara-1" value="Juara 1" tabindex="-1" checked aria-label="Juara 1">
+                    <input class="select-input" type="radio" name="peringkat" id="peringkat-juara-2" value="Juara 2" tabindex="-1" aria-label="Juara 2">
+                    <input class="select-input" type="radio" name="peringkat" id="peringkat-juara-3" value="Juara 3" tabindex="-1" aria-label="Juara 3">
+                    <input class="select-input" type="radio" name="peringkat" id="peringkat-harapan-1" value="Harapan 1" tabindex="-1" aria-label="Harapan 1">
+                    <input class="select-input" type="radio" name="peringkat" id="peringkat-harapan-2" value="Harapan 2" tabindex="-1" aria-label="Harapan 2">
+                    <input class="select-input" type="radio" name="peringkat" id="peringkat-lainnya" value="Lainnya" tabindex="-1" aria-label="Lainnya">
+
+                    <div class="select-trigger" id="peringkat" tabindex="0" role="group" aria-labelledby="peringkat-label" aria-haspopup="listbox">
+                      <span class="select-trigger-value" aria-hidden="true">
+                        <span class="select-value-label select-value-label--juara-1">Juara 1</span>
+                        <span class="select-value-label select-value-label--juara-2">Juara 2</span>
+                        <span class="select-value-label select-value-label--juara-3">Juara 3</span>
+                        <span class="select-value-label select-value-label--harapan-1">Harapan 1</span>
+                        <span class="select-value-label select-value-label--harapan-2">Harapan 2</span>
+                        <span class="select-value-label select-value-label--lainnya">Lainnya</span>
+                      </span>
+
+                      <!-- Ikon panah dropdown -->
+                      <svg class="select-chevron" viewBox="0 0 12 8" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="m1 1.5 5 5 5-5"/>
+                      </svg>
+
+                      <div class="select-menu" role="listbox" aria-labelledby="peringkat-label">
+                        <label class="select-item select-item--juara-1" for="peringkat-juara-1">Juara 1</label>
+                        <label class="select-item select-item--juara-2" for="peringkat-juara-2">Juara 2</label>
+                        <label class="select-item select-item--juara-3" for="peringkat-juara-3">Juara 3</label>
+                        <label class="select-item select-item--harapan-1" for="peringkat-harapan-1">Harapan 1</label>
+                        <label class="select-item select-item--harapan-2" for="peringkat-harapan-2">Harapan 2</label>
+                        <label class="select-item select-item--lainnya" for="peringkat-lainnya">Lainnya</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Pilihan tahun pelaksanaan prestasi -->
+                <div class="form-field">
+                  <span class="form-label" id="tahun-pelaksanaan-label">Tahun Pelaksanaan</span>
+                  <div class="select-field">
+                    <input class="select-input" type="radio" name="tahun_pelaksanaan" id="tahun-pelaksanaan-2026" value="2026" tabindex="-1" checked aria-label="2026">
+                    <input class="select-input" type="radio" name="tahun_pelaksanaan" id="tahun-pelaksanaan-2025" value="2025" tabindex="-1" aria-label="2025">
+                    <input class="select-input" type="radio" name="tahun_pelaksanaan" id="tahun-pelaksanaan-2024" value="2024" tabindex="-1" aria-label="2024">
+                    <input class="select-input" type="radio" name="tahun_pelaksanaan" id="tahun-pelaksanaan-2023" value="2023" tabindex="-1" aria-label="2023">
+                    <input class="select-input" type="radio" name="tahun_pelaksanaan" id="tahun-pelaksanaan-2022" value="2022" tabindex="-1" aria-label="2022">
+                    <input class="select-input" type="radio" name="tahun_pelaksanaan" id="tahun-pelaksanaan-2021" value="2021" tabindex="-1" aria-label="2021">
+                    <input class="select-input" type="radio" name="tahun_pelaksanaan" id="tahun-pelaksanaan-2020" value="2020" tabindex="-1" aria-label="2020">
+
+                    <div class="select-trigger" id="tahun-pelaksanaan" tabindex="0" role="group" aria-labelledby="tahun-pelaksanaan-label" aria-haspopup="listbox">
+                      <span class="select-trigger-value" aria-hidden="true">
+                        <span class="select-value-label select-value-label--2026">2026</span>
+                        <span class="select-value-label select-value-label--2025">2025</span>
+                        <span class="select-value-label select-value-label--2024">2024</span>
+                        <span class="select-value-label select-value-label--2023">2023</span>
+                        <span class="select-value-label select-value-label--2022">2022</span>
+                        <span class="select-value-label select-value-label--2021">2021</span>
+                        <span class="select-value-label select-value-label--2020">2020</span>
+                      </span>
+
+                      <!-- Ikon panah dropdown -->
+                      <svg class="select-chevron" viewBox="0 0 12 8" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="m1 1.5 5 5 5-5"/>
+                      </svg>
+
+                      <div class="select-menu" role="listbox" aria-labelledby="tahun-pelaksanaan-label">
+                        <label class="select-item select-item--2026" for="tahun-pelaksanaan-2026">2026</label>
+                        <label class="select-item select-item--2025" for="tahun-pelaksanaan-2025">2025</label>
+                        <label class="select-item select-item--2024" for="tahun-pelaksanaan-2024">2024</label>
+                        <label class="select-item select-item--2023" for="tahun-pelaksanaan-2023">2023</label>
+                        <label class="select-item select-item--2022" for="tahun-pelaksanaan-2022">2022</label>
+                        <label class="select-item select-item--2021" for="tahun-pelaksanaan-2021">2021</label>
+                        <label class="select-item select-item--2020" for="tahun-pelaksanaan-2020">2020</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Input tambahan untuk menuliskan capaian selain pilihan yang tersedia -->
+              <div class="form-field" id="capaian-lainnya-field">
+                <label class="form-label" for="capaian-lainnya">Capaian Lainnya</label>
+                <input class="form-control" type="text" id="capaian-lainnya" name="capaian_lainnya" placeholder="Tuliskan capaian prestasi Anda" autocomplete="off" aria-describedby="capaian-lainnya-error">
+                <!-- Pesan kesalahan jika capaian lainnya belum diisi -->
+                <p class="field-error" id="capaian-lainnya-error">Tuliskan capaian prestasi Anda.</p>
+              </div>
+
+              <!-- Input nama instansi atau lembaga penyelenggara -->
+              <div class="form-field">
+                <label class="form-label" for="instansi">Instansi / Lembaga Penyelenggara</label>
+                <input class="form-control" type="text" id="instansi" name="instansi" placeholder="Contoh: Puspresnas Kemendikbudristek / IEEE Indonesia Section" autocomplete="off" required aria-describedby="instansi-error">
+                <!-- Pesan kesalahan jika instansi belum diisi -->
+                <p class="field-error" id="instansi-error">Instansi atau lembaga penyelenggara wajib diisi.</p>
+              </div>
+
+              <!-- BAGIAN UNGGAH DOKUMEN SERTIFIKAT -->
+              <div class="form-field">
+
+                <!-- Label untuk menjelaskan dokumen yang harus diunggah -->
+                <span class="form-label" id="bukti-label">Unggah Dokumen Sertifikat (Wajib PDF)</span>
+
+                <!-- Kotak unggah file sertifikat -->
+                <div class="upload-box" aria-labelledby="bukti-label">
+
+                  <!-- Ikon unggah dokumen -->
+                  <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M4 14.9A7 7 0 1 1 15.7 8h1.6a4.5 4.5 0 0 1 2.6 8.2"/>
+                    <path d="M12 12v8"/>
+                    <path d="m16 16-4-4-4 4"/>
+                  </svg>
+
+                  <!-- Petunjuk dan ketentuan dokumen yang diunggah -->
+                  <p class="upload-title">Pilih berkas sertifikat dari perangkat Anda</p>
+                  <p class="upload-note">Ketentuan: Berkas PDF resmi, maksimal ukuran 5 MB, teks dan tanda tangan terbaca jelas.</p>
+
+                  <!-- Input untuk memilih file PDF dari perangkat -->
+                  <input class="file-input" id="evidence-file" name="evidence_file" type="file" accept=".pdf,application/pdf" required aria-describedby="evidence-file-error">
+
+                  <!-- Label yang berfungsi sebagai tombol pemilih file -->
+                  <label class="upload-button" for="evidence-file">Pilih File PDF</label>
+
+                  <!-- Area informasi status file yang dipilih -->
+                  <div class="file-status" id="file-status" aria-live="polite">
+
+                    <!-- Ikon dokumen PDF -->
+                    <span class="file-icon" aria-hidden="true">
+                      <svg viewBox="0 0 20 22" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 1.5h8l4 4V20.5H4z"/>
+                        <path d="M12 1.5v4h4"/>
+                        <text x="5.2" y="15.2" fill="currentColor" stroke="none" font-size="4.4" font-family="Roboto, sans-serif" font-weight="600">PDF</text>
+                      </svg>
+                    </span>
+
+                    <!-- Nama file yang ditampilkan -->
+                    <span class="file-name">Berkas PDF dipilih</span>
+
+                    <!-- Keterangan bahwa file siap diunggah -->
+                    <span class="file-ready">
+                      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="8" cy="8" r="6.2"/>
+                        <path d="m5.2 8.1 1.8 1.8 3.9-4"/>
+                      </svg>
+                      Siap diunggah
+                    </span>
+                  </div>
+                </div>
+
+                <!-- Pesan kesalahan jika dokumen PDF belum diunggah atau formatnya tidak sesuai -->
+                <p class="field-error" id="evidence-file-error">
+                  <strong id="evidence-file-error-title">Dokumen sertifikat wajib diunggah!</strong>
+                  <span id="evidence-file-error-detail">Pilih dokumen sertifikat atau bukti prestasi dalam format PDF.</span>
+                </p>
+              </div>
+
+              <!-- BAGIAN TOMBOL KIRIM FORMULIR -->
+              <div class="form-actions">
+
+                <!-- Tombol untuk mengirim pengajuan prestasi -->
+                <button class="apply-button apply-button--primary" type="submit">
+                  <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="10" cy="10" r="7.2"/>
+                    <path d="M10 6.7v6.6M6.7 10h6.6"/>
+                  </svg>
+                  <span>Kirim Pengajuan Prestasi</span>
+                </button>
+              </div>
+            </form>
+          </section>
+
+          <!-- BAGIAN 5: PANEL NOTIFIKASI JIKA PENGAJUAN BERHASIL -->
+          <section class="apply-card success-card" id="success-panel" aria-live="polite" aria-labelledby="success-title">
+
+            <!-- Ikon tanda berhasil -->
+            <div class="success-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="8.4"/>
+                <path d="m8.2 12.1 2.5 2.5 5.3-5.4"/>
+              </svg>
+            </div>
+
+            <!-- Judul pemberitahuan pengajuan berhasil -->
+            <h2 class="success-title" id="success-title" tabindex="-1">Pengajuan Prestasi Berhasil Dikirim!</h2>
+
+            <!-- Keterangan bahwa pengajuan masuk ke antrean verifikasi -->
+            <p class="success-text">Pengajuan sertifikat kompetisi <strong>&ldquo;<span id="success-competition-name">Gemastik XVII - Divisi Pemrograman Web / Hackathon Nasional</span>&rdquo;</strong> telah masuk ke antrean verifikasi tim kemahasiswaan dengan status <strong>&ldquo;Diajukan&rdquo;</strong>.</p>
+
+            <!-- Tombol tindakan setelah pengajuan berhasil -->
+            <div class="success-actions">
+
+              <!-- Tombol untuk mengajukan prestasi lainnya -->
+              <a class="apply-button apply-button--secondary" id="submit-another" href="ajukan-prestasi.html">Ajukan Prestasi Lainnya</a>
+
+              <!-- Tautan untuk membuka halaman riwayat prestasi -->
+              <a class="apply-button apply-button--primary" href="riwayat-prestasi.html">Buka Riwayat Prestasi Saya</a>
+            </div>
+          </section>
+        </div>
+      </main>
+
+      <!-- BAGIAN 6: FOOTER / KAKI HALAMAN -->
+      <footer class="page-footer apply-footer">
+        <p>&copy; 2026 SIPRESMA <span class="footer-separator">&middot;</span> Sistem Informasi Prestasi Mahasiswa</p>
+      </footer>
+    </div>
+  </div>
+
+  <!-- BAGIAN 7: NOTIFIKASI KETIKA PENGAJUAN GAGAL -->
+  <div class="toast toast--error" id="error-toast" role="alert" aria-live="assertive" hidden>
+
+    <!-- Ikon peringatan kesalahan -->
+    <span class="toast-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="8.5"/>
+        <path d="M12 7.7v5.1M12 16.5h.01"/>
+      </svg>
+    </span>
+
+    <!-- Judul dan keterangan notifikasi gagal -->
+    <span class="toast-copy">
+      <strong>Pengajuan gagal dikirim</strong>
+      <span>Lengkapi data wajib dan periksa kembali dokumen PDF Anda.</span>
+    </span>
+
+    <!-- Tombol untuk menutup notifikasi -->
+    <button class="toast-close" id="error-toast-close" type="button" aria-label="Tutup notifikasi gagal">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+        <path d="m2 2 10 10M12 2 2 12"/>
+      </svg>
+    </button>
+  </div>
+
+</body>
+</html>

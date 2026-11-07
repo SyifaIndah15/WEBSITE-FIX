@@ -1,0 +1,642 @@
+﻿/* =========================================================
+   VARIABEL WARNA DAN FONT UTAMA
+   ========================================================= */
+:root {
+  --page-text: #443a2b; /* Warna teks utama pada halaman */
+  --page-muted: #8f7f67; /* Warna teks sekunder atau teks yang lebih lembut */
+  --gold-text: #c3a25f; /* Warna teks aksen gold */
+  --gold-dark: #a98643; /* Warna gold yang lebih gelap */
+  --gold-line: #d3b77e; /* Warna garis atau aksen gold */
+  --card-bg: #fbf6ea; /* Warna background card */
+  --field-bg: #fffdf8; /* Warna background input */
+  --field-border: #e9dcc3; /* Warna garis tepi input */
+  --field-icon: #c5a66c; /* Warna ikon pada input */
+  --font-main: "Plus Jakarta Sans", "Segoe UI", Tahoma, sans-serif; /* Urutan font utama dan font alternatif */
+  --font-password: "Inter", "Segoe UI", Tahoma, sans-serif; /* Font khusus teks pada kolom password */
+}
+
+/* Mengatur perhitungan ukuran elemen agar padding dan border termasuk dalam ukuran elemen */
+* {
+  box-sizing: border-box;
+}
+
+/* Mengatur tinggi minimum elemen HTML */
+html {
+  min-height: 100%;
+}
+
+/* =========================================================
+   PENGATURAN DASAR HALAMAN
+   ========================================================= */
+body {
+  min-height: 100vh; /* Membuat tinggi halaman minimal sebesar tinggi layar */
+  margin: 0; /* Menghilangkan margin bawaan browser */
+  font-family: var(--font-main); /* Menggunakan font utama dari variabel */
+  color: var(--page-text); /* Mengatur warna teks utama */
+  background-color: #f5ebd7; /* Memberikan warna dasar background cream */
+
+  /* Membuat beberapa lapisan efek gradasi radial dan linear pada background */
+  background-image:
+    radial-gradient(ellipse 70% 52% at 50% -8%, rgba(255, 251, 236, 0.95) 0%, rgba(255, 251, 236, 0) 65%),
+    radial-gradient(ellipse 48% 42% at 100% 96%, rgba(233, 214, 176, 0.55) 0%, rgba(233, 214, 176, 0) 70%),
+    radial-gradient(ellipse 52% 44% at 0% 94%, rgba(238, 223, 193, 0.5) 0%, rgba(238, 223, 193, 0) 70%),
+    linear-gradient(155deg, #fbf3e2 0%, #f7edd8 45%, #f3e7cf 100%);
+
+  background-attachment: fixed; /* Membuat background tetap saat halaman digulir */
+  -webkit-font-smoothing: antialiased; /* Menghaluskan tampilan font pada browser berbasis WebKit */
+  -moz-osx-font-smoothing: grayscale; /* Menghaluskan tampilan font pada macOS */
+}
+
+/* =========================================================
+   BACKGROUND DEKORATIF
+   ========================================================= */
+.page-background {
+  position: fixed; /* Memposisikan background tetap pada layar */
+  inset: 0; /* Membuat elemen memenuhi seluruh sisi layar */
+  z-index: 0; /* Menempatkan background pada lapisan paling belakang */
+  overflow: hidden; /* Menyembunyikan bagian background yang keluar dari area */
+  pointer-events: none; /* Membuat background tidak menghalangi interaksi pengguna */
+}
+
+/* Mengatur SVG yang berada di dalam elemen background */
+.page-background svg {
+  display: block; /* Menghilangkan ruang kosong bawaan elemen inline */
+  width: 100%; /* Membuat SVG memenuhi lebar container */
+  height: 100%; /* Membuat SVG memenuhi tinggi container */
+}
+
+/* =========================================================
+   CONTAINER UTAMA HALAMAN
+   ========================================================= */
+.page-shell {
+  position: relative; /* Menjadikan elemen sebagai acuan posisi elemen di dalamnya */
+  z-index: 1; /* Menempatkan konten di atas background dekoratif */
+  display: flex; /* Menggunakan layout Flexbox */
+  flex-direction: column; /* Menyusun elemen secara vertikal */
+  align-items: center; /* Memposisikan elemen di tengah secara horizontal */
+  min-height: 100vh; /* Mengatur tinggi minimum sebesar layar */
+  min-height: 100svh; /* Menggunakan tinggi layar yang terlihat pada perangkat */
+  padding: 46px 24px 40px; /* Mengatur jarak bagian atas, samping, dan bawah */
+}
+
+/* =========================================================
+   BAGIAN IDENTITAS BRAND / LOGO
+   ========================================================= */
+.brand {
+  display: flex; /* Menggunakan Flexbox */
+  flex-direction: column; /* Menyusun logo dan teks secara vertikal */
+  align-items: center; /* Memposisikan elemen di tengah */
+  text-align: center; /* Membuat teks rata tengah */
+  animation: motion-rise-in var(--motion-duration) var(--motion-ease) both; /* Memberikan animasi muncul dari bawah */
+}
+
+/* Kotak yang menjadi tempat logo aplikasi */
+.brand-logo {
+  display: grid; /* Menggunakan CSS Grid */
+  place-items: center; /* Memposisikan ikon tepat di tengah */
+  width: 70px; /* Mengatur lebar logo */
+  height: 70px; /* Mengatur tinggi logo */
+  border-radius: 20px; /* Membuat sudut kotak membulat */
+  background: linear-gradient(140deg, #f5dc93 0%, #e6c06a 52%, #cfa95c 100%); /* Memberikan gradasi warna gold */
+  color: #3d3225; /* Mengatur warna ikon di dalam logo */
+
+  /* Memberikan efek bayangan pada kotak logo */
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    0 9px 18px rgba(167, 128, 48, 0.2),
+    0 2px 5px rgba(120, 90, 35, 0.12);
+}
+
+/* Mengatur ukuran ikon di dalam logo */
+.brand-icon {
+  width: 30px; /* Lebar ikon */
+  height: 30px; /* Tinggi ikon */
+}
+
+/* Mengatur tampilan judul brand */
+.brand-title {
+  margin: 34px 0 0; /* Memberikan jarak atas dari logo */
+  font-size: 26px; /* Mengatur ukuran teks */
+  font-weight: 700; /* Membuat teks tebal */
+  line-height: 34px; /* Mengatur tinggi baris teks */
+  letter-spacing: 0.2px; /* Mengatur jarak antarhuruf */
+  color: #3f3528; /* Mengatur warna judul */
+}
+
+/* Mengatur teks deskripsi di bawah judul brand */
+.brand-subtitle {
+  margin: 4px 0 0; /* Memberikan jarak atas */
+  font-size: 12px; /* Mengatur ukuran teks */
+  font-weight: 400; /* Mengatur ketebalan teks normal */
+  line-height: 18px; /* Mengatur tinggi baris */
+  color: var(--page-muted); /* Menggunakan warna teks sekunder */
+}
+
+/* =========================================================
+   CARD LOGIN
+   ========================================================= */
+.login-card {
+  width: 466px; /* Mengatur lebar card login */
+  max-width: 100%; /* Mencegah card melebihi lebar container */
+  margin-top: 30px; /* Memberikan jarak dari bagian brand */
+  padding: 34px 43px 74px; /* Mengatur ruang dalam card */
+  background: var(--card-bg); /* Memberikan background card cream */
+  border: 1px solid rgba(221, 201, 163, 0.55); /* Memberikan garis tepi lembut */
+  border-radius: 16px; /* Membuat sudut card membulat */
+
+  /* Memberikan efek bayangan pada card */
+  box-shadow:
+    0 26px 45px -24px rgba(112, 85, 38, 0.28),
+    0 8px 18px rgba(112, 85, 38, 0.05);
+
+  animation: motion-rise-in var(--motion-duration) var(--motion-ease) 60ms both; /* Memberikan animasi muncul pada card */
+}
+
+/* Mengatur judul di dalam card login */
+.card-title {
+  margin: 0 0 14px; /* Mengatur jarak bawah judul */
+  font-size: 12px; /* Ukuran teks */
+  font-weight: 600; /* Ketebalan teks */
+  line-height: 18px; /* Tinggi baris */
+  color: #4b4032; /* Warna teks judul */
+}
+
+/* =========================================================
+   PEMILIHAN ROLE PENGGUNA
+   ========================================================= */
+.role-selector {
+  position: relative; /* Menjadi acuan posisi elemen di dalamnya */
+  display: grid; /* Menggunakan CSS Grid */
+  grid-template-columns: repeat(3, 1fr); /* Membagi area menjadi tiga kolom sama besar */
+  height: 40px; /* Mengatur tinggi pilihan role */
+  background: #eee2ca; /* Warna background pilihan role */
+  border-radius: 10px; /* Membuat sudut membulat */
+}
+
+/* Menyembunyikan radio button asli tanpa menghilangkan fungsinya */
+.role-radio {
+  position: absolute; /* Memposisikan radio button secara absolut */
+  width: 1px; /* Mengatur lebar sangat kecil */
+  height: 1px; /* Mengatur tinggi sangat kecil */
+  opacity: 0; /* Membuat radio button transparan */
+  pointer-events: none; /* Menonaktifkan interaksi pointer langsung */
+}
+
+/* Mengatur tampilan setiap pilihan role */
+.role-option {
+  display: flex; /* Menggunakan Flexbox */
+  align-items: center; /* Memposisikan isi secara vertikal di tengah */
+  justify-content: center; /* Memposisikan isi secara horizontal di tengah */
+  gap: 8px; /* Memberikan jarak antara ikon dan teks */
+  margin: 3px; /* Memberikan jarak antar pilihan */
+  border: 1px solid transparent; /* Menyiapkan border transparan */
+  border-radius: 8px; /* Membuat sudut pilihan membulat */
+  font-size: 12px; /* Ukuran teks role */
+  font-weight: 500; /* Ketebalan teks */
+  line-height: 1; /* Mengatur tinggi baris */
+  color: #a08c6d; /* Warna teks role yang belum dipilih */
+  cursor: pointer; /* Mengubah kursor menjadi tangan */
+  user-select: none; /* Mencegah teks dipilih saat diklik */
+
+  /* Memberikan transisi saat tampilan pilihan berubah */
+  transition:
+    background-color var(--motion-duration) var(--motion-ease),
+    border-color var(--motion-duration) var(--motion-ease),
+    box-shadow var(--motion-duration) var(--motion-ease),
+    color var(--motion-duration) var(--motion-ease);
+}
+
+/* Mengatur ikon SVG pada setiap pilihan role */
+.role-option svg {
+  flex-shrink: 0; /* Mencegah ikon mengecil */
+  width: 15px; /* Lebar ikon */
+  height: 15px; /* Tinggi ikon */
+  color: #b29666; /* Warna ikon */
+}
+
+/* Mengubah warna teks saat pilihan role diarahkan kursor */
+.role-option:hover {
+  color: #7e6a4d; /* Memberikan warna lebih gelap saat hover */
+}
+
+/* Mengatur tampilan pilihan role yang sedang aktif */
+.role-radio:checked + .role-option {
+  background: #fdfaf2; /* Memberikan background pada role aktif */
+  border: 1.5px solid #d8b96c; /* Memberikan border gold */
+  color: #45382a; /* Mengubah warna teks menjadi lebih gelap */
+  font-weight: 600; /* Membuat teks lebih tebal */
+
+  /* Memberikan bayangan lembut pada role aktif */
+  box-shadow:
+    0 0 0 2px rgba(253, 250, 242, 0.45),
+    0 1px 3px rgba(145, 110, 45, 0.14);
+}
+
+/* Memberikan tanda fokus ketika pilihan role digunakan melalui keyboard */
+.role-radio:focus-visible + .role-option {
+  outline: 2px solid #b28f4d; /* Garis fokus berwarna gold */
+  outline-offset: 2px; /* Memberikan jarak garis fokus */
+}
+
+/* =========================================================
+   FORM LOGIN DAN PENGATURAN ROLE
+   ========================================================= */
+.form-group {
+  margin-top: 16px; /* Memberikan jarak atas pada kelompok input */
+}
+
+/* Menyembunyikan form login Dosen dan Admin secara default,
+   serta form Mahasiswa ketika role Dosen atau Admin dipilih */
+.login-form--dosen,
+.login-form--admin,
+.login-card:has(#role-dosen:checked) .login-form--mahasiswa,
+.login-card:has(#role-admin:checked) .login-form--mahasiswa {
+  display: none; /* Tidak menampilkan form yang tidak sesuai role */
+}
+
+/* Menampilkan form Dosen atau Admin sesuai role yang dipilih */
+.login-card:has(#role-dosen:checked) .login-form--dosen,
+.login-card:has(#role-admin:checked) .login-form--admin {
+  display: block; /* Menampilkan form sesuai role aktif */
+}
+
+/* Mengatur jarak khusus pada kelompok input password */
+.form-group--password {
+  margin-top: 18px; /* Memberikan jarak atas pada input password */
+}
+
+/* Mengatur label pada setiap input */
+.form-label {
+  display: block; /* Membuat label berada pada baris tersendiri */
+  margin-bottom: 12px; /* Memberikan jarak antara label dan input */
+  font-size: 12px; /* Ukuran teks label */
+  font-weight: 600; /* Membuat label lebih tebal */
+  line-height: 18px; /* Tinggi baris label */
+  color: #4b4032; /* Warna teks label */
+}
+
+/* =========================================================
+   AREA INPUT FORM LOGIN
+   ========================================================= */
+.input-field {
+  display: flex; /* Menggunakan Flexbox */
+  align-items: center; /* Memposisikan isi input secara vertikal di tengah */
+  gap: 9px; /* Memberikan jarak antara ikon dan kolom input */
+  height: 41px; /* Mengatur tinggi area input */
+  padding: 0 14px; /* Memberikan ruang di sisi kiri dan kanan */
+  background: var(--field-bg); /* Memberikan background input */
+  border: 1px solid var(--field-border); /* Memberikan garis tepi input */
+  border-radius: 10px; /* Membuat sudut input membulat */
+
+  /* Memberikan transisi ketika input mendapatkan fokus */
+  transition:
+    border-color var(--motion-duration) var(--motion-ease),
+    box-shadow var(--motion-duration) var(--motion-ease);
+}
+
+/* Mengubah border dan bayangan ketika input atau elemen di dalamnya mendapatkan fokus */
+.input-field:focus-within {
+  border-color: #d2b271; /* Mengubah warna border menjadi gold */
+  box-shadow: 0 0 0 3px rgba(210, 178, 113, 0.14); /* Memberikan efek cahaya lembut */
+}
+
+/* Mengatur ikon yang berada di dalam input */
+.input-icon {
+  flex-shrink: 0; /* Mencegah ikon mengecil */
+  width: 16px; /* Lebar ikon */
+  height: 16px; /* Tinggi ikon */
+  color: var(--field-icon); /* Menggunakan warna ikon dari variabel */
+}
+
+/* Mengatur elemen input teks atau password */
+.input-control {
+  flex: 1; /* Menggunakan ruang yang tersedia */
+  min-width: 0; /* Memungkinkan input mengecil sesuai container */
+  padding: 0; /* Menghilangkan padding bawaan */
+  font-family: inherit; /* Mengikuti font dari elemen induk */
+  font-size: 12px; /* Ukuran teks input */
+  font-weight: 400; /* Ketebalan teks normal */
+  color: var(--page-text); /* Warna teks yang diketik */
+  background: transparent; /* Membuat background input transparan */
+  border: 0; /* Menghilangkan border bawaan input */
+  outline: 0; /* Menghilangkan outline bawaan */
+}
+
+/* Menerapkan font Inter khusus pada teks kolom password, baik saat terlihat maupun tersembunyi */
+.input-control[name="password"] {
+  font-family: var(--font-password); /* Menggunakan font khusus password */
+}
+
+/* Mengatur tampilan teks petunjuk di dalam input */
+.input-control::placeholder {
+  color: #ab9b85; /* Warna placeholder */
+  opacity: 1; /* Menjaga placeholder tetap terlihat */
+}
+
+/* =========================================================
+   TOMBOL TAMPIL / SEMBUNYIKAN PASSWORD
+   ========================================================= */
+.password-toggle {
+  display: grid; /* Menggunakan CSS Grid */
+  flex-shrink: 0; /* Mencegah ikon mengecil ketika ruang input terbatas */
+  place-items: center; /* Memposisikan ikon tepat di tengah */
+  width: 24px; /* Lebar tombol */
+  height: 24px; /* Tinggi tombol */
+  margin-right: -4px; /* Mengatur posisi tombol ke arah kanan */
+  padding: 0; /* Menghilangkan padding bawaan */
+  color: #bfa25d; /* Warna ikon tombol */
+  background: transparent; /* Membuat background transparan */
+  border: 0; /* Menghilangkan border */
+  border-radius: 50%; /* Membuat bentuk tombol lingkaran */
+  cursor: pointer; /* Mengubah kursor menjadi tangan */
+
+  /* Memberikan transisi perubahan warna */
+  transition: color var(--motion-duration) var(--motion-ease);
+}
+
+/* Ikon mata statis karena CSS tidak dapat mengubah tipe input password */
+.password-toggle--static {
+  pointer-events: none; /* Menonaktifkan interaksi pada ikon dekoratif */
+  cursor: default; /* Mengembalikan kursor ke bentuk bawaan */
+}
+
+/* Mengubah warna tombol saat diarahkan kursor */
+.password-toggle:hover {
+  color: #856b44; /* Mengubah warna menjadi lebih gelap */
+}
+
+/* Memberikan indikator fokus ketika tombol digunakan melalui keyboard */
+.password-toggle:focus-visible {
+  outline: 2px solid #b28f4d; /* Membuat garis fokus */
+  outline-offset: 1px; /* Memberikan jarak garis fokus */
+}
+
+/* Mengatur ukuran ikon SVG pada tombol password */
+.password-toggle svg {
+  width: 18px; /* Lebar ikon */
+  height: 18px; /* Tinggi ikon */
+}
+
+/* =========================================================
+   PETUNJUK PENGISIAN FORM
+   ========================================================= */
+.form-hint {
+  margin: 7px 0 0; /* Memberikan jarak atas pada teks petunjuk */
+  font-size: 11px; /* Ukuran teks petunjuk */
+  font-weight: 400; /* Ketebalan teks normal */
+  line-height: 16px; /* Tinggi baris */
+  color: #94836b; /* Warna teks petunjuk */
+}
+
+/* =========================================================
+   TOMBOL LOGIN
+   ========================================================= */
+.login-button {
+  width: 100%; /* Membuat tombol memenuhi lebar container */
+  height: 38px; /* Mengatur tinggi tombol */
+  margin-top: 25px; /* Memberikan jarak atas dari input */
+  padding: 0; /* Menghilangkan padding bawaan */
+  font-family: inherit; /* Mengikuti font utama */
+  font-size: 12px; /* Ukuran teks tombol */
+  font-weight: 600; /* Membuat teks tombol lebih tebal */
+  letter-spacing: 0.2px; /* Mengatur jarak antarhuruf */
+  color: #fffdf8; /* Warna teks putih cream */
+
+  /* Memberikan gradasi warna gold pada tombol */
+  background: linear-gradient(90deg, #bb9850 0%, #cfab61 48%, #e2bd67 100%);
+
+  border: 0; /* Menghilangkan border */
+  border-radius: 9px; /* Membuat sudut tombol membulat */
+  cursor: pointer; /* Mengubah kursor menjadi tangan */
+
+  /* Memberikan bayangan dan efek cahaya pada tombol */
+  box-shadow:
+    0 10px 18px -8px rgba(174, 132, 49, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+
+  /* Memberikan transisi saat tombol berinteraksi */
+  transition: filter var(--motion-duration) var(--motion-ease), transform var(--motion-duration) var(--motion-ease);
+}
+
+/* Memberikan efek perubahan kecerahan saat tombol diarahkan kursor */
+.login-button:hover {
+  filter: brightness(1.03); /* Sedikit meningkatkan kecerahan tombol */
+}
+
+/* Memberikan efek tombol sedikit bergerak ketika ditekan */
+.login-button:active {
+  transform: translateY(1px); /* Menggeser tombol ke bawah 1 piksel */
+}
+
+/* Memberikan indikator fokus pada tombol login */
+.login-button:focus-visible {
+  outline: 2px solid #b08c44; /* Membuat garis fokus gold */
+  outline-offset: 2px; /* Memberikan jarak garis fokus */
+}
+
+/* =========================================================
+   FOOTER DI DALAM CARD LOGIN
+   ========================================================= */
+.card-footer {
+  margin-top: 23px; /* Memberikan jarak dari tombol login */
+  padding-top: 9px; /* Memberikan ruang di atas teks footer */
+  font-size: 12px; /* Ukuran teks */
+  line-height: 18px; /* Tinggi baris */
+  text-align: center; /* Membuat teks rata tengah */
+  border-top: 1px solid #efe4d1; /* Memberikan garis pemisah di bagian atas */
+}
+
+/* Mengatur tampilan tautan lupa password */
+.forgot-link {
+  display: inline-block; /* Membuat link dapat diatur dimensinya */
+  font-size: 12px; /* Ukuran teks */
+  font-weight: 600; /* Membuat teks lebih tebal */
+  line-height: 18px; /* Tinggi baris */
+  color: var(--gold-text); /* Menggunakan warna gold */
+  text-decoration: none; /* Menghilangkan garis bawah */
+
+  /* Memberikan transisi perubahan warna */
+  transition: color var(--motion-duration) var(--motion-ease);
+}
+
+/* Menyembunyikan tautan lupa password Dosen secara default,
+   tautan Mahasiswa ketika Dosen dipilih, dan footer saat Admin dipilih */
+.forgot-link--dosen,
+.login-card:has(#role-dosen:checked) .forgot-link--mahasiswa,
+.login-card:has(#role-admin:checked) .card-footer {
+  display: none; /* Tidak menampilkan elemen yang tidak sesuai role */
+}
+
+/* Menampilkan tautan lupa password Dosen ketika role Dosen dipilih */
+.login-card:has(#role-dosen:checked) .forgot-link--dosen {
+  display: inline-block; /* Menampilkan link Dosen */
+}
+
+/* Memberikan efek pada tautan lupa password ketika diarahkan kursor */
+.forgot-link:hover {
+  color: var(--gold-dark); /* Mengubah warna menjadi gold gelap */
+  text-decoration: underline; /* Menampilkan garis bawah */
+}
+
+/* Memberikan indikator fokus pada tautan lupa password */
+.forgot-link:focus-visible {
+  border-radius: 3px; /* Membuat sudut indikator membulat */
+  outline: 2px solid #b28f4d; /* Membuat garis fokus */
+  outline-offset: 3px; /* Memberikan jarak garis fokus */
+}
+
+/* =========================================================
+   FOOTER UTAMA HALAMAN
+   ========================================================= */
+.site-footer {
+  margin-top: 28px; /* Memberikan jarak dari card login */
+  text-align: center; /* Membuat isi footer rata tengah */
+}
+
+/* Mengatur paragraf di dalam footer utama */
+.site-footer p {
+  margin: 0; /* Menghilangkan margin bawaan paragraf */
+  font-size: 12px; /* Ukuran teks footer */
+  font-weight: 400; /* Ketebalan teks normal */
+  line-height: 18px; /* Tinggi baris */
+  color: #8c7c64; /* Warna teks footer */
+}
+
+/* Mengatur pemisah teks pada footer */
+.footer-separator {
+  margin: 0 3px; /* Memberikan jarak horizontal */
+  color: #a4906f; /* Mengatur warna pemisah */
+}
+
+/* =========================================================
+   RESPONSIVE DESIGN UNTUK LAYAR MAKSIMAL 540PX
+   Digunakan untuk menyesuaikan tampilan pada perangkat kecil.
+   ========================================================= */
+@media (max-width: 540px) {
+  .page-shell {
+    padding: 32px 18px 32px; /* Mengurangi padding halaman */
+  }
+
+  .brand-logo {
+    width: 62px; /* Mengecilkan lebar logo */
+    height: 62px; /* Mengecilkan tinggi logo */
+    border-radius: 18px; /* Menyesuaikan sudut logo */
+  }
+
+  .brand-icon {
+    width: 27px; /* Mengecilkan ikon */
+    height: 27px; /* Mengecilkan ikon */
+  }
+
+  .brand-title {
+    margin-top: 26px; /* Mengurangi jarak atas judul */
+    font-size: 23px; /* Mengecilkan ukuran judul */
+    line-height: 30px; /* Menyesuaikan tinggi baris */
+  }
+
+  .brand-subtitle {
+    font-size: 11px; /* Mengecilkan teks deskripsi */
+    line-height: 17px; /* Menyesuaikan tinggi baris */
+  }
+
+  .login-card {
+    margin-top: 26px; /* Mengurangi jarak atas card */
+    padding: 28px 22px 40px; /* Mengurangi ruang dalam card */
+    border-radius: 14px; /* Menyesuaikan sudut card */
+  }
+
+  .card-title {
+    margin-bottom: 11px; /* Mengurangi jarak bawah judul */
+  }
+
+  .role-selector {
+    height: 38px; /* Menyesuaikan tinggi pemilihan role */
+  }
+
+  .role-option {
+    gap: 6px; /* Mengurangi jarak ikon dan teks */
+    font-size: 11px; /* Mengecilkan teks pilihan role */
+  }
+
+  .role-option svg {
+    width: 14px; /* Mengecilkan ikon role */
+    height: 14px; /* Mengecilkan ikon role */
+  }
+
+  .form-group {
+    margin-top: 15px; /* Menyesuaikan jarak kelompok input */
+  }
+
+  .form-group--password {
+    margin-top: 18px; /* Mengatur jarak input password */
+  }
+
+  .form-label {
+    margin-bottom: 10px; /* Mengurangi jarak label dan input */
+  }
+
+  .input-field {
+    height: 42px; /* Menyesuaikan tinggi input */
+  }
+
+  .form-hint {
+    font-size: 10.5px; /* Mengecilkan teks petunjuk */
+  }
+
+  .login-button {
+    height: 42px; /* Menyesuaikan tinggi tombol login */
+    margin-top: 23px; /* Mengurangi jarak atas tombol */
+  }
+
+  .card-footer {
+    margin-top: 20px; /* Mengurangi jarak footer card */
+    padding-top: 11px; /* Menyesuaikan ruang atas footer */
+  }
+
+  .site-footer {
+    margin-top: 24px; /* Mengurangi jarak footer utama */
+  }
+
+  .site-footer p {
+    font-size: 11px; /* Mengecilkan teks footer */
+  }
+}
+
+/* =========================================================
+   RESPONSIVE DESIGN UNTUK LAYAR SANGAT KECIL
+   ========================================================= */
+@media (max-width: 370px) {
+  .login-card {
+    padding-right: 18px; /* Mengurangi padding kanan card */
+    padding-left: 18px; /* Mengurangi padding kiri card */
+  }
+
+  .role-option {
+    gap: 4px; /* Mengurangi jarak ikon dan teks */
+    font-size: 10px; /* Mengecilkan teks pilihan role */
+  }
+
+  .role-option svg {
+    width: 13px; /* Mengecilkan ikon role */
+    height: 13px; /* Mengecilkan ikon role */
+  }
+}
+
+/* =========================================================
+   RESPONSIVE DESIGN UNTUK LAYAR PENDEK
+   Berlaku pada layar dengan tinggi maksimal 780px
+   dan lebar minimal 541px.
+   ========================================================= */
+@media (max-height: 780px) and (min-width: 541px) {
+  .page-shell {
+    padding-top: 28px; /* Mengurangi jarak bagian atas halaman */
+  }
+
+  .login-card {
+    padding-bottom: 44px; /* Mengurangi ruang bawah card */
+  }
+
+  .site-footer {
+    margin-top: 24px; /* Mengurangi jarak footer */
+  }
+}

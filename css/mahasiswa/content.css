@@ -1,0 +1,669 @@
+/* =========================================================
+   TOPBAR / HEADER HALAMAN
+   Mengatur tampilan bagian atas dashboard yang berisi
+   tombol menu, breadcrumb, judul halaman, dan dekorasi.
+   ========================================================= */
+.topbar {
+  position: relative;
+  display: flex;
+  flex: 0 0 64px;
+  align-items: center;
+  gap: 16px;
+  height: 64px;
+  padding: 0 32px 4px 19px;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(224, 210, 185, 0.48);
+}
+
+/* =========================================================
+   TOMBOL MENU SIDEBAR
+   Mengatur tombol untuk membuka atau menutup sidebar.
+   ========================================================= */
+.menu-toggle {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  flex: 0 0 28px;
+  place-items: center;
+  width: 28px;
+  height: 36px;
+  padding: 0;
+  color: #3b3023;
+  background: transparent;
+  border: 0;
+  border-radius: 7px;
+  cursor: pointer;
+
+  /* Animasi perubahan background dan ukuran tombol */
+  transition:
+    background-color var(--motion-duration) var(--motion-ease),
+    transform var(--motion-duration) var(--motion-ease);
+}
+
+/* Menyembunyikan tombol menu mobile pada tampilan desktop */
+.menu-toggle--mobile {
+  display: none;
+}
+
+/* Input transparan yang digunakan untuk mengontrol menu */
+.menu-toggle-input {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Memberikan efek tombol sedikit mengecil ketika ditekan */
+.menu-toggle:active {
+  transform: scale(0.96);
+}
+
+/* Mengubah background tombol ketika diarahkan kursor */
+.menu-toggle:hover {
+  background: rgba(143, 110, 57, 0.06);
+}
+
+/* Memberikan garis fokus ketika tombol dipilih menggunakan keyboard */
+.menu-toggle:has(.menu-toggle-input:focus-visible) {
+  outline: 2px solid #b18c4c;
+  outline-offset: 3px;
+}
+
+/* Mengatur ukuran ikon SVG pada tombol menu */
+.menu-toggle svg {
+  width: 20px;
+  height: 14px;
+  pointer-events: none;
+}
+
+/* =========================================================
+   JUDUL DAN BREADCRUMB
+   Mengatur informasi lokasi halaman dan judul halaman
+   yang ditampilkan pada bagian atas dashboard.
+   ========================================================= */
+.topbar-heading {
+  position: relative;
+  top: -1px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  min-width: 0;
+}
+
+/* Menyusun breadcrumb secara horizontal */
+.breadcrumbs {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 8px;
+  align-items: center;
+  font-size: 11.2px;
+  font-weight: 400;
+  line-height: 14px;
+  color: #877a68;
+}
+
+/* Tampilan nama brand pada breadcrumb */
+.crumb-brand {
+  font-weight: 500;
+  letter-spacing: 0.05px;
+  color: #b89553;
+}
+
+/* Tampilan pemisah antarbagian breadcrumb */
+.crumb-sep {
+  color: #b3a48d;
+}
+
+/* Tampilan breadcrumb yang menunjukkan halaman saat ini */
+.crumb-current {
+  font-weight: 600;
+  color: #4d4437;
+}
+
+/* Judul utama halaman yang ditampilkan pada topbar */
+.page-title {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 24px;
+  letter-spacing: -0.6px;
+  color: #30281d;
+}
+
+/* =========================================================
+   DEKORASI TOPBAR
+   Mengatur tampilan gelombang dekoratif pada bagian header.
+   ========================================================= */
+.topbar-waves {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+/* =========================================================
+   ANIMASI KONTEN HALAMAN
+   Memberikan animasi ketika konten halaman muncul.
+   ========================================================= */
+.page-content {
+  animation: motion-rise-in var(--motion-duration) var(--motion-ease) both;
+}
+
+/* =========================================================
+   BANNER SELAMAT DATANG
+   Mengatur tampilan banner yang berisi informasi
+   dan sapaan kepada pengguna dashboard.
+   ========================================================= */
+.welcome-banner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 112px;
+  padding: 0 24px;
+  overflow: hidden;
+
+  /* Background menggunakan gradasi warna cream */
+  background: linear-gradient(90deg, #e9dcc2 0%, #ede1ca 22%, #f2e6d0 50%, #ede1c9 78%, #e9dcc2 100%);
+
+  /* Border dan sudut banner */
+  border: 1px solid rgba(222, 204, 173, 0.8);
+  border-radius: 12px;
+
+  /* Bayangan tipis di bagian dalam banner */
+  box-shadow: inset 0 1px 0 rgba(255, 252, 243, 0.28);
+}
+
+/* Mengatur area informasi di dalam banner */
+.banner-info {
+  position: relative;
+  z-index: 2;
+}
+
+/* Mengatur susunan badge status dan informasi tambahan */
+.banner-top {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px 8px;
+  align-items: center;
+  margin-bottom: 7px;
+}
+
+/* Tampilan badge status pengguna */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 22px;
+  padding: 0 11.5px 3px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 22px;
+  letter-spacing: 0.05px;
+  color: #0d6348;
+  background: #d1f8e5;
+  border-radius: 4px;
+}
+
+/* Mengatur informasi tambahan pada banner */
+.banner-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+  letter-spacing: -0.2px;
+  color: #887b69;
+}
+
+/* Mencegah setiap informasi tambahan terpotong menjadi beberapa baris */
+.banner-meta > span {
+  white-space: nowrap;
+}
+
+/* Menambahkan garis pemisah antar informasi banner */
+.banner-meta > span + span::before {
+  content: "";
+  display: inline-block;
+  width: 1px;
+  height: 12px;
+  margin: 0 9px 0 8px;
+  vertical-align: -1px;
+  background: #cbb896;
+}
+
+/* Judul sapaan kepada pengguna pada banner */
+.banner-greeting {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 32px;
+  letter-spacing: -1.5px;
+  color: #3b3124;
+}
+
+/* Dekorasi gelombang pada sisi kanan banner */
+.banner-waves {
+  position: absolute;
+  right: 14px;
+  bottom: 10px;
+  z-index: 1;
+  width: min(620px, 54%);
+  height: 90px;
+  opacity: 0.62;
+  pointer-events: none;
+}
+
+/* =========================================================
+   GRID KARTU STATISTIK
+   Mengatur susunan kartu statistik dashboard.
+   Pada tampilan awal, terdapat empat kolom.
+   ========================================================= */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 22px;
+}
+
+/* =========================================================
+   KARTU STATISTIK
+   Mengatur tampilan dasar setiap kartu informasi statistik.
+   ========================================================= */
+.stat-card {
+  min-width: 0;
+  padding: 20px;
+  background: #fbf6eb;
+  border: 1px solid #eadcc4;
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(117, 90, 45, 0.035);
+
+  /* Animasi ketika kartu bergerak atau bayangannya berubah */
+  transition:
+    transform var(--motion-duration) var(--motion-ease),
+    box-shadow var(--motion-duration) var(--motion-ease);
+}
+
+/* Memberikan animasi muncul pada semua kartu statistik */
+.stats-grid .stat-card {
+  animation: motion-rise-in var(--motion-duration) var(--motion-ease) backwards;
+}
+
+/* Mengatur jeda animasi kartu statistik pertama */
+.stats-grid .stat-card:nth-child(1) {
+  animation-delay: 60ms;
+}
+
+/* Mengatur jeda animasi kartu statistik kedua */
+.stats-grid .stat-card:nth-child(2) {
+  animation-delay: 100ms;
+}
+
+/* Mengatur jeda animasi kartu statistik ketiga */
+.stats-grid .stat-card:nth-child(3) {
+  animation-delay: 140ms;
+}
+
+/* Mengatur jeda animasi kartu statistik keempat */
+.stats-grid .stat-card:nth-child(4) {
+  animation-delay: 180ms;
+}
+
+/* Efek ketika kursor diarahkan ke kartu statistik */
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(117, 90, 45, 0.1);
+}
+
+/* Warna khusus kartu statistik prestasi terverifikasi */
+.stat-card--verified {
+  background: #f3e8d2;
+  border-color: #e6d6b9;
+}
+
+/* Warna khusus kartu statistik prestasi yang perlu diperbaiki */
+.stat-card--revision {
+  background: #e9dcc2;
+  border-color: #e2d0ae;
+}
+
+/* Warna khusus kartu statistik kategori klasifikasi */
+.stat-card--category {
+  background: #f0e0b8;
+  border-color: #e5d0a2;
+}
+
+/* =========================================================
+   HEADER KARTU STATISTIK
+   Mengatur posisi label dan ikon pada bagian atas kartu.
+   ========================================================= */
+.stat-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  height: 34px;
+}
+
+/* Tampilan label atau judul statistik */
+.stat-label {
+  margin: 0;
+  overflow: hidden;
+  font-size: 11.5px;
+  font-weight: 600;
+  line-height: 16px;
+  letter-spacing: 0.35px;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: #786d5e;
+}
+
+/* Area pembungkus ikon statistik */
+.stat-icon {
+  display: grid;
+  flex: 0 0 34px;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+}
+
+/* Mengatur ukuran ikon SVG dalam kartu statistik */
+.stat-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Warna dan background ikon gold */
+.stat-icon--gold {
+  color: #c0a05c;
+  background: #e9dcc2;
+  box-shadow: inset 0 0 0 1px rgba(255, 249, 237, 0.5);
+}
+
+/* Warna dan background ikon hijau */
+.stat-icon--mint {
+  color: #148f6d;
+  background: #d0fae5;
+}
+
+/* Warna dan background ikon peringatan */
+.stat-icon--alert {
+  color: #cf870e;
+  background: #fef3c6;
+}
+
+/* Warna dan background ikon dekoratif */
+.stat-icon--sparkle {
+  color: #c5a35b;
+  background: #fbf6eb;
+  border: 1px solid #dcc38e;
+}
+
+/* =========================================================
+   NILAI STATISTIK
+   Mengatur tampilan angka atau nilai utama pada kartu.
+   ========================================================= */
+.stat-value {
+  margin: 10px 0 0;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 30px;
+  letter-spacing: -0.2px;
+  color: #30291f;
+}
+
+/* Memberikan warna hijau pada nilai statistik terverifikasi */
+.stat-card--verified .stat-value {
+  color: #007a55;
+}
+
+/* Memberikan warna khusus pada nilai statistik perlu perbaikan */
+.stat-card--revision .stat-value {
+  color: #bb4d00;
+}
+
+/* Teks keterangan tambahan di bawah nilai statistik */
+.stat-note {
+  margin: 4px 0 0;
+  overflow: hidden;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 16px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #8c8172;
+}
+
+/* =========================================================
+   BADGE KATEGORI KLASIFIKASI
+   Mengatur tampilan label kategori hasil klasifikasi CART.
+   ========================================================= */
+.category-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 26px;
+  margin-top: 10px;
+  padding: 0 13px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+  color: #3b2e1f;
+  background: linear-gradient(180deg, #eddaa2 0%, #e5be63 55%, #ddb45b 100%);
+  border: 1px solid rgba(208, 170, 87, 0.35);
+  border-radius: 999px;
+}
+
+/* Informasi IPK yang ditampilkan pada kartu statistik */
+.stat-ipk {
+  margin: 6px 0 0;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 16px;
+  color: #6e5c3e;
+}
+
+/* =========================================================
+   FOOTER HALAMAN
+   Mengatur area bagian bawah dashboard.
+   ========================================================= */
+.page-footer {
+  display: flex;
+  flex: 0 0 70px;
+  align-items: center;
+  justify-content: center;
+  height: 70px;
+  padding: 0 24px 3px;
+}
+
+/* Mengatur teks informasi pada footer */
+.page-footer p {
+  margin: 0;
+  font-size: 10.7px;
+  font-weight: 400;
+  line-height: 16px;
+  letter-spacing: 0.1px;
+  text-align: center;
+  color: #9d9283;
+}
+
+/* Mengatur tampilan pemisah antar teks footer */
+.footer-separator {
+  margin: 0 2px;
+  color: #ae9f8a;
+}
+
+/* =========================================================
+   RESPONSIVE: LAYAR MAKSIMAL 1360px
+   Menyembunyikan dekorasi gelombang banner agar tampilan
+   tetap rapi pada ukuran layar yang lebih kecil.
+   ========================================================= */
+@media (max-width: 1360px) {
+  .banner-waves {
+    display: none;
+  }
+}
+
+/* =========================================================
+   RESPONSIVE: LAYAR MAKSIMAL 1279px
+   Mengubah susunan kartu statistik dari empat kolom
+   menjadi dua kolom.
+   ========================================================= */
+@media (max-width: 1279px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* =========================================================
+   RESPONSIVE: LAYAR MAKSIMAL 960px
+   Menyesuaikan topbar dan tombol sidebar untuk tablet
+   atau perangkat dengan layar lebih kecil.
+   ========================================================= */
+@media (max-width: 960px) {
+
+  /* Mengurangi padding kanan topbar */
+  .topbar {
+    padding-right: 24px;
+  }
+
+  /* Menyembunyikan tombol menu khusus desktop */
+  .menu-toggle--desktop {
+    display: none;
+  }
+
+  /* Menampilkan tombol menu khusus perangkat mobile */
+  .menu-toggle--mobile {
+    display: grid;
+  }
+}
+
+/* =========================================================
+   RESPONSIVE: LAYAR MAKSIMAL 640px
+   Mengatur ulang ukuran dan jarak elemen agar sesuai
+   dengan tampilan smartphone.
+   ========================================================= */
+@media (max-width: 640px) {
+
+  /* Menyesuaikan jarak dan padding topbar */
+  .topbar {
+    gap: 10px;
+    padding: 0 16px 3px 12px;
+  }
+
+  /* Mengecilkan ukuran teks breadcrumb */
+  .breadcrumbs {
+    gap: 5px;
+    font-size: 9px;
+    line-height: 13px;
+  }
+
+  /* Mengecilkan judul halaman pada topbar */
+  .page-title {
+    font-size: 16px;
+    line-height: 22px;
+  }
+
+  /* Mengurangi transparansi dekorasi topbar */
+  .topbar-waves {
+    opacity: 0.22;
+  }
+
+  /* Mengatur posisi dan padding banner pada smartphone */
+  .welcome-banner {
+    align-items: flex-start;
+    min-height: 0;
+    padding: 17px 16px 18px;
+  }
+
+  /* Menyesuaikan jarak informasi di bagian atas banner */
+  .banner-top {
+    gap: 6px 8px;
+    align-items: flex-start;
+    margin-bottom: 8px;
+  }
+
+  /* Mengecilkan badge status pada banner */
+  .status-badge {
+    height: 21px;
+    padding: 0 10px;
+    font-size: 10.5px;
+    line-height: 21px;
+  }
+
+  /* Menyesuaikan ukuran dan jarak informasi tambahan */
+  .banner-meta {
+    column-gap: 10px;
+    row-gap: 2px;
+    font-size: 10.5px;
+    line-height: 16px;
+  }
+
+  /* Menghilangkan garis pemisah informasi pada smartphone */
+  .banner-meta > span + span::before {
+    display: none;
+  }
+
+  /* Mengecilkan teks sapaan pengguna */
+  .banner-greeting {
+    font-size: 20px;
+    line-height: 28px;
+    letter-spacing: -0.15px;
+  }
+
+  /* Menyusun kartu statistik menjadi satu kolom */
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-top: 14px;
+  }
+
+  /* Mengurangi padding di dalam kartu statistik */
+  .stat-card {
+    padding: 18px;
+  }
+
+  /* Menyesuaikan tinggi bagian header kartu statistik */
+  .stat-head {
+    height: 32px;
+  }
+
+  /* Mengurangi jarak atas nilai statistik */
+  .stat-value {
+    margin-top: 7px;
+  }
+
+  /* Menyesuaikan teks keterangan statistik */
+  .stat-note {
+    margin-top: 5px;
+    font-size: 10.5px;
+  }
+
+  /* Mengecilkan teks informasi IPK */
+  .stat-ipk {
+    font-size: 9.5px;
+  }
+
+  /* Mengurangi tinggi area footer pada smartphone */
+  .page-footer {
+    flex: 0 0 64px;
+    height: 64px;
+    padding: 0 16px 3px;
+  }
+
+  /* Menyesuaikan ukuran teks footer */
+  .page-footer p {
+    font-size: 10px;
+    line-height: 15px;
+  }
+}

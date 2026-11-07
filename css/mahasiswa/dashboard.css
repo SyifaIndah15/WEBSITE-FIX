@@ -1,0 +1,208 @@
+/* =========================================================
+   VARIABEL GLOBAL (ROOT)
+   Menyimpan nilai warna, ukuran, dan jenis font yang
+   digunakan bersama oleh berbagai bagian aplikasi.
+   ========================================================= */
+:root {
+  /* Jenis font utama aplikasi */
+  --font-main: "Roboto", "Segoe UI", Tahoma, sans-serif;
+
+  /* Lebar sidebar */
+  --sidebar-width: 253px;
+
+  /* Warna teks utama halaman */
+  --page-text: #3b3023;
+
+  /* Warna teks judul dan teks yang perlu ditonjolkan */
+  --text-strong: #30291f;
+
+  /* Warna teks sekunder atau informasi tambahan */
+  --text-muted: #8d8170;
+
+  /* Warna gold utama */
+  --gold: #c3a05a;
+
+  /* Warna gold yang lebih gelap */
+  --gold-deep: #a98543;
+
+  /* Warna garis atau aksen gold */
+  --gold-line: #d4b87e;
+
+  /* Warna cream utama */
+  --cream: #fbf6eb;
+
+  /* Warna awal gradasi background halaman */
+  --page-start: #f6f0e0;
+
+  /* Warna tengah gradasi background halaman */
+  --page-mid: #f4ead6;
+
+  /* Warna akhir gradasi background halaman */
+  --page-end: #f5eddc;
+
+  /* Warna teks pada bagian footer */
+  --footer-text: #9d9283;
+
+  /* Warna garis pembatas card */
+  --card-line: #e8dbc2;
+}
+
+/* =========================================================
+   PENGATURAN DASAR SEMUA ELEMEN
+   Membuat ukuran elemen lebih mudah dikendalikan.
+   ========================================================= */
+* {
+  box-sizing: border-box;
+}
+
+/* =========================================================
+   PENGATURAN HTML
+   Memastikan elemen HTML memiliki tinggi minimum.
+   ========================================================= */
+html {
+  min-height: 100%;
+}
+
+/* =========================================================
+   PENGATURAN BODY
+   Mengatur tampilan dasar seluruh halaman aplikasi,
+   termasuk ukuran, font, warna teks, dan background.
+   ========================================================= */
+body {
+  min-height: 100vh;
+  min-height: 100svh;
+  margin: 0;
+  overflow-x: hidden;
+
+  /* Menggunakan font yang telah ditentukan pada root */
+  font-family: var(--font-main);
+
+  /* Ukuran teks dasar */
+  font-size: 14px;
+
+  /* Warna teks utama */
+  color: var(--page-text);
+
+  /* Warna dasar background halaman */
+  background-color: var(--page-end);
+
+  /* Membuat background gradasi dari atas ke bawah */
+  background-image: linear-gradient(180deg, #f5ecd9 0%, var(--page-mid) 55%, var(--page-end) 100%);
+
+  /* Mempertahankan background saat halaman digulir */
+  background-attachment: fixed;
+
+  /* Menghaluskan tampilan font pada browser WebKit */
+  -webkit-font-smoothing: antialiased;
+
+  /* Menghaluskan tampilan font pada browser macOS */
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* =========================================================
+   PENGATURAN LINK
+   Menghilangkan garis bawah bawaan dan mewarisi warna teks
+   dari elemen induknya.
+   ========================================================= */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* =========================================================
+   PENGATURAN IKON SVG
+   Membuat ikon SVG ditampilkan sebagai elemen blok.
+   ========================================================= */
+svg {
+  display: block;
+}
+
+/* =========================================================
+   LAYOUT DASHBOARD
+   Menjadi pembungkus utama sidebar dan area konten.
+   Menggunakan Flexbox untuk menyusun keduanya.
+   ========================================================= */
+.dashboard-layout {
+  display: flex;
+  min-height: 100vh;
+  min-height: 100svh;
+  position: relative;
+}
+
+/* =========================================================
+   AREA UTAMA APLIKASI
+   Mengatur bagian halaman di sebelah kanan sidebar.
+   ========================================================= */
+.main-shell {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 100vh;
+  min-height: 100svh;
+
+  /* Memberikan ruang untuk sidebar di sebelah kiri */
+  margin-left: var(--sidebar-width);
+
+  /* Animasi perubahan margin ketika sidebar ditutup */
+  transition: margin-left var(--motion-duration) var(--motion-ease);
+}
+
+/* =========================================================
+   KONTEN HALAMAN
+   Mengatur jarak bagian dalam area konten utama.
+   ========================================================= */
+.page-content {
+  flex: 1;
+  padding: 30px 32px 0;
+}
+
+/* =========================================================
+   RESPONSIVE: DESKTOP
+   Berlaku pada layar dengan lebar minimal 961px.
+   Sidebar dapat disembunyikan melalui tombol menu desktop.
+   ========================================================= */
+@media (min-width: 961px) {
+
+  /* Menggeser sidebar keluar dari layar ketika tombol aktif */
+  .dashboard-layout:has(.menu-toggle--desktop .menu-toggle-input:checked) .sidebar {
+    transform: translateX(-100%);
+  }
+
+  /* Memperluas area utama ketika sidebar disembunyikan */
+  .dashboard-layout:has(.menu-toggle--desktop .menu-toggle-input:checked) .main-shell {
+    margin-left: 0;
+  }
+}
+
+/* =========================================================
+   RESPONSIVE: TABLET DAN LAYAR KECIL
+   Berlaku ketika lebar layar maksimal 960px.
+   Sidebar tidak lagi mengambil ruang permanen di layout.
+   ========================================================= */
+@media (max-width: 960px) {
+
+  /* Menghilangkan jarak kiri untuk sidebar pada area utama */
+  .main-shell {
+    margin-left: 0;
+  }
+
+  /* Mengurangi jarak kanan dan kiri konten */
+  .page-content {
+    padding-right: 24px;
+    padding-left: 24px;
+  }
+}
+
+/* =========================================================
+   RESPONSIVE: MOBILE
+   Berlaku ketika lebar layar maksimal 640px.
+   Padding konten diperkecil agar sesuai dengan layar ponsel.
+   ========================================================= */
+@media (max-width: 640px) {
+  .page-content {
+    padding: 18px 16px 0;
+  }
+}

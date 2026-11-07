@@ -1,0 +1,672 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <!-- Pengaturan dasar dokumen HTML dan informasi halaman -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Pengelolaan akun Dosen Pembimbing dan Ketua Program Studi Teknik Informatika SIPRESMA.">
+  <title>Data Dosen Pembimbing - SIPRESMA</title>
+
+  <!-- Menghubungkan Google Fonts untuk menggunakan jenis huruf Roboto Mono dan Roboto -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&amp;family=Roboto:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+
+  <!-- Menghubungkan file CSS untuk mengatur animasi, dashboard, sidebar, konten, dan halaman data dosen -->
+  <link rel="stylesheet" href="../../css/shared/motion.css">
+  <link rel="stylesheet" href="../../css/admin/dashboard.css">
+  <link rel="stylesheet" href="../../css/admin/sidebar.css">
+  <link rel="stylesheet" href="../../css/admin/content.css">
+  <link rel="stylesheet" href="../../css/admin/data-dosen.css">
+</head>
+<body>
+
+  <!-- Container utama yang mengatur keseluruhan tata letak dashboard admin -->
+  <div class="dashboard-layout">
+
+    <!-- Checkbox digunakan sebagai pengontrol untuk membuka dan menutup sidebar -->
+    <input class="sidebar-toggle-input" type="checkbox" id="sidebar-toggle" aria-controls="sidebar" aria-label="Buka atau tutup menu navigasi">
+
+    <!-- Bagian sidebar yang berisi identitas sistem, hak akses, dan menu navigasi -->
+    <aside class="sidebar" id="sidebar">
+
+      <!-- Logo dan identitas aplikasi SIPRESMA yang mengarah ke halaman dashboard -->
+      <a class="sidebar-brand" href="dashboard.html" aria-label="SIPRESMA Dashboard Admin">
+        <span class="brand-mark" aria-hidden="true">
+          <!-- SVG sebagai ikon logo SIPRESMA -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="8" r="5.6"/>
+            <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>
+          </svg>
+        </span>
+        <span class="brand-copy">
+          <span class="brand-name">SIPRESMA</span>
+          <span class="brand-tagline">Prestasi Mahasiswa</span>
+        </span>
+      </a>
+
+      <!-- Menampilkan informasi hak akses pengguna yang sedang menggunakan sistem -->
+      <div class="access-row">
+        <svg class="access-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/>
+          <path d="m9 12 2 2 4-4"/>
+        </svg>
+        <span class="access-label">Hak Akses:</span>
+        <span class="access-role">Administrator</span>
+      </div>
+
+      <!-- Bagian menu navigasi utama pada sidebar -->
+      <div class="sidebar-menu">
+        <p class="menu-label">Menu Utama</p>
+        <nav class="sidebar-nav" aria-label="Navigasi utama">
+
+          <!-- Menu untuk menuju halaman dashboard -->
+          <a class="nav-link" href="dashboard.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="3" width="7" height="7" rx="1"/>
+              <rect x="14" y="3" width="7" height="7" rx="1"/>
+              <rect x="3" y="14" width="7" height="7" rx="1"/>
+              <rect x="14" y="14" width="7" height="7" rx="1"/>
+            </svg>
+            <span>Dashboard</span>
+          </a>
+
+          <!-- Menu untuk mengelola data mahasiswa dan data akademik -->
+          <a class="nav-link" href="data-mahasiswa.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="8.6" cy="8.2" r="3.2"/>
+              <path d="M2.8 19.2c.4-3.5 2.6-5.5 5.8-5.5s5.4 2 5.8 5.5"/>
+              <path d="M15.8 5.3a3 3 0 0 1 0 5.5"/>
+              <path d="M17.6 13.9c2.1.6 3.4 2.4 3.6 5.3"/>
+            </svg>
+            <span>Data Mahasiswa &amp; Akademik</span>
+          </a>
+
+          <!-- Menu Data Dosen yang sedang aktif karena pengguna berada di halaman ini -->
+          <a class="nav-link is-active" href="data-dosen.html" aria-current="page">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m3 8 9-5 9 5-9 5-9-5Z"/>
+              <path d="M7 10v5c3 3 7 3 10 0v-5"/>
+              <path d="M21 8v7"/>
+            </svg>
+            <span>Data Dosen</span>
+          </a>
+
+          <!-- Menu untuk melihat dan mengelola data prestasi mahasiswa -->
+          <a class="nav-link" href="daftar-prestasi.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M8 4h8v5a4 4 0 0 1-8 0V4Z"/>
+              <path d="M8 5H5.6a2.4 2.4 0 0 0 0 4.8H8"/>
+              <path d="M16 5h2.4a2.4 2.4 0 0 1 0 4.8H16"/>
+              <path d="M12 13v3"/>
+              <path d="M9 20h6"/>
+              <path d="M9 20l3-3.4 3 3.4"/>
+            </svg>
+            <span>Data Prestasi Mahasiswa</span>
+          </a>
+
+          <!-- Menu untuk melakukan verifikasi sertifikat prestasi mahasiswa -->
+          <a class="nav-link" href="verifikasi-prestasi.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/>
+              <path d="M14 3v5h5"/>
+              <path d="m9 14 2 2 4-4"/>
+            </svg>
+            <span>Verifikasi Sertifikat</span>
+          </a>
+
+          <!-- Menu untuk melihat hasil klasifikasi prestasi mahasiswa -->
+          <a class="nav-link" href="hasil-klasifikasi.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4 19V5"/>
+              <path d="M4 19h16"/>
+              <path d="M8 15v-4"/>
+              <path d="M12 15V8"/>
+              <path d="M16 15v-6"/>
+            </svg>
+            <span>Hasil Klasifikasi</span>
+          </a>
+
+          <!-- Menu untuk mengakses fitur reset password -->
+          <a class="nav-link" href="reset-password.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/>
+              <circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/>
+            </svg>
+            <span>Reset Password</span>
+          </a>
+
+          <!-- Menu untuk melihat informasi profil administrator -->
+          <a class="nav-link" href="profil.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="8" r="3.7"/>
+              <path d="M5.3 20c.5-3.9 3-6.1 6.7-6.1s6.2 2.2 6.7 6.1"/>
+            </svg>
+            <span>Profil Saya</span>
+          </a>
+        </nav>
+      </div>
+
+      <!-- Elemen dekorasi berupa garis SVG pada bagian bawah sidebar -->
+      <div class="sidebar-decoration" aria-hidden="true">
+        <svg viewBox="0 0 253 42" preserveAspectRatio="none">
+          <g fill="none" stroke="#b99555" stroke-width="1" vector-effect="non-scaling-stroke">
+            <path d="M-4 23C35 12 66 12 104 18C142 24 166 35 204 30C226 27 241 18 257 12" stroke-opacity=".38"/>
+            <path d="M-4 33C38 22 72 23 110 29C148 35 172 41 210 36C231 33 244 27 257 22" stroke-opacity=".24"/>
+          </g>
+        </svg>
+      </div>
+
+      <!-- Tombol untuk keluar dari halaman administrator dan kembali ke halaman utama -->
+      <div class="sidebar-footer">
+        <a class="logout-link" href="../../index.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M10 20.5H6.5A2.5 2.5 0 0 1 4 18V6a2.5 2.5 0 0 1 2.5-2.5H10"/>
+            <path d="M14.5 16.5 19 12l-4.5-4.5"/>
+            <path d="M19 12H9.5"/>
+          </svg>
+          <span>Keluar (Logout)</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- Lapisan overlay untuk menutup sidebar ketika area di luar sidebar diklik -->
+    <label class="sidebar-overlay" for="sidebar-toggle" aria-label="Tutup menu navigasi"></label>
+
+    <!-- Container utama yang menampung header, konten halaman, dan footer -->
+    <div class="main-shell">
+
+      <!-- Header bagian atas yang berisi tombol sidebar dan informasi halaman -->
+      <header class="topbar">
+
+        <!-- Tombol untuk membuka atau menutup sidebar pada tampilan desktop -->
+        <label class="menu-toggle menu-toggle--desktop" for="sidebar-toggle">
+          <svg viewBox="0 0 20 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+            <path d="M1 1h18M1 7h18M1 13h18"/>
+          </svg>
+        </label>
+
+        <!-- Tombol untuk membuka atau menutup sidebar pada tampilan mobile -->
+        <label class="menu-toggle menu-toggle--mobile" for="sidebar-toggle">
+          <svg viewBox="0 0 20 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+            <path d="M1 1h18M1 7h18M1 13h18"/>
+          </svg>
+        </label>
+
+        <!-- Menampilkan navigasi breadcrumb dan judul halaman -->
+        <div class="topbar-heading">
+
+          <!-- Breadcrumb menunjukkan posisi halaman yang sedang dibuka -->
+          <nav class="breadcrumbs" aria-label="Breadcrumb">
+            <span class="crumb-brand">SIPRESMA</span>
+            <span class="crumb-sep" aria-hidden="true">/</span>
+            <span>Admin</span>
+            <span class="crumb-sep" aria-hidden="true">/</span>
+            <span class="crumb-current" aria-current="page">Data Dosen Pembimbing</span>
+          </nav>
+
+          <!-- Judul utama halaman dashboard -->
+          <h1 class="page-title">Data Dosen Pembimbing</h1>
+        </div>
+
+        <!-- Elemen dekoratif berupa garis gelombang menggunakan SVG -->
+        <svg class="topbar-waves" viewBox="0 0 1228 64" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0 58C170 58 280 38 430 38C580 38 620 52 770 49C920 46 1010 18 1135 17C1180 17 1205 19 1228 21" fill="none" stroke="#c6a86f" stroke-width="1" vector-effect="non-scaling-stroke"/>
+        </svg>
+      </header>
+
+      <!-- Bagian konten utama halaman Data Dosen -->
+      <main class="page-content dd-page">
+
+        <!-- Bagian judul halaman dan tombol untuk membuat akun dosen baru -->
+        <section class="dd-heading" aria-labelledby="dd-title">
+          <div class="dd-heading-copy">
+            <h2 id="dd-title">Data Dosen</h2>
+            <p>Pengelolaan akun Dosen Pembimbing dan Ketua Program Studi Teknik Informatika untuk pemantauan prestasi mahasiswa.</p>
+          </div>
+
+          <!-- Tombol yang digunakan untuk membuka modal pembuatan akun dosen -->
+          <div class="dd-actions">
+            <button class="dd-button dd-button--gold" type="button" id="dd-create-account-button" aria-haspopup="dialog" aria-controls="dd-create-modal">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                <path d="M12 5v14M5 12h14"/>
+              </svg>
+              <span>Buat Akun Dosen</span>
+            </button>
+          </div>
+        </section>
+
+        <!-- Bagian pencarian dan filter untuk mempermudah pencarian data dosen -->
+        <section class="dd-filter" aria-label="Pencarian dan filter data dosen">
+
+          <!-- Kolom pencarian berdasarkan nama, NIDN, atau alamat email dosen -->
+          <label class="dd-search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="7"/>
+              <path d="m16 16 5 5"/>
+            </svg>
+            <span class="dd-sr-only">Cari data dosen</span>
+            <input type="search" id="dd-search-input" placeholder="Cari berdasarkan nama, NIDN, atau email...">
+          </label>
+
+          <!-- Bagian filter tambahan berdasarkan program studi dan status akun -->
+          <div class="dd-filter-right">
+
+            <!-- Informasi program studi yang ditampilkan pada halaman -->
+            <div class="dd-study-program">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 5h18l-7 8v6l-4 2v-8Z"/>
+              </svg>
+              <span>Program Studi: <strong>Teknik Informatika</strong></span>
+            </div>
+
+            <!-- Dropdown untuk menyaring data dosen berdasarkan status akun -->
+            <div class="dd-status-filter">
+              <label for="dd-status-trigger" id="dd-status-label">Status:</label>
+              <div class="dd-status-select" id="dd-status-select">
+
+                <!-- Tombol untuk membuka daftar pilihan status -->
+                <button class="dd-status-trigger" type="button" id="dd-status-trigger" aria-haspopup="listbox" aria-expanded="false" aria-controls="dd-status-menu" aria-labelledby="dd-status-label dd-status-value">
+                  <span class="dd-status-value" id="dd-status-value">Semua Status</span>
+                  <span class="dd-status-caret" aria-hidden="true"></span>
+                </button>
+
+                <!-- Daftar pilihan status akun dosen -->
+                <ul class="dd-status-menu" id="dd-status-menu" role="listbox" aria-labelledby="dd-status-label">
+                  <li class="dd-status-option is-selected" role="option" tabindex="-1" data-value="Semua Status" aria-selected="true">Semua Status</li>
+                  <li class="dd-status-option" role="option" tabindex="-1" data-value="Aktif" aria-selected="false">Aktif</li>
+                  <li class="dd-status-option" role="option" tabindex="-1" data-value="Nonaktif" aria-selected="false">Nonaktif</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Bagian tabel yang menampilkan daftar akun dosen -->
+        <section class="dd-table-card" aria-labelledby="dd-table-caption">
+
+          <!-- Judul tabel yang hanya digunakan untuk kebutuhan aksesibilitas -->
+          <h2 class="dd-sr-only" id="dd-table-caption">Daftar akun dosen Program Studi Teknik Informatika</h2>
+
+          <!-- Container tabel yang memungkinkan tabel digulir secara horizontal -->
+          <div class="dd-table-scroll" tabindex="0">
+
+            <!-- Tabel utama untuk menampilkan informasi akun dosen -->
+            <table class="dd-table">
+
+              <!-- Mengatur pembagian lebar kolom pada tabel -->
+              <colgroup>
+                <col class="dd-col-lecturer">
+                <col class="dd-col-email">
+                <col class="dd-col-status">
+                <col class="dd-col-action">
+              </colgroup>
+
+              <!-- Bagian kepala tabel yang berisi nama setiap kolom -->
+              <thead>
+                <tr>
+                  <th scope="col">NIDN &amp; Nama Dosen</th>
+                  <th scope="col">Alamat Email</th>
+                  <th scope="col">Status Akun</th>
+                  <th scope="col">Aksi</th>
+                </tr>
+              </thead>
+
+              <!-- Bagian isi tabel yang menyimpan data dosen -->
+              <tbody id="dd-table-body">
+
+                <!-- Baris data dosen pertama beserta NIDN, nama, email, dan status akun -->
+                <tr data-nidn="0012058201" data-name="Amal Khairan" data-email="amal.khairan@univ.ac.id" data-status="Aktif">
+                  <td>
+                    <span class="dd-lecturer-name">Amal Khairan</span>
+                    <span class="dd-lecturer-meta">NIDN: 0012058201</span>
+                  </td>
+                  <td class="dd-email-cell">amal.khairan@univ.ac.id</td>
+                  <td class="dd-status-cell">
+                    <span class="dd-status dd-status--active">
+                      <!-- Ikon centang untuk menandakan akun dosen berstatus aktif -->
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="12" cy="12" r="9"/>
+                        <path d="m8.2 12.2 2.4 2.4 5.2-5.2"/>
+                      </svg>
+                      Aktif
+                    </span>
+                  </td>
+                  <td class="dd-action-cell">
+                    <!-- Tombol aksi untuk mengedit dan menghapus akun dosen -->
+                    <div class="dd-row-actions">
+                      <button class="dd-icon-button dd-icon-button--edit" type="button" aria-label="Edit data Amal Khairan" title="Edit">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <path d="m14 5 5 5M4 20l4.5-1 11-11a2.1 2.1 0 0 0-3-3l-11 11L4 20Z"/>
+                        </svg>
+                      </button>
+                      <button class="dd-icon-button dd-icon-button--delete" type="button" aria-label="Hapus akun Amal Khairan" title="Hapus">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <path d="M4 7h16M10 11v6m4-6v6M5 7l1 14h12l1-14M9 7V4h6v3"/>
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+
+                <!-- Baris data dosen kedua -->
+                <tr data-nidn="0024098502" data-name="Dr. Siti Rahmawati, M.Kom." data-email="siti.rahmawati@univ.ac.id" data-status="Aktif">
+                  <td>
+                    <span class="dd-lecturer-name">Dr. Siti Rahmawati, M.Kom.</span>
+                    <span class="dd-lecturer-meta">NIDN: 0024098502</span>
+                  </td>
+                  <td class="dd-email-cell">siti.rahmawati@univ.ac.id</td>
+                  <td class="dd-status-cell">
+                    <span class="dd-status dd-status--active">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="12" cy="12" r="9"/>
+                        <path d="m8.2 12.2 2.4 2.4 5.2-5.2"/>
+                      </svg>
+                      Aktif
+                    </span>
+                  </td>
+                  <td class="dd-action-cell">
+                    <div class="dd-row-actions">
+                      <!-- Tombol edit dan hapus data dosen kedua -->
+                      <button class="dd-icon-button dd-icon-button--edit" type="button" aria-label="Edit data Dr. Siti Rahmawati, M.Kom." title="Edit">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <path d="m14 5 5 5M4 20l4.5-1 11-11a2.1 2.1 0 0 0-3-3l-11 11L4 20Z"/>
+                        </svg>
+                      </button>
+                      <button class="dd-icon-button dd-icon-button--delete" type="button" aria-label="Hapus akun Dr. Siti Rahmawati, M.Kom." title="Hapus">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <path d="M4 7h16M10 11v6m4-6v6M5 7l1 14h12l1-14M9 7V4h6v3"/>
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+
+                <!-- Baris data dosen ketiga -->
+                <tr data-nidn="0018117903" data-name="Prof. Dr. Eng. Agus Priyono, M.Sc." data-email="agus.priyono@univ.ac.id" data-status="Aktif">
+                  <td>
+                    <span class="dd-lecturer-name">Prof. Dr. Eng. Agus Priyono, M.Sc.</span>
+                    <span class="dd-lecturer-meta">NIDN: 0018117903</span>
+                  </td>
+                  <td class="dd-email-cell">agus.priyono@univ.ac.id</td>
+                  <td class="dd-status-cell">
+                    <span class="dd-status dd-status--active">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="12" cy="12" r="9"/>
+                        <path d="m8.2 12.2 2.4 2.4 5.2-5.2"/>
+                      </svg>
+                      Aktif
+                    </span>
+                  </td>
+                  <td class="dd-action-cell">
+                    <div class="dd-row-actions">
+                      <!-- Tombol edit dan hapus data dosen ketiga -->
+                      <button class="dd-icon-button dd-icon-button--edit" type="button" aria-label="Edit data Prof. Dr. Eng. Agus Priyono, M.Sc." title="Edit">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <path d="m14 5 5 5M4 20l4.5-1 11-11a2.1 2.1 0 0 0-3-3l-11 11L4 20Z"/>
+                        </svg>
+                      </button>
+                      <button class="dd-icon-button dd-icon-button--delete" type="button" aria-label="Hapus akun Prof. Dr. Eng. Agus Priyono, M.Sc." title="Hapus">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <path d="M4 7h16M10 11v6m4-6v6M5 7l1 14h12l1-14M9 7V4h6v3"/>
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+
+                <!-- Baris data dosen keempat -->
+                <tr data-nidn="0005078904" data-name="Nurul Hidayati, S.T., M.Cs." data-email="nurul.hidayati@univ.ac.id" data-status="Aktif">
+                  <td>
+                    <span class="dd-lecturer-name">Nurul Hidayati, S.T., M.Cs.</span>
+                    <span class="dd-lecturer-meta">NIDN: 0005078904</span>
+                  </td>
+                  <td class="dd-email-cell">nurul.hidayati@univ.ac.id</td>
+                  <td class="dd-status-cell">
+                    <span class="dd-status dd-status--active">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="12" cy="12" r="9"/>
+                        <path d="m8.2 12.2 2.4 2.4 5.2-5.2"/>
+                      </svg>
+                      Aktif
+                    </span>
+                  </td>
+                  <td class="dd-action-cell">
+                    <div class="dd-row-actions">
+                      <!-- Tombol edit dan hapus data dosen keempat -->
+                      <button class="dd-icon-button dd-icon-button--edit" type="button" aria-label="Edit data Nurul Hidayati, S.T., M.Cs." title="Edit">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <path d="m14 5 5 5M4 20l4.5-1 11-11a2.1 2.1 0 0 0-3-3l-11 11L4 20Z"/>
+                        </svg>
+                      </button>
+                      <button class="dd-icon-button dd-icon-button--delete" type="button" aria-label="Hapus akun Nurul Hidayati, S.T., M.Cs." title="Hapus">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <path d="M4 7h16M10 11v6m4-6v6M5 7l1 14h12l1-14M9 7V4h6v3"/>
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+
+                <!-- Baris data dosen kelima dengan status akun Nonaktif -->
+                <tr data-nidn="0019028805" data-name="Bayu Wicaksono, M.Kom." data-email="bayu.wicaksono@univ.ac.id" data-status="Nonaktif">
+                  <td>
+                    <span class="dd-lecturer-name">Bayu Wicaksono, M.Kom.</span>
+                    <span class="dd-lecturer-meta">NIDN: 0019028805</span>
+                  </td>
+                  <td class="dd-email-cell">bayu.wicaksono@univ.ac.id</td>
+                  <td class="dd-status-cell">
+                    <span class="dd-status dd-status--inactive">
+                      <!-- Ikon silang untuk menandakan akun dosen berstatus nonaktif -->
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="12" cy="12" r="9"/>
+                        <path d="m9 9 6 6M15 9l-6 6"/>
+                      </svg>
+                      Nonaktif
+                    </span>
+                  </td>
+                  <td class="dd-action-cell">
+                    <div class="dd-row-actions">
+                      <!-- Tombol edit dan hapus data dosen kelima -->
+                      <button class="dd-icon-button dd-icon-button--edit" type="button" aria-label="Edit data Bayu Wicaksono, M.Kom." title="Edit">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <path d="m14 5 5 5M4 20l4.5-1 11-11a2.1 2.1 0 0 0-3-3l-11 11L4 20Z"/>
+                        </svg>
+                      </button>
+                      <button class="dd-icon-button dd-icon-button--delete" type="button" aria-label="Hapus akun Bayu Wicaksono, M.Kom." title="Hapus">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <path d="M4 7h16M10 11v6m4-6v6M5 7l1 14h12l1-14M9 7V4h6v3"/>
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <!-- Pesan yang ditampilkan ketika tidak ada data dosen yang sesuai dengan pencarian atau filter -->
+            <div class="dd-empty-state" id="dd-empty-state" hidden>
+              Tidak ada data dosen yang sesuai dengan pencarian.
+            </div>
+          </div>
+
+          <!-- Informasi jumlah data dosen yang sedang ditampilkan -->
+          <div class="dd-table-bottom">
+            <span id="dd-table-info">Menampilkan 5 dari 5 dosen Program Studi Teknik Informatika</span>
+          </div>
+        </section>
+      </main>
+
+      <!-- Footer halaman yang menampilkan hak cipta dan identitas sistem SIPRESMA -->
+      <footer class="page-footer dd-page-footer">
+        <p>&copy; 2026 SIPRESMA <span class="footer-separator">&middot;</span> Sistem Informasi Prestasi Mahasiswa</p>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL BUAT AKUN DOSEN ==================== -->
+  <!-- Modal berisi formulir untuk menambahkan akun dosen baru -->
+  <div class="dd-modal" id="dd-create-modal" hidden>
+    <!-- Background modal yang dapat digunakan untuk menutup jendela modal -->
+    <div class="dd-modal__backdrop" data-dd-create-close></div>
+
+    <!-- Kotak dialog untuk menampilkan formulir pembuatan akun -->
+    <div class="dd-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="dd-create-modal-title" tabindex="-1">
+      <div class="dd-modal__header">
+        <h2 class="dd-modal__title" id="dd-create-modal-title">Buat Akun Dosen Baru</h2>
+
+        <!-- Tombol untuk menutup modal pembuatan akun -->
+        <button class="dd-modal__close" type="button" aria-label="Tutup formulir buat akun dosen" data-dd-create-close>
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" aria-hidden="true">
+            <path d="M1.5 1.5 10.5 10.5M10.5 1.5 1.5 10.5"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Formulir untuk mengisi identitas dosen yang akan dibuatkan akun -->
+      <form class="dd-form" id="dd-create-form">
+        <div class="dd-form-body">
+
+          <!-- Input NIDN dengan validasi wajib 10 digit angka -->
+          <div class="dd-field">
+            <label for="dd-create-nidn">Nomor Induk Dosen Nasional (NIDN)</label>
+            <input id="dd-create-nidn" name="nidn" type="text" inputmode="numeric" pattern="[0-9]{10}" maxlength="10" title="NIDN harus terdiri dari 10 digit angka." placeholder="10 digit NIDN" autocomplete="off" required>
+          </div>
+
+          <!-- Input nama lengkap beserta gelar akademik dosen -->
+          <div class="dd-field">
+            <label for="dd-create-name">Nama Lengkap &amp; Gelar</label>
+            <input id="dd-create-name" name="name" type="text" placeholder="Contoh: Dr. Ir. Hendra Wijaya, M.T." autocomplete="name" required>
+          </div>
+
+          <!-- Input alamat email kampus dengan tipe email -->
+          <div class="dd-field">
+            <label for="dd-create-email">Alamat Email Kampus</label>
+            <input id="dd-create-email" name="email" type="email" placeholder="nama.dosen@univ.ac.id" autocomplete="email" required>
+          </div>
+
+          <!-- Pilihan status akun dosen, yaitu Aktif atau Nonaktif -->
+          <div class="dd-field">
+            <label for="dd-create-status">Status Akun</label>
+            <select id="dd-create-status" name="status" required>
+              <option value="Aktif">Aktif</option>
+              <option value="Nonaktif">Nonaktif</option>
+            </select>
+          </div>
+
+          <!-- Menampilkan program studi yang menjadi bagian dari akun dosen -->
+          <div class="dd-program">
+            <span class="dd-program__label">Program Studi:</span>
+            <span class="dd-program__value">Teknik Informatika</span>
+          </div>
+        </div>
+
+        <!-- Tombol untuk membatalkan atau mengirim formulir pembuatan akun -->
+        <div class="dd-form-footer">
+          <button class="dd-form-button dd-form-button--secondary" type="button" data-dd-create-close>Batal</button>
+          <button class="dd-form-button dd-form-button--primary dd-form-button--create" type="submit">Buat Akun Dosen</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL EDIT DATA DOSEN ==================== -->
+  <!-- Modal untuk mengubah informasi akun dosen yang sudah tersedia -->
+  <div class="dd-modal" id="dd-edit-modal" hidden>
+    <!-- Background modal yang dapat digunakan untuk menutup formulir edit -->
+    <div class="dd-modal__backdrop" data-dd-edit-close></div>
+
+    <!-- Kotak dialog untuk menampilkan formulir edit data dosen -->
+    <div class="dd-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="dd-edit-modal-title" tabindex="-1">
+      <div class="dd-modal__header">
+        <h2 class="dd-modal__title" id="dd-edit-modal-title">Edit Data Dosen</h2>
+
+        <!-- Tombol untuk menutup modal edit -->
+        <button class="dd-modal__close" type="button" aria-label="Tutup formulir edit data dosen" data-dd-edit-close>
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" aria-hidden="true">
+            <path d="M1.5 1.5 10.5 10.5M10.5 1.5 1.5 10.5"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Formulir untuk memperbarui informasi dosen -->
+      <form class="dd-form" id="dd-edit-form">
+        <div class="dd-form-body">
+
+          <!-- Input untuk mengubah NIDN dosen -->
+          <div class="dd-field">
+            <label for="dd-edit-nidn">Nomor Induk Dosen Nasional (NIDN)</label>
+            <input id="dd-edit-nidn" name="nidn" type="text" inputmode="numeric" pattern="[0-9]{10}" maxlength="10" title="NIDN harus terdiri dari 10 digit angka." placeholder="10 digit NIDN" autocomplete="off" required>
+          </div>
+
+          <!-- Input untuk mengubah nama lengkap dan gelar dosen -->
+          <div class="dd-field">
+            <label for="dd-edit-name">Nama Lengkap &amp; Gelar</label>
+            <input id="dd-edit-name" name="name" type="text" placeholder="Contoh: Dr. Ir. Hendra Wijaya, M.T." autocomplete="name" required>
+          </div>
+
+          <!-- Input untuk mengubah alamat email dosen -->
+          <div class="dd-field">
+            <label for="dd-edit-email">Alamat Email Kampus</label>
+            <input id="dd-edit-email" name="email" type="email" placeholder="nama.dosen@univ.ac.id" autocomplete="email" required>
+          </div>
+
+          <!-- Pilihan untuk mengubah status akun dosen -->
+          <div class="dd-field">
+            <label for="dd-edit-status">Status Akun</label>
+            <select id="dd-edit-status" name="status" required>
+              <option value="Aktif">Aktif</option>
+              <option value="Nonaktif">Nonaktif</option>
+            </select>
+          </div>
+
+          <!-- Informasi program studi dosen -->
+          <div class="dd-program">
+            <span class="dd-program__label">Program Studi:</span>
+            <span class="dd-program__value">Teknik Informatika</span>
+          </div>
+        </div>
+
+        <!-- Tombol untuk membatalkan atau menyimpan perubahan data dosen -->
+        <div class="dd-form-footer">
+          <button class="dd-form-button dd-form-button--secondary" type="button" data-dd-edit-close>Batal</button>
+          <button class="dd-form-button dd-form-button--primary dd-form-button--edit" type="submit">Simpan Perubahan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL KONFIRMASI HAPUS ==================== -->
+  <!-- Modal konfirmasi sebelum akun dosen dihapus dari tabel -->
+  <div class="dd-modal" id="dd-delete-modal" hidden>
+    <!-- Background modal yang dapat digunakan untuk membatalkan penghapusan -->
+    <div class="dd-modal__backdrop" data-dd-delete-close></div>
+
+    <!-- Kotak dialog konfirmasi penghapusan akun dosen -->
+    <div class="dd-modal__dialog dd-confirm-dialog" role="alertdialog" aria-modal="true" aria-labelledby="dd-delete-modal-title" aria-describedby="dd-delete-description" tabindex="-1">
+
+      <!-- Ikon tempat sampah sebagai penanda tindakan penghapusan -->
+      <span class="dd-confirm-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 7h16M10 11v6m4-6v6M5 7l1 14h12l1-14M9 7V4h6v3"/>
+        </svg>
+      </span>
+
+      <!-- Judul dan penjelasan konfirmasi penghapusan akun -->
+      <h2 class="dd-confirm-title" id="dd-delete-modal-title">Hapus Akun Dosen?</h2>
+      <p class="dd-confirm-description" id="dd-delete-description">Akun dosen ini tidak akan dapat login lagi ke portal SIPRESMA.</p>
+
+      <!-- Tombol untuk membatalkan atau menyetujui penghapusan akun -->
+      <div class="dd-confirm-actions">
+        <button class="dd-form-button dd-confirm-button dd-confirm-button--secondary" type="button" data-dd-delete-close>Batal</button>
+        <button class="dd-form-button dd-confirm-button dd-confirm-button--danger" type="button" id="dd-confirm-delete-button">Ya, Hapus</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== JAVASCRIPT ==================== -->
+  <!-- JavaScript digunakan untuk mengatur interaksi, pencarian, filter, modal, dan pengelolaan data dosen -->
+  <script src="../../js/admin/data-dosen.js"></script>
+</body>
+</html>

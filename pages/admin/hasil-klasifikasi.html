@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Rekapitulasi hasil klasifikasi kategori prestasi mahasiswa Program Studi Teknik Informatika SIPRESMA.">
+  <title>Hasil Klasifikasi Prestasi Mahasiswa - SIPRESMA</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../../css/shared/motion.css">
+  <link rel="stylesheet" href="../../css/admin/dashboard.css">
+  <link rel="stylesheet" href="../../css/admin/sidebar.css">
+  <link rel="stylesheet" href="../../css/admin/content.css">
+  <link rel="stylesheet" href="../../css/admin/hasil-klasifikasi.css">
+</head>
+<body>
+
+  <input class="hk-filter-input" type="radio" name="hk-kategori" id="hk-kategori-all" checked aria-label="Semua Kategori">
+  <input class="hk-filter-input" type="radio" name="hk-kategori" id="hk-kategori-tinggi" aria-label="Tinggi">
+  <input class="hk-filter-input" type="radio" name="hk-kategori" id="hk-kategori-sedang" aria-label="Sedang">
+  <input class="hk-filter-input" type="radio" name="hk-kategori" id="hk-kategori-rendah" aria-label="Rendah">
+
+  <div class="dashboard-layout">
+    <input class="sidebar-toggle-input" type="checkbox" id="sidebar-toggle" aria-controls="sidebar" aria-label="Buka atau tutup menu navigasi">
+
+    <aside class="sidebar" id="sidebar">
+      <a class="sidebar-brand" href="dashboard.html" aria-label="SIPRESMA Dashboard Admin">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="8" r="5.6"/>
+            <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>
+          </svg>
+        </span>
+        <span class="brand-copy">
+          <span class="brand-name">SIPRESMA</span>
+          <span class="brand-tagline">Prestasi Mahasiswa</span>
+        </span>
+      </a>
+
+      <div class="access-row">
+        <svg class="access-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/>
+          <path d="m9 12 2 2 4-4"/>
+        </svg>
+        <span class="access-label">Hak Akses:</span>
+        <span class="access-role">Administrator</span>
+      </div>
+
+      <div class="sidebar-menu">
+        <p class="menu-label">Menu Utama</p>
+        <nav class="sidebar-nav" aria-label="Navigasi utama">
+          <a class="nav-link" href="dashboard.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="3" width="7" height="7" rx="1"/>
+              <rect x="14" y="3" width="7" height="7" rx="1"/>
+              <rect x="3" y="14" width="7" height="7" rx="1"/>
+              <rect x="14" y="14" width="7" height="7" rx="1"/>
+            </svg>
+            <span>Dashboard</span>
+          </a>
+
+          <a class="nav-link" href="data-mahasiswa.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="8.6" cy="8.2" r="3.2"/>
+              <path d="M2.8 19.2c.4-3.5 2.6-5.5 5.8-5.5s5.4 2 5.8 5.5"/>
+              <path d="M15.8 5.3a3 3 0 0 1 0 5.5"/>
+              <path d="M17.6 13.9c2.1.6 3.4 2.4 3.6 5.3"/>
+            </svg>
+            <span>Data Mahasiswa &amp; Akademik</span>
+          </a>
+
+          <a class="nav-link" href="data-dosen.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m3 8 9-5 9 5-9 5-9-5Z"/>
+              <path d="M7 10v5c3 3 7 3 10 0v-5"/>
+              <path d="M21 8v7"/>
+            </svg>
+            <span>Data Dosen</span>
+          </a>
+
+          <a class="nav-link" href="daftar-prestasi.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M8 4h8v5a4 4 0 0 1-8 0V4Z"/>
+              <path d="M8 5H5.6a2.4 2.4 0 0 0 0 4.8H8"/>
+              <path d="M16 5h2.4a2.4 2.4 0 0 1 0 4.8H16"/>
+              <path d="M12 13v3"/>
+              <path d="M9 20h6"/>
+              <path d="M9 20l3-3.4 3 3.4"/>
+            </svg>
+            <span>Data Prestasi Mahasiswa</span>
+          </a>
+
+          <a class="nav-link" href="verifikasi-prestasi.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/>
+              <path d="M14 3v5h5"/>
+              <path d="m9 14 2 2 4-4"/>
+            </svg>
+            <span>Verifikasi Sertifikat</span>
+          </a>
+
+          <a class="nav-link is-active" href="hasil-klasifikasi.html" aria-current="page">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4 19V5"/>
+              <path d="M4 19h16"/>
+              <path d="M8 15v-4"/>
+              <path d="M12 15V8"/>
+              <path d="M16 15v-6"/>
+            </svg>
+            <span>Hasil Klasifikasi</span>
+          </a>
+
+          <a class="nav-link" href="reset-password.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/>
+              <circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/>
+            </svg>
+            <span>Reset Password</span>
+          </a>
+
+          <a class="nav-link" href="profil.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="8" r="3.7"/>
+              <path d="M5.3 20c.5-3.9 3-6.1 6.7-6.1s6.2 2.2 6.7 6.1"/>
+            </svg>
+            <span>Profil Saya</span>
+          </a>
+        </nav>
+      </div>
+
+      <div class="sidebar-decoration" aria-hidden="true">
+        <svg viewBox="0 0 253 42" preserveAspectRatio="none">
+          <g fill="none" stroke="#b99555" stroke-width="1" vector-effect="non-scaling-stroke">
+            <path d="M-4 23C35 12 66 12 104 18C142 24 166 35 204 30C226 27 241 18 257 12" stroke-opacity=".38"/>
+            <path d="M-4 33C38 22 72 23 110 29C148 35 172 41 210 36C231 33 244 27 257 22" stroke-opacity=".24"/>
+          </g>
+        </svg>
+      </div>
+
+      <div class="sidebar-footer">
+        <a class="logout-link" href="../../index.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M10 20.5H6.5A2.5 2.5 0 0 1 4 18V6a2.5 2.5 0 0 1 2.5-2.5H10"/>
+            <path d="M14.5 16.5 19 12l-4.5-4.5"/>
+            <path d="M19 12H9.5"/>
+          </svg>
+          <span>Keluar (Logout)</span>
+        </a>
+      </div>
+    </aside>
+
+    <label class="sidebar-overlay" for="sidebar-toggle" aria-label="Tutup menu navigasi"></label>
+
+    <div class="main-shell">
+      <header class="topbar">
+        <label class="menu-toggle menu-toggle--desktop" for="sidebar-toggle">
+          <svg viewBox="0 0 20 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+            <path d="M1 1h18M1 7h18M1 13h18"/>
+          </svg>
+        </label>
+
+        <label class="menu-toggle menu-toggle--mobile" for="sidebar-toggle">
+          <svg viewBox="0 0 20 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+            <path d="M1 1h18M1 7h18M1 13h18"/>
+          </svg>
+        </label>
+
+        <div class="topbar-heading">
+          <nav class="breadcrumbs" aria-label="Breadcrumb">
+            <span class="crumb-brand">SIPRESMA</span>
+            <span class="crumb-sep" aria-hidden="true">/</span>
+            <span>Admin</span>
+            <span class="crumb-sep" aria-hidden="true">/</span>
+            <span class="crumb-current" aria-current="page">Hasil Klasifikasi Prestasi Mahasiswa</span>
+          </nav>
+          <h1 class="page-title">Hasil Klasifikasi Prestasi Mahasiswa</h1>
+        </div>
+
+        <svg class="topbar-waves" viewBox="0 0 1228 64" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0 58C170 58 280 38 430 38C580 38 620 52 770 49C920 46 1010 18 1135 17C1180 17 1205 19 1228 21" fill="none" stroke="#c6a86f" stroke-width="1" vector-effect="non-scaling-stroke"/>
+        </svg>
+      </header>
+
+      <main class="page-content hk-page">
+        <section class="hk-heading" aria-labelledby="hk-title">
+          <h2 id="hk-title">Hasil Klasifikasi Prestasi Mahasiswa</h2>
+          <p>Rekapitulasi penetapan kategori tingkat prestasi mahasiswa Program Studi Teknik Informatika.</p>
+        </section>
+
+        <section class="hk-summary-grid" aria-label="Ringkasan kategori hasil klasifikasi">
+          <article class="hk-summary-card hk-summary-card--high">
+            <div class="hk-summary-copy">
+              <span class="hk-summary-label">Kategori Tinggi</span>
+              <span class="hk-summary-value">30 Mahasiswa</span>
+            </div>
+            <span class="hk-summary-icon hk-summary-icon--high" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 3.7c.55 4.12 1.72 5.29 5.84 5.84-4.12.55-5.29 1.72-5.84 5.84-.55-4.12-1.72-5.29-5.84-5.84 4.12-.55 5.29-1.72 5.84-5.84Z"/>
+                <path d="M18.4 15.1c.24 1.83.76 2.35 2.59 2.59-1.83.24-2.35.76-2.59 2.59-.24-1.83-.76-2.35-2.59-2.59 1.83-.24 2.35-.76 2.59-2.59Z"/>
+                <path d="M6.2 15.8v.01"/>
+              </svg>
+            </span>
+          </article>
+
+          <article class="hk-summary-card hk-summary-card--medium">
+            <div class="hk-summary-copy">
+              <span class="hk-summary-label">Kategori Sedang</span>
+              <span class="hk-summary-value">20 Mahasiswa</span>
+            </div>
+            <span class="hk-summary-icon hk-summary-icon--medium" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 18v-5"/>
+                <path d="M12 18V7"/>
+                <path d="M19 18V4"/>
+              </svg>
+            </span>
+          </article>
+
+          <article class="hk-summary-card hk-summary-card--low">
+            <div class="hk-summary-copy">
+              <span class="hk-summary-label">Kategori Rendah</span>
+              <span class="hk-summary-value">10 Mahasiswa</span>
+            </div>
+            <span class="hk-summary-icon hk-summary-icon--low" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 5h16l-6.2 7.2v5.2L10.2 19v-6.8L4 5Z"/>
+              </svg>
+            </span>
+          </article>
+        </section>
+
+        <section class="hk-filter" aria-label="Pencarian dan filter hasil klasifikasi">
+          <label class="hk-search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="7"/>
+              <path d="m16 16 5 5"/>
+            </svg>
+            <span class="hk-sr-only">Cari mahasiswa atau NIM</span>
+            <input type="search" placeholder="Cari mahasiswa atau NIM...">
+          </label>
+
+          <div class="hk-filter-right">
+            <span class="hk-program-chip">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21.5 8.6 12 4 2.5 8.6 12 13.2l9.5-4.6Z"/>
+                <path d="M6.2 10.7v4.1c0 1.5 2.6 2.7 5.8 2.7s5.8-1.2 5.8-2.7v-4.1"/>
+                <path d="M21.5 8.6v4.7"/>
+              </svg>
+              <span>Program Studi: Teknik Informatika</span>
+            </span>
+
+            <div class="hk-filter-group">
+              <span class="hk-filter-label" id="hk-kategori-label">Filter Kategori:</span>
+              <div class="hk-select" tabindex="0" role="group" aria-haspopup="listbox" aria-labelledby="hk-kategori-label">
+                <span class="hk-select-value" aria-hidden="true">
+                  <span class="hk-select-label hk-label--all">Semua Kategori</span>
+                  <span class="hk-select-label hk-label--tinggi">Tinggi</span>
+                  <span class="hk-select-label hk-label--sedang">Sedang</span>
+                  <span class="hk-select-label hk-label--rendah">Rendah</span>
+                </span>
+                <span class="hk-select-caret" aria-hidden="true"></span>
+                <div class="hk-select-menu" role="listbox" aria-label="Pilih kategori klasifikasi">
+                  <label class="hk-select-option hk-option--all" for="hk-kategori-all">Semua Kategori</label>
+                  <label class="hk-select-option hk-option--tinggi" for="hk-kategori-tinggi">Tinggi</label>
+                  <label class="hk-select-option hk-option--sedang" for="hk-kategori-sedang">Sedang</label>
+                  <label class="hk-select-option hk-option--rendah" for="hk-kategori-rendah">Rendah</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="hk-table-card" aria-labelledby="hk-table-caption">
+          <h2 class="hk-sr-only" id="hk-table-caption">Daftar hasil klasifikasi prestasi mahasiswa</h2>
+
+          <div class="hk-table-scroll" tabindex="0" aria-label="Tabel hasil klasifikasi prestasi mahasiswa, dapat digulir vertikal dan horizontal">
+            <table class="hk-table">
+              <colgroup>
+                <col class="hk-col-student">
+                <col class="hk-col-ipk">
+                <col class="hk-col-category">
+              </colgroup>
+              <thead>
+                <tr>
+                  <th scope="col">Nama Mahasiswa &amp; NIM</th>
+                  <th scope="col">IPK</th>
+                  <th scope="col">Kategori Klasifikasi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <span class="hk-student-name">Devanka Shankara</span>
+                    <span class="hk-student-nim">NIM: 07352411036</span>
+                  </td>
+                  <td class="hk-ipk">3.88</td>
+                  <td>
+                    <span class="hk-category hk-category--high">Tinggi</span>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <span class="hk-student-name">Nabila Putri Kirana</span>
+                    <span class="hk-student-nim">NIM: 07352111002</span>
+                  </td>
+                  <td class="hk-ipk">3.92</td>
+                  <td>
+                    <span class="hk-category hk-category--high">Tinggi</span>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <span class="hk-student-name">Muhammad Fajar Ramadhan</span>
+                    <span class="hk-student-nim">NIM: 07352211003</span>
+                  </td>
+                  <td class="hk-ipk">3.85</td>
+                  <td>
+                    <span class="hk-category hk-category--high">Tinggi</span>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <span class="hk-student-name">Siti Nurhaliza</span>
+                    <span class="hk-student-nim">NIM: 07352311004</span>
+                  </td>
+                  <td class="hk-ipk">3.79</td>
+                  <td>
+                    <span class="hk-category hk-category--high">Tinggi</span>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <span class="hk-student-name">Dimas Wahyu Pratama</span>
+                    <span class="hk-student-nim">NIM: 07352411005</span>
+                  </td>
+                  <td class="hk-ipk">3.90</td>
+                  <td>
+                    <span class="hk-category hk-category--high">Tinggi</span>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <span class="hk-student-name">Anisa Rahmawati</span>
+                    <span class="hk-student-nim">NIM: 07352411006</span>
+                  </td>
+                  <td class="hk-ipk">3.82</td>
+                  <td>
+                    <span class="hk-category hk-category--high">Tinggi</span>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <span class="hk-student-name">Kevin Sanjaya</span>
+                    <span class="hk-student-nim">NIM: 07352211007</span>
+                  </td>
+                  <td class="hk-ipk">3.75</td>
+                  <td>
+                    <span class="hk-category hk-category--high">Tinggi</span>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <span class="hk-student-name">Rian Hidayat</span>
+                    <span class="hk-student-nim">NIM: 07352311008</span>
+                  </td>
+                  <td class="hk-ipk">3.84</td>
+                  <td>
+                    <span class="hk-category hk-category--high">Tinggi</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="hk-table-bottom">
+            <span>Menampilkan 8 dari 8 mahasiswa</span>
+          </div>
+        </section>
+      </main>
+
+      <footer class="page-footer hk-page-footer">
+        <p>&copy; 2026 SIPRESMA <span class="footer-separator">&middot;</span> Sistem Informasi Prestasi Mahasiswa</p>
+      </footer>
+    </div>
+  </div>
+</body>
+</html>

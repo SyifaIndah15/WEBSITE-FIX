@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <!-- Mengatur karakter agar huruf, angka, dan simbol ditampilkan dengan benar -->
+    <meta charset="UTF-8">
+
+    <!-- Membuat tampilan website menyesuaikan ukuran layar perangkat -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Memberikan deskripsi singkat mengenai halaman dashboard -->
+    <meta name="description" content="Dashboard mahasiswa SIPRESMA untuk melihat ringkasan pengajuan prestasi.">
+
+    <!-- Mengatur judul yang muncul pada tab browser -->
+    <title>Dashboard - SIPRESMA</title>
+
+
+    <!-- Menghubungkan browser lebih awal ke server Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Mengambil jenis huruf Roboto dengan beberapa variasi ketebalan -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+
+    <!-- Menghubungkan file CSS untuk mengatur animasi -->
+    <link rel="stylesheet" href="../../css/shared/motion.css">
+
+    <!-- Menghubungkan file CSS untuk mengatur layout dashboard secara umum -->
+    <link rel="stylesheet" href="../../css/mahasiswa/dashboard.css">
+
+    <!-- Menghubungkan file CSS untuk mengatur tampilan sidebar -->
+    <link rel="stylesheet" href="../../css/mahasiswa/sidebar.css">
+
+    <!-- Menghubungkan file CSS untuk mengatur konten utama dashboard -->
+    <link rel="stylesheet" href="../../css/mahasiswa/content.css">
+
+</head>
+
+
+<body>
+
+    <!-- PEMBUNGKUS UTAMA: Menampung seluruh bagian layout dashboard -->
+    <div class="dashboard-layout">
+
+
+        <!-- ========================================= -->
+        <!-- BAGIAN 1: SIDEBAR / MENU SAMPING          -->
+        <!-- ========================================= -->
+
+        <!-- Sidebar berisi logo, informasi hak akses, menu navigasi, dan logout -->
+        <aside class="sidebar" id="sidebar">
+
+
+            <!-- Logo dan nama aplikasi SIPRESMA -->
+            <!-- Ketika diklik, pengguna diarahkan ke halaman dashboard -->
+            <a class="sidebar-brand" href="dashboard.html" aria-label="SIPRESMA Dashboard">
+
+                <!-- Tempat menampilkan ikon logo SIPRESMA -->
+                <span class="brand-mark" aria-hidden="true">
+
+                    <!-- SVG digunakan untuk menggambar ikon logo -->
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+
+                        <circle cx="12" cy="8" r="5.6"/>
+                        <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>
+
+                    </svg>
+                </span>
+
+
+                <!-- Menampilkan nama aplikasi dan slogan -->
+                <span class="brand-copy">
+                    <span class="brand-name">SIPRESMA</span>
+                    <span class="brand-tagline">Prestasi Mahasiswa</span>
+                </span>
+
+            </a>
+
+
+            <!-- Informasi hak akses pengguna yang sedang menggunakan aplikasi -->
+            <div class="access-row">
+
+                <!-- Ikon yang menunjukkan informasi hak akses -->
+                <svg class="access-icon" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="1.8"
+                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/>
+                    <path d="m9 12 2 2 4-4"/>
+
+                </svg>
+
+                <!-- Label dan jenis hak akses pengguna -->
+                <span class="access-label">Hak Akses:</span>
+                <span class="access-role">Mahasiswa</span>
+
+            </div>
+
+
+            <!-- Bagian menu utama pada sidebar -->
+            <div class="sidebar-menu">
+
+                <!-- Judul kelompok menu -->
+                <p class="menu-label">Menu Utama</p>
+
+                <!-- Navigasi untuk berpindah ke halaman lain -->
+                <nav class="sidebar-nav" aria-label="Navigasi utama">
+
+
+                    <!-- Menu Dashboard yang sedang aktif -->
+                    <a class="nav-link is-active" href="dashboard.html" aria-current="page">
+
+                        <!-- Ikon menu Dashboard -->
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+
+                            <rect x="3" y="3" width="7" height="7" rx="1"/>
+                            <rect x="14" y="3" width="7" height="7" rx="1"/>
+                            <rect x="3" y="14" width="7" height="7" rx="1"/>
+                            <rect x="14" y="14" width="7" height="7" rx="1"/>
+
+                        </svg>
+
+                        <span>Dashboard</span>
+                    </a>
+
+
+                    <!-- Menu untuk membuka halaman pengajuan prestasi -->
+                    <a class="nav-link" href="ajukan-prestasi.html">
+
+                        <!-- Ikon tambah untuk menu pengajuan prestasi -->
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+
+                            <circle cx="12" cy="12" r="8.5"/>
+                            <path d="M12 8.5v7M8.5 12h7"/>
+
+                        </svg>
+
+                        <span>Ajukan Prestasi</span>
+                    </a>
+
+
+                    <!-- Menu untuk membuka riwayat prestasi mahasiswa -->
+                    <a class="nav-link" href="riwayat-prestasi.html">
+
+                        <!-- Ikon jam untuk menggambarkan riwayat -->
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+
+                            <circle cx="12" cy="12" r="8.5"/>
+                            <path d="M12 7.5V12l3 1.8"/>
+
+                        </svg>
+
+                        <span>Riwayat Prestasi</span>
+                    </a>
+
+
+                    <!-- Menu untuk membuka halaman profil mahasiswa -->
+                    <a class="nav-link" href="profil.html">
+
+                        <!-- Ikon pengguna untuk menu profil -->
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+
+                            <circle cx="12" cy="8" r="3.7"/>
+                            <path d="M5.3 20c.5-3.9 3-6.1 6.7-6.1s6.2 2.2 6.7 6.1"/>
+
+                        </svg>
+
+                        <span>Profil Saya</span>
+                    </a>
+
+                </nav>
+            </div>
+
+
+            <!-- Hiasan dekoratif pada bagian bawah sidebar -->
+            <div class="sidebar-decoration" aria-hidden="true">
+
+                <!-- SVG digunakan untuk menggambar garis dekoratif -->
+                <svg viewBox="0 0 253 42" preserveAspectRatio="none">
+
+                    <g fill="none" stroke="#b99555" stroke-width="1" vector-effect="non-scaling-stroke">
+                        <path d="M-4 23C35 12 66 12 104 18C142 24 166 35 204 30C226 27 241 18 257 12" stroke-opacity=".38"/>
+                        <path d="M-4 33C38 22 72 23 110 29C148 35 172 41 210 36C231 33 244 27 257 22" stroke-opacity=".24"/>
+                    </g>
+
+                </svg>
+            </div>
+
+
+            <!-- Bagian bawah sidebar yang berisi tombol keluar -->
+            <div class="sidebar-footer">
+
+                <!-- Mengarahkan pengguna kembali ke halaman index saat logout -->
+                <a class="logout-link" href="../../index.html">
+
+                    <!-- Ikon logout -->
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+
+                        <path d="M10 20.5H6.5A2.5 2.5 0 0 1 4 18V6a2.5 2.5 0 0 1 2.5-2.5H10"/>
+                        <path d="M14.5 16.5 19 12l-4.5-4.5"/>
+                        <path d="M19 12H9.5"/>
+
+                    </svg>
+
+                    <span>Keluar (Logout)</span>
+                </a>
+            </div>
+
+        </aside>
+
+
+        <!-- Lapisan transparan untuk membantu menutup sidebar pada tampilan mobile -->
+        <label class="sidebar-overlay" for="mobile-sidebar-toggle"
+            aria-label="Tutup menu navigasi"></label>
+
+
+        <!-- ========================================= -->
+        <!-- BAGIAN 2: KERANGKA KONTEN UTAMA           -->
+        <!-- ========================================= -->
+
+        <!-- Menampung header, konten dashboard, dan footer -->
+        <div class="main-shell">
+
+
+            <!-- ========================================= -->
+            <!-- BAGIAN 3: HEADER / TOPBAR                -->
+            <!-- ========================================= -->
+
+            <!-- Bagian atas halaman yang berisi tombol menu dan judul halaman -->
+            <header class="topbar">
+
+
+                <!-- Tombol untuk menampilkan atau menyembunyikan sidebar pada desktop -->
+                <label class="menu-toggle menu-toggle--desktop">
+
+                    <!-- Checkbox digunakan sebagai kontrol menu desktop -->
+                    <input class="menu-toggle-input" type="checkbox"
+                        id="desktop-sidebar-toggle" aria-controls="sidebar"
+                        aria-label="Tampilkan atau sembunyikan menu navigasi">
+
+                    <!-- Ikon tiga garis sebagai tombol menu -->
+                    <svg viewBox="0 0 20 14" fill="none" stroke="currentColor"
+                        stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+
+                        <path d="M1 1h18M1 7h18M1 13h18"/>
+
+                    </svg>
+                </label>
+
+
+                <!-- Tombol untuk membuka atau menutup sidebar pada perangkat mobile -->
+                <label class="menu-toggle menu-toggle--mobile">
+
+                    <!-- Checkbox digunakan sebagai kontrol menu mobile -->
+                    <input class="menu-toggle-input" type="checkbox"
+                        id="mobile-sidebar-toggle" aria-controls="sidebar"
+                        aria-label="Buka atau tutup menu navigasi">
+
+                    <!-- Ikon tiga garis sebagai tombol menu -->
+                    <svg viewBox="0 0 20 14" fill="none" stroke="currentColor"
+                        stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+
+                        <path d="M1 1h18M1 7h18M1 13h18"/>
+
+                    </svg>
+                </label>
+
+
+                <!-- Menampilkan breadcrumb dan judul halaman -->
+                <div class="topbar-heading">
+
+                    <!-- Breadcrumb menunjukkan posisi halaman yang sedang dibuka -->
+                    <nav class="breadcrumbs" aria-label="Breadcrumb">
+
+                        <span class="crumb-brand">SIPRESMA</span>
+                        <span class="crumb-sep" aria-hidden="true">/</span>
+                        <span>Mahasiswa</span>
+                        <span class="crumb-sep" aria-hidden="true">/</span>
+                        <span class="crumb-current" aria-current="page">Dashboard Utama</span>
+
+                    </nav>
+
+                    <!-- Judul utama halaman dashboard -->
+                    <h1 class="page-title">Dashboard Utama</h1>
+
+                </div>
+
+
+                <!-- Hiasan garis bergelombang pada bagian header -->
+                <svg class="topbar-waves" viewBox="0 0 1228 64"
+                    preserveAspectRatio="none" aria-hidden="true">
+
+                    <path d="M0 58C170 58 280 38 430 38C580 38 620 52 770 49C920 46 1010 18 1135 17C1180 17 1205 19 1228 21"
+                        fill="none" stroke="#c6a86f" stroke-width="1"
+                        vector-effect="non-scaling-stroke"/>
+
+                </svg>
+
+            </header>
+
+
+            <!-- ========================================= -->
+            <!-- BAGIAN 4: KONTEN UTAMA DASHBOARD         -->
+            <!-- ========================================= -->
+
+            <!-- Menampung seluruh isi utama halaman dashboard -->
+            <main class="page-content">
+
+
+                <!-- ========================================= -->
+                <!-- BAGIAN 4A: BANNER SELAMAT DATANG          -->
+                <!-- ========================================= -->
+
+                <!-- Menampilkan sapaan dan informasi mahasiswa -->
+                <section class="welcome-banner" aria-labelledby="banner-greeting">
+
+                    <div class="banner-info">
+
+                        <!-- Bagian atas banner berisi status dan identitas mahasiswa -->
+                        <div class="banner-top">
+
+                            <!-- Menunjukkan status mahasiswa -->
+                            <span class="status-badge">Mahasiswa Aktif</span>
+
+                            <!-- Informasi identitas mahasiswa -->
+                            <div class="banner-meta">
+
+                                <span>NPM: 07352411036</span>
+                                <span>Program Studi Teknik Informatika</span>
+                                <span>Angkatan 2024</span>
+
+                            </div>
+                        </div>
+
+                        <!-- Sapaan utama kepada mahasiswa -->
+                        <h2 class="banner-greeting" id="banner-greeting">
+                            Selamat Datang, Devanka Shankara
+                        </h2>
+
+                    </div>
+
+
+                    <!-- Hiasan garis bergelombang pada banner -->
+                    <svg class="banner-waves" viewBox="0 0 620 90"
+                        preserveAspectRatio="none" aria-hidden="true">
+
+                        <g fill="none" stroke="#c6a86f" stroke-width="1" vector-effect="non-scaling-stroke">
+
+                            <path d="M55 43C120 38 175 25 255 25C330 25 365 40 430 40C495 40 540 26 620 27"/>
+                            <path d="M135 72C205 65 255 54 330 55C405 56 450 67 510 65C555 63 590 52 620 52"/>
+
+                        </g>
+                    </svg>
+
+                </section>
+
+
+                <!-- ========================================= -->
+                <!-- BAGIAN 4B: KARTU STATISTIK PRESTASI       -->
+                <!-- ========================================= -->
+
+                <!-- Mengelompokkan empat kartu ringkasan prestasi mahasiswa -->
+                <section class="stats-grid" aria-label="Ringkasan prestasi">
+
+
+                    <!-- KARTU 1: TOTAL PENGAJUAN -->
+                    <article class="stat-card stat-card--total">
+
+                        <div class="stat-head">
+
+                            <!-- Nama statistik -->
+                            <h3 class="stat-label">Total Pengajuan</h3>
+
+                            <!-- Ikon piala untuk total pengajuan -->
+                            <span class="stat-icon stat-icon--gold" aria-hidden="true">
+
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+
+                                    <path d="M8 4h8v5a4 4 0 0 1-8 0V4Z"/>
+                                    <path d="M8 5H5.6a2.4 2.4 0 0 0 0 4.8H8"/>
+                                    <path d="M16 5h2.4a2.4 2.4 0 0 1 0 4.8H16"/>
+                                    <path d="M12 13v3"/>
+                                    <path d="M9 20h6"/>
+                                    <path d="M9 20l3-3.4 3 3.4"/>
+
+                                </svg>
+                            </span>
+                        </div>
+
+                        <!-- Angka total pengajuan prestasi -->
+                        <p class="stat-value">4</p>
+
+                        <!-- Keterangan tambahan -->
+                        <p class="stat-note">Sertifikat kejuaraan tertinggi</p>
+
+                    </article>
+
+
+                    <!-- KARTU 2: PRESTASI YANG TELAH DIVERIFIKASI -->
+                    <article class="stat-card stat-card--verified">
+
+                        <div class="stat-head">
+
+                            <h3 class="stat-label">Telah Diverifikasi</h3>
+
+                            <!-- Ikon tanda centang sebagai simbol verifikasi -->
+                            <span class="stat-icon stat-icon--mint" aria-hidden="true">
+
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+
+                                    <circle cx="12" cy="12" r="8.6"/>
+                                    <path d="m8 12.2 2.6 2.6 5.6-6"/>
+
+                                </svg>
+                            </span>
+                        </div>
+
+                        <!-- Jumlah prestasi yang sudah diverifikasi -->
+                        <p class="stat-value">3</p>
+
+                        <p class="stat-note">Terverifikasi tim validator</p>
+
+                    </article>
+
+
+                    <!-- KARTU 3: PRESTASI YANG PERLU DIPERBAIKI -->
+                    <article class="stat-card stat-card--revision">
+
+                        <div class="stat-head">
+
+                            <h3 class="stat-label">Perlu Perbaikan</h3>
+
+                            <!-- Ikon tanda peringatan -->
+                            <span class="stat-icon stat-icon--alert" aria-hidden="true">
+
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+
+                                    <circle cx="12" cy="12" r="8.6"/>
+                                    <path d="M12 7.6V12"/>
+                                    <path d="M12 16.1h.01"/>
+
+                                </svg>
+                            </span>
+                        </div>
+
+                        <!-- Jumlah pengajuan yang perlu diperbaiki -->
+                        <p class="stat-value">0</p>
+
+                        <p class="stat-note">Semua berkas aman</p>
+
+                    </article>
+
+
+                    <!-- KARTU 4: KATEGORI HASIL KLASIFIKASI -->
+                    <article class="stat-card stat-card--category">
+
+                        <div class="stat-head">
+
+                            <h3 class="stat-label">Kategori</h3>
+
+                            <!-- Ikon dekoratif untuk kategori -->
+                            <span class="stat-icon stat-icon--sparkle" aria-hidden="true">
+
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+
+                                    <path d="M10.8 4.2c.65 3.9 2.25 5.5 6.15 6.15-3.9.65-5.5 2.25-6.15 6.15-.65-3.9-2.25-5.5-6.15-6.15 3.9-.65 5.5-2.25 6.15-6.15Z"/>
+                                    <path d="M18.2 3.2v3.4M16.5 4.9h3.4"/>
+                                    <circle cx="5.4" cy="17.6" r="1.35"/>
+
+                                </svg>
+                            </span>
+                        </div>
+
+                        <!-- Menampilkan kategori klasifikasi mahasiswa -->
+                        <span class="category-pill">Tinggi</span>
+
+                        <!-- Menampilkan nilai IPK mahasiswa -->
+                        <p class="stat-ipk">IPK: 3.88</p>
+
+                    </article>
+
+                </section>
+
+            </main>
+
+
+            <!-- ========================================= -->
+            <!-- BAGIAN 5: FOOTER / BAGIAN BAWAH HALAMAN   -->
+            <!-- ========================================= -->
+
+            <!-- Menampilkan informasi hak cipta aplikasi -->
+            <footer class="page-footer">
+
+                <p>
+                    &copy; 2026 SIPRESMA
+                    <span class="footer-separator">&middot;</span>
+                    Sistem Informasi Prestasi Mahasiswa
+                </p>
+
+            </footer>
+
+        </div>
+        <!-- Akhir dari main-shell -->
+
+    </div>
+    <!-- Akhir dari dashboard-layout -->
+
+</body>
+</html>

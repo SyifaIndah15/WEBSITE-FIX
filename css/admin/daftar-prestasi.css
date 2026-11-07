@@ -1,0 +1,770 @@
+.dp-page {
+  padding: 36px 20px 0 32px;
+}
+
+.dp-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.dp-heading-copy {
+  min-width: 0;
+}
+
+.dp-heading h2 {
+  margin: 0 0 3px;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 28px;
+  letter-spacing: -0.35px;
+  color: #3c3123;
+}
+
+.dp-heading p {
+  max-width: 720px;
+  margin: 0;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 17px;
+  letter-spacing: -0.05px;
+  color: #817663;
+}
+
+.dp-filter-input {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  white-space: nowrap;
+  border: 0;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+}
+
+.dp-filter {
+  position: relative;
+  z-index: 8;
+  display: flex;
+  min-height: 58px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 11px 17px;
+  margin-bottom: 25px;
+  background: #fbf6eb;
+  border: 1px solid #e6d7b9;
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(79, 58, 26, 0.04);
+}
+
+.dp-search {
+  display: flex;
+  flex: 1 1 300px;
+  min-width: 200px;
+  height: 34px;
+  align-items: center;
+  gap: 9px;
+  padding: 0 12px;
+  background: #f8f1e1;
+  border: 1px solid #e5d4b1;
+  border-radius: 9px;
+  transition:
+    border-color var(--motion-duration) var(--motion-ease),
+    box-shadow var(--motion-duration) var(--motion-ease);
+}
+
+.dp-search:focus-within {
+  border-color: #c5a052;
+  box-shadow: 0 0 0 3px rgba(197, 160, 82, 0.1);
+}
+
+.dp-search svg {
+  flex: 0 0 15px;
+  width: 15px;
+  height: 15px;
+  color: #c39a4c;
+}
+
+.dp-search input {
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  font-family: var(--font-main);
+  font-size: 11.5px;
+  color: #40372b;
+  background: transparent;
+  border: 0;
+  outline: 0;
+}
+
+.dp-search input::placeholder {
+  color: #b0a48e;
+  opacity: 1;
+}
+
+.dp-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  white-space: nowrap;
+  border: 0;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+}
+
+.dp-filter-right {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 12px;
+}
+
+.dp-filter-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dp-filter-label {
+  font-size: 11.5px;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  color: #453a2d;
+}
+
+.dp-select {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  width: 106px;
+  height: 32px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 7px;
+  padding: 0 10px 1px 11px;
+  font-family: var(--font-main);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 16px;
+  color: #6f6250;
+  text-align: left;
+  background: #fbf6eb;
+  border: 1px solid #d8c6a6;
+  border-radius: 7px;
+  box-shadow: inset 0 1px 0 rgba(255, 253, 247, 0.72);
+  cursor: pointer;
+  user-select: none;
+  transition:
+    border-color var(--motion-duration) var(--motion-ease),
+    box-shadow var(--motion-duration) var(--motion-ease),
+    background-color var(--motion-duration) var(--motion-ease);
+}
+
+.dp-select--tingkat {
+  width: 118px;
+}
+
+.dp-select--status {
+  width: 140px;
+}
+
+.dp-select:hover {
+  background: #fffaf0;
+  border-color: #c9b289;
+}
+
+.dp-select:focus,
+.dp-select:focus-within {
+  outline: none;
+  border-color: #b18c4c;
+  box-shadow: 0 0 0 3px rgba(177, 140, 76, 0.14);
+}
+
+.dp-select-value {
+  display: flex;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dp-select-label {
+  display: none;
+}
+
+.dp-select-caret {
+  flex: 0 0 6px;
+  width: 6px;
+  height: 6px;
+  margin: -3px 1px 0 0;
+  border-right: 1.5px solid #8f7a57;
+  border-bottom: 1.5px solid #8f7a57;
+  transform: rotate(45deg);
+  pointer-events: none;
+  transition: transform var(--motion-duration) var(--motion-ease);
+}
+
+.dp-select:focus .dp-select-caret,
+.dp-select:focus-within .dp-select-caret {
+  margin-top: 2px;
+  transform: rotate(225deg);
+}
+
+.dp-select-menu {
+  position: absolute;
+  top: calc(100% + 5px);
+  right: 0;
+  z-index: 30;
+  display: none;
+  width: max-content;
+  min-width: 100%;
+  padding: 3px;
+  margin: 0;
+  overflow: hidden;
+  background: #fffdf8;
+  border: 1px solid #d8d1c4;
+  border-radius: 6px;
+  box-shadow: 0 10px 26px rgba(72, 54, 27, 0.16);
+}
+
+.dp-select:focus .dp-select-menu,
+.dp-select:focus-within .dp-select-menu {
+  display: block;
+}
+
+.dp-select-option {
+  display: flex;
+  min-height: 27px;
+  align-items: center;
+  padding: 0 10px;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1;
+  color: #524635;
+  white-space: nowrap;
+  cursor: pointer;
+  border-bottom: 1px solid #ece5d9;
+  border-radius: 3px;
+  transition:
+    background-color 140ms ease,
+    color 140ms ease;
+}
+
+.dp-select-option:last-child {
+  border-bottom: 0;
+}
+
+.dp-select-option:hover {
+  background: #f4ead7;
+}
+
+#dp-jenis-all:checked ~ .dashboard-layout .dp-jenis-label--all,
+#dp-jenis-akademik:checked ~ .dashboard-layout .dp-jenis-label--akademik,
+#dp-jenis-nonakademik:checked ~ .dashboard-layout .dp-jenis-label--nonakademik,
+#dp-tingkat-all:checked ~ .dashboard-layout .dp-tingkat-label--all,
+#dp-tingkat-kampus:checked ~ .dashboard-layout .dp-tingkat-label--kampus,
+#dp-tingkat-kabupaten:checked ~ .dashboard-layout .dp-tingkat-label--kabupaten,
+#dp-tingkat-provinsi:checked ~ .dashboard-layout .dp-tingkat-label--provinsi,
+#dp-tingkat-nasional:checked ~ .dashboard-layout .dp-tingkat-label--nasional,
+#dp-tingkat-internasional:checked ~ .dashboard-layout .dp-tingkat-label--internasional,
+#dp-status-all:checked ~ .dashboard-layout .dp-status-label--all,
+#dp-status-pending:checked ~ .dashboard-layout .dp-status-label--pending,
+#dp-status-verified:checked ~ .dashboard-layout .dp-status-label--verified,
+#dp-status-revision:checked ~ .dashboard-layout .dp-status-label--revision,
+#dp-status-rejected:checked ~ .dashboard-layout .dp-status-label--rejected {
+  display: inline;
+}
+
+#dp-jenis-all:checked ~ .dashboard-layout .dp-jenis-option--all,
+#dp-jenis-akademik:checked ~ .dashboard-layout .dp-jenis-option--akademik,
+#dp-jenis-nonakademik:checked ~ .dashboard-layout .dp-jenis-option--nonakademik,
+#dp-tingkat-all:checked ~ .dashboard-layout .dp-tingkat-option--all,
+#dp-tingkat-kampus:checked ~ .dashboard-layout .dp-tingkat-option--kampus,
+#dp-tingkat-kabupaten:checked ~ .dashboard-layout .dp-tingkat-option--kabupaten,
+#dp-tingkat-provinsi:checked ~ .dashboard-layout .dp-tingkat-option--provinsi,
+#dp-tingkat-nasional:checked ~ .dashboard-layout .dp-tingkat-option--nasional,
+#dp-tingkat-internasional:checked ~ .dashboard-layout .dp-tingkat-option--internasional,
+#dp-status-all:checked ~ .dashboard-layout .dp-status-option--all,
+#dp-status-pending:checked ~ .dashboard-layout .dp-status-option--pending,
+#dp-status-verified:checked ~ .dashboard-layout .dp-status-option--verified,
+#dp-status-revision:checked ~ .dashboard-layout .dp-status-option--revision,
+#dp-status-rejected:checked ~ .dashboard-layout .dp-status-option--rejected {
+  font-weight: 600;
+  color: #fffdf7;
+  background: linear-gradient(90deg, #c5a25c 0%, #9d7a42 100%);
+}
+
+.dp-table-card {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  background: #fbf6eb;
+  border: 1px solid #e1d2b7;
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(79, 58, 26, 0.04);
+}
+
+.dp-table-scroll {
+  max-height: clamp(300px, calc(100vh - 390px), 452px);
+  overflow-x: auto;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-color: #c6a76d #efe4d0;
+  scrollbar-width: thin;
+}
+
+.dp-table-scroll:focus-visible {
+  outline: 2px solid #b18c4c;
+  outline-offset: -2px;
+}
+
+.dp-table-scroll::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.dp-table-scroll::-webkit-scrollbar-track {
+  background: #efe4d0;
+}
+
+.dp-table-scroll::-webkit-scrollbar-thumb {
+  background: #c6a76d;
+  border: 2px solid #efe4d0;
+  border-radius: 999px;
+}
+
+.dp-table-scroll::-webkit-scrollbar-thumb:hover {
+  background: #b89550;
+}
+
+.dp-table {
+  width: 100%;
+  min-width: 860px;
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.dp-col-student {
+  width: 21%;
+}
+
+.dp-col-competition {
+  width: 28%;
+}
+
+.dp-col-type {
+  width: 14%;
+}
+
+.dp-col-rank {
+  width: 10%;
+}
+
+.dp-col-year {
+  width: 7%;
+}
+
+.dp-col-status {
+  width: 14%;
+}
+
+.dp-col-proof {
+  width: 6%;
+}
+
+.dp-table th {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  height: 41px;
+  padding: 2px 16px 0;
+  font-size: 10.5px;
+  font-weight: 600;
+  line-height: 14px;
+  letter-spacing: -0.05px;
+  text-align: left;
+  color: #564d3f;
+  white-space: nowrap;
+  background: #e9dcc2;
+  border-bottom: 1px solid #e3d5ba;
+  box-shadow: inset 0 -1px 0 #e6d9bf;
+}
+
+.dp-table th:last-child {
+  padding-right: 12px;
+  padding-left: 4px;
+  text-align: center;
+}
+
+.dp-table td {
+  height: 56px;
+  padding: 7px 16px;
+  vertical-align: middle;
+  background: #fbf6eb;
+  border-bottom: 1px solid #f1e7d3;
+}
+
+.dp-table tbody tr:nth-child(even) td {
+  background: #f8f1e1;
+}
+
+.dp-table tbody tr:hover td {
+  background: #f5ecd9;
+}
+
+.dp-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.dp-student-name {
+  display: block;
+  overflow: hidden;
+  font-size: 11.5px;
+  font-weight: 600;
+  line-height: 15px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #3d3327;
+}
+
+.dp-student-meta {
+  display: block;
+  margin-top: 2px;
+  overflow: hidden;
+  font-size: 9.5px;
+  font-weight: 400;
+  line-height: 13px;
+  letter-spacing: 0.02px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #918573;
+}
+
+.dp-competition-name {
+  display: block;
+  font-size: 11.5px;
+  font-weight: 600;
+  line-height: 15px;
+  color: #3a3025;
+}
+
+.dp-competition-org {
+  display: block;
+  margin-top: 2px;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 13px;
+  color: #948878;
+}
+
+.dp-type-name {
+  display: block;
+  font-size: 11.5px;
+  font-weight: 600;
+  line-height: 15px;
+  color: #3e3428;
+}
+
+.dp-type-level {
+  display: block;
+  margin-top: 2px;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 13px;
+  color: #948878;
+}
+
+.dp-rank {
+  font-size: 11.5px;
+  font-weight: 500;
+  line-height: 15px;
+  color: #3e3428;
+}
+
+.dp-year {
+  font-size: 11.5px;
+  font-weight: 500;
+  line-height: 15px;
+  color: #3e3428;
+  font-variant-numeric: tabular-nums;
+}
+
+.dp-status-cell {
+  white-space: normal;
+}
+
+.dp-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.15;
+  white-space: nowrap;
+  border-radius: 999px;
+}
+
+.dp-status svg {
+  flex: 0 0 12px;
+  width: 12px;
+  height: 12px;
+}
+
+.dp-status--verified {
+  height: 23px;
+  padding: 0 9px 1px;
+  color: #0c7563;
+  background: #e6f7f1;
+  border: 1px solid #96d7c6;
+}
+
+.dp-status--pending {
+  max-width: 92px;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 4px 7px 4px 6px;
+  color: #a96924;
+  white-space: normal;
+  text-align: left;
+  background: #fffaf0;
+  border: 1px solid #d9b46a;
+  border-radius: 6px;
+}
+
+.dp-status--pending span {
+  line-height: 12px;
+}
+
+.dp-proof-cell {
+  padding-right: 10px;
+  padding-left: 4px;
+  text-align: center;
+}
+
+.dp-proof-link {
+  display: inline-grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  color: #a08046;
+  background: #f3e9d6;
+  border: 1px solid #dfcdad;
+  border-radius: 7px;
+  transition:
+    background-color var(--motion-duration) var(--motion-ease),
+    border-color var(--motion-duration) var(--motion-ease),
+    color var(--motion-duration) var(--motion-ease),
+    transform var(--motion-duration) var(--motion-ease);
+}
+
+.dp-proof-link svg {
+  width: 15px;
+  height: 15px;
+}
+
+.dp-proof-link:hover {
+  color: #7d5f2c;
+  background: #fbf2e1;
+  border-color: #c9ae7c;
+  transform: translateY(-1px);
+}
+
+.dp-proof-link:focus-visible {
+  outline: 2px solid #b18c4c;
+  outline-offset: 2px;
+}
+
+.dp-table-bottom {
+  display: flex;
+  min-height: 38px;
+  align-items: center;
+  justify-content: center;
+  padding: 9px 16px;
+  font-size: 10.5px;
+  font-weight: 400;
+  line-height: 15px;
+  letter-spacing: 0.05px;
+  text-align: center;
+  color: #8a7d69;
+  background: #f0e6d1;
+  border-top: 1px solid #e6d7bb;
+}
+
+.dp-page-footer {
+  margin-right: 20px;
+}
+
+.dp-page-footer p {
+  font-size: 10.5px;
+}
+
+@media (max-width: 1180px) {
+  .dp-filter {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .dp-search {
+    flex-basis: auto;
+    width: 100%;
+  }
+
+  .dp-filter-right {
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 960px) {
+  .dp-page {
+    padding-right: 24px;
+    padding-left: 24px;
+  }
+
+  .dp-page-footer {
+    margin-right: 24px;
+    margin-left: 24px;
+  }
+}
+
+@media (max-width: 640px) {
+  .dp-page {
+    padding: 18px 16px 0;
+  }
+
+  .dp-heading {
+    gap: 15px;
+    margin-bottom: 16px;
+  }
+
+  .dp-heading h2 {
+    font-size: 18px;
+    line-height: 25px;
+  }
+
+  .dp-heading p {
+    font-size: 10.8px;
+    line-height: 16px;
+  }
+
+  .dp-filter {
+    gap: 11px;
+    padding: 12px;
+    margin-bottom: 16px;
+    border-radius: 10px;
+  }
+
+  .dp-filter-right {
+    gap: 10px;
+  }
+
+  .dp-filter-group {
+    flex: 1;
+    justify-content: space-between;
+    min-width: 0;
+  }
+
+  .dp-filter-label {
+    font-size: 10.8px;
+  }
+
+  .dp-select {
+    flex: 0 1 auto;
+    width: 102px;
+  }
+
+  .dp-select--tingkat {
+    width: 112px;
+  }
+
+  .dp-select--status {
+    width: 132px;
+  }
+
+  .dp-table-card {
+    border-radius: 10px;
+  }
+
+  .dp-table {
+    min-width: 860px;
+  }
+
+  .dp-table th {
+    height: 43px;
+    padding: 7px 12px;
+    font-size: 9.5px;
+    line-height: 12px;
+    white-space: normal;
+  }
+
+  .dp-table td {
+    height: 60px;
+    padding: 8px 12px;
+  }
+
+  .dp-student-name,
+  .dp-competition-name,
+  .dp-type-name {
+    font-size: 10.8px;
+    line-height: 15px;
+  }
+
+  .dp-student-meta,
+  .dp-competition-org,
+  .dp-type-level {
+    font-size: 9px;
+    line-height: 12px;
+  }
+
+  .dp-rank,
+  .dp-year {
+    font-size: 10.8px;
+  }
+
+  .dp-status {
+    font-size: 9px;
+  }
+
+  .dp-status--verified {
+    height: 21px;
+    padding: 0 7px 1px;
+  }
+
+  .dp-status--pending {
+    max-width: 84px;
+    padding: 4px 6px;
+  }
+
+  .dp-table-bottom {
+    padding: 9px 12px;
+    font-size: 9px;
+  }
+
+  .dp-page-footer {
+    margin: 18px 16px 0;
+  }
+}
+
+@media (max-width: 430px) {
+  .dp-filter-group {
+    flex: 1 1 100%;
+  }
+
+  .dp-select {
+    flex: 1;
+    max-width: 140px;
+  }
+}

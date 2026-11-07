@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Halaman verifikasi dan validasi berkas sertifikat prestasi mahasiswa Program Studi Teknik Informatika SIPRESMA.">
+  <title>Verifikasi Sertifikat - SIPRESMA</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../../css/shared/motion.css">
+  <link rel="stylesheet" href="../../css/admin/dashboard.css">
+  <link rel="stylesheet" href="../../css/admin/sidebar.css">
+  <link rel="stylesheet" href="../../css/admin/content.css">
+  <link rel="stylesheet" href="../../css/admin/verifikasi-prestasi.css">
+</head>
+<body>
+
+  <input class="vs-state" type="radio" name="vs-tab" id="vs-tab-pending" checked aria-label="Menunggu Verifikasi">
+  <input class="vs-state" type="radio" name="vs-tab" id="vs-tab-history" aria-label="Semua Riwayat Pengajuan">
+
+  <input class="vs-state" type="checkbox" id="vs-modal-approve" aria-label="Buka konfirmasi persetujuan">
+  <input class="vs-state" type="checkbox" id="vs-modal-revision" aria-label="Buka konfirmasi permintaan perbaikan">
+  <input class="vs-state" type="checkbox" id="vs-modal-reject" aria-label="Buka konfirmasi penolakan">
+
+  <div class="dashboard-layout">
+    <input class="sidebar-toggle-input" type="checkbox" id="sidebar-toggle" aria-controls="sidebar" aria-label="Buka atau tutup menu navigasi">
+
+    <aside class="sidebar" id="sidebar">
+      <a class="sidebar-brand" href="dashboard.html" aria-label="SIPRESMA Dashboard Admin">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="8" r="5.6"/>
+            <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>
+          </svg>
+        </span>
+        <span class="brand-copy">
+          <span class="brand-name">SIPRESMA</span>
+          <span class="brand-tagline">Prestasi Mahasiswa</span>
+        </span>
+      </a>
+
+      <div class="access-row">
+        <svg class="access-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/>
+          <path d="m9 12 2 2 4-4"/>
+        </svg>
+        <span class="access-label">Hak Akses:</span>
+        <span class="access-role">Administrator</span>
+      </div>
+
+      <div class="sidebar-menu">
+        <p class="menu-label">Menu Utama</p>
+        <nav class="sidebar-nav" aria-label="Navigasi utama">
+          <a class="nav-link" href="dashboard.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="3" width="7" height="7" rx="1"/>
+              <rect x="14" y="3" width="7" height="7" rx="1"/>
+              <rect x="3" y="14" width="7" height="7" rx="1"/>
+              <rect x="14" y="14" width="7" height="7" rx="1"/>
+            </svg>
+            <span>Dashboard</span>
+          </a>
+
+          <a class="nav-link" href="data-mahasiswa.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="8.6" cy="8.2" r="3.2"/>
+              <path d="M2.8 19.2c.4-3.5 2.6-5.5 5.8-5.5s5.4 2 5.8 5.5"/>
+              <path d="M15.8 5.3a3 3 0 0 1 0 5.5"/>
+              <path d="M17.6 13.9c2.1.6 3.4 2.4 3.6 5.3"/>
+            </svg>
+            <span>Data Mahasiswa &amp; Akademik</span>
+          </a>
+
+          <a class="nav-link" href="data-dosen.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m3 8 9-5 9 5-9 5-9-5Z"/>
+              <path d="M7 10v5c3 3 7 3 10 0v-5"/>
+              <path d="M21 8v7"/>
+            </svg>
+            <span>Data Dosen</span>
+          </a>
+
+          <a class="nav-link" href="daftar-prestasi.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M8 4h8v5a4 4 0 0 1-8 0V4Z"/>
+              <path d="M8 5H5.6a2.4 2.4 0 0 0 0 4.8H8"/>
+              <path d="M16 5h2.4a2.4 2.4 0 0 1 0 4.8H16"/>
+              <path d="M12 13v3"/>
+              <path d="M9 20h6"/>
+              <path d="M9 20l3-3.4 3 3.4"/>
+            </svg>
+            <span>Data Prestasi Mahasiswa</span>
+          </a>
+
+          <a class="nav-link is-active" href="verifikasi-prestasi.html" aria-current="page">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/>
+              <path d="M14 3v5h5"/>
+              <path d="m9 14 2 2 4-4"/>
+            </svg>
+            <span>Verifikasi Sertifikat</span>
+          </a>
+
+          <a class="nav-link" href="hasil-klasifikasi.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4 19V5"/>
+              <path d="M4 19h16"/>
+              <path d="M8 15v-4"/>
+              <path d="M12 15V8"/>
+              <path d="M16 15v-6"/>
+            </svg>
+            <span>Hasil Klasifikasi</span>
+          </a>
+
+          <a class="nav-link" href="reset-password.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/>
+              <circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/>
+            </svg>
+            <span>Reset Password</span>
+          </a>
+
+          <a class="nav-link" href="profil.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="8" r="3.7"/>
+              <path d="M5.3 20c.5-3.9 3-6.1 6.7-6.1s6.2 2.2 6.7 6.1"/>
+            </svg>
+            <span>Profil Saya</span>
+          </a>
+        </nav>
+      </div>
+
+      <div class="sidebar-decoration" aria-hidden="true">
+        <svg viewBox="0 0 253 42" preserveAspectRatio="none">
+          <g fill="none" stroke="#b99555" stroke-width="1" vector-effect="non-scaling-stroke">
+            <path d="M-4 23C35 12 66 12 104 18C142 24 166 35 204 30C226 27 241 18 257 12" stroke-opacity=".38"/>
+            <path d="M-4 33C38 22 72 23 110 29C148 35 172 41 210 36C231 33 244 27 257 22" stroke-opacity=".24"/>
+          </g>
+        </svg>
+      </div>
+
+      <div class="sidebar-footer">
+        <a class="logout-link" href="../../index.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M10 20.5H6.5A2.5 2.5 0 0 1 4 18V6a2.5 2.5 0 0 1 2.5-2.5H10"/>
+            <path d="M14.5 16.5 19 12l-4.5-4.5"/>
+            <path d="M19 12H9.5"/>
+          </svg>
+          <span>Keluar (Logout)</span>
+        </a>
+      </div>
+    </aside>
+
+    <label class="sidebar-overlay" for="sidebar-toggle" aria-label="Tutup menu navigasi"></label>
+
+    <div class="main-shell">
+      <header class="topbar">
+        <label class="menu-toggle menu-toggle--desktop" for="sidebar-toggle">
+          <svg viewBox="0 0 20 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+            <path d="M1 1h18M1 7h18M1 13h18"/>
+          </svg>
+        </label>
+
+        <label class="menu-toggle menu-toggle--mobile" for="sidebar-toggle">
+          <svg viewBox="0 0 20 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+            <path d="M1 1h18M1 7h18M1 13h18"/>
+          </svg>
+        </label>
+
+        <div class="topbar-heading">
+          <nav class="breadcrumbs" aria-label="Breadcrumb">
+            <span class="crumb-brand">SIPRESMA</span>
+            <span class="crumb-sep" aria-hidden="true">/</span>
+            <span>Admin</span>
+            <span class="crumb-sep" aria-hidden="true">/</span>
+            <span class="crumb-current" aria-current="page">Verifikasi Berkas Sertifikat</span>
+          </nav>
+          <h1 class="page-title">Verifikasi Berkas Sertifikat</h1>
+        </div>
+
+        <svg class="topbar-waves" viewBox="0 0 1228 64" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0 58C170 58 280 38 430 38C580 38 620 52 770 49C920 46 1010 18 1135 17C1180 17 1205 19 1228 21" fill="none" stroke="#c6a86f" stroke-width="1" vector-effect="non-scaling-stroke"/>
+        </svg>
+      </header>
+
+      <main class="page-content vs-page">
+        <section class="vs-heading" aria-labelledby="vs-title">
+          <div class="vs-heading-copy">
+            <h2 id="vs-title">Verifikasi &amp; Validasi Sertifikat Prestasi</h2>
+            <p>Tinjau dokumen sertifikat yang diajukan mahasiswa Teknik Informatika, periksa keabsahan penyelenggara, dan tentukan status validasi.</p>
+          </div>
+          <span class="vs-pending-summary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="9"/>
+              <path d="M12 7.5V12l3 1.8"/>
+            </svg>
+            <span>10 Menunggu Verifikasi</span>
+          </span>
+        </section>
+
+        <section class="vs-toolbar" aria-label="Pencarian dan daftar pengajuan sertifikat">
+          <div class="vs-tabs" role="tablist" aria-label="Kelompok pengajuan sertifikat">
+            <label class="vs-tab" for="vs-tab-pending" role="tab">Menunggu Verifikasi (10)</label>
+            <label class="vs-tab" for="vs-tab-history" role="tab">Semua Riwayat Pengajuan (60)</label>
+          </div>
+
+          <label class="vs-search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="7"/>
+              <path d="m16 16 5 5"/>
+            </svg>
+            <span class="vs-sr-only">Cari pengajuan sertifikat</span>
+            <input type="search" placeholder="Cari mahasiswa, NIM, atau kompetisi...">
+          </label>
+        </section>
+
+        <section class="vs-table-card" aria-labelledby="vs-table-caption">
+          <h2 class="vs-sr-only" id="vs-table-caption">Daftar pengajuan sertifikat prestasi mahasiswa</h2>
+
+          <div class="vs-table-scroll" tabindex="0" aria-label="Tabel verifikasi sertifikat, dapat digulir">
+            <table class="vs-table">
+              <colgroup>
+                <col class="vs-col-student">
+                <col class="vs-col-competition">
+                <col class="vs-col-level">
+                <col class="vs-col-document">
+                <col class="vs-col-status">
+                <col class="vs-col-decision">
+              </colgroup>
+              <thead>
+                <tr>
+                  <th scope="col">Mahasiswa</th>
+                  <th scope="col">Nama Kegiatan &amp; Penyelenggara</th>
+                  <th scope="col">Tingkat &amp; Peringkat</th>
+                  <th scope="col">Dokumen Sertifikat</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Keputusan Verifikator</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="vs-row vs-row--pending">
+                  <td>
+                    <span class="vs-student-name">Devanka Shankara</span>
+                    <span class="vs-student-npm">NPM: 07352411036</span>
+                  </td>
+                  <td>
+                    <span class="vs-competition-name">International Youth AI Innovation Forum 2026</span>
+                    <span class="vs-competition-org">IEEE Computer Society Chapter</span>
+                    <span class="vs-competition-date">Tgl Pengajuan: 2026-02-18</span>
+                  </td>
+                  <td>
+                    <span class="vs-rank">Peserta / Penyaji</span>
+                    <span class="vs-level">Akademik &middot; Tingkat Internasional</span>
+                  </td>
+                  <td class="vs-document-cell">
+                    <a class="vs-document-link" href="../../assets/dokumen/sertifikat-international-youth-ai-innovation-forum-2026.pdf" target="_blank" rel="noopener">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/>
+                        <path d="M14 3v5h5"/>
+                        <path d="M9 13h6M9 17h6"/>
+                      </svg>
+                      <span>Lihat Sertifikat</span>
+                    </a>
+                  </td>
+                  <td class="vs-status-cell">
+                    <span class="vs-status vs-status--pending">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="12" cy="12" r="9"/>
+                        <path d="M12 7.5V12l3 1.8"/>
+                      </svg>
+                      <span>Menunggu Verifikasi</span>
+                    </span>
+                  </td>
+                  <td class="vs-decision-cell">
+                    <div class="vs-actions">
+                      <label class="vs-action vs-action--approve" for="vs-modal-approve">Setujui</label>
+                      <label class="vs-action vs-action--revision" for="vs-modal-revision">Minta Perbaikan</label>
+                      <label class="vs-action vs-action--reject" for="vs-modal-reject">Tolak</label>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr class="vs-row vs-row--pending">
+                  <td>
+                    <span class="vs-student-name">Siti Nurhaliza</span>
+                    <span class="vs-student-npm">NPM: 07352311004</span>
+                  </td>
+                  <td>
+                    <span class="vs-competition-name">Turnamen Catur Mahasiswa Wilayah Jawa Barat</span>
+                    <span class="vs-competition-org">BAPOMI Jawa Barat</span>
+                    <span class="vs-competition-date">Tgl Pengajuan: 2024-04-10</span>
+                  </td>
+                  <td>
+                    <span class="vs-rank">Juara 3</span>
+                    <span class="vs-level">Nonakademik &middot; Tingkat Provinsi</span>
+                  </td>
+                  <td class="vs-document-cell">
+                    <a class="vs-document-link" href="../../assets/dokumen/sertifikat-turnamen-catur-jawa-barat-2025.pdf" target="_blank" rel="noopener">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/>
+                        <path d="M14 3v5h5"/>
+                        <path d="M9 13h6M9 17h6"/>
+                      </svg>
+                      <span>Lihat Sertifikat</span>
+                    </a>
+                  </td>
+                  <td class="vs-status-cell">
+                    <span class="vs-status vs-status--pending">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="12" cy="12" r="9"/>
+                        <path d="M12 7.5V12l3 1.8"/>
+                      </svg>
+                      <span>Menunggu Verifikasi</span>
+                    </span>
+                  </td>
+                  <td class="vs-decision-cell">
+                    <div class="vs-actions">
+                      <label class="vs-action vs-action--approve" for="vs-modal-approve">Setujui</label>
+                      <label class="vs-action vs-action--revision" for="vs-modal-revision">Minta Perbaikan</label>
+                      <label class="vs-action vs-action--reject" for="vs-modal-reject">Tolak</label>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr class="vs-row vs-row--pending">
+                  <td>
+                    <span class="vs-student-name">Bayu Aji Pamungkas</span>
+                    <span class="vs-student-npm">NPM: 07352111010</span>
+                  </td>
+                  <td>
+                    <span class="vs-competition-name">Capture The Flag Cyber Security Challenge</span>
+                    <span class="vs-competition-org">Komunitas Cyber Security</span>
+                    <span class="vs-competition-date">Tgl Pengajuan: 2024-10-28</span>
+                  </td>
+                  <td>
+                    <span class="vs-rank">Juara 1</span>
+                    <span class="vs-level">Akademik &middot; Tingkat Kota</span>
+                  </td>
+                  <td class="vs-document-cell">
+                    <a class="vs-document-link" href="../../assets/dokumen/sertifikat-national-hackathon-data-science-2025.pdf" target="_blank" rel="noopener">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/>
+                        <path d="M14 3v5h5"/>
+                        <path d="M9 13h6M9 17h6"/>
+                      </svg>
+                      <span>Lihat Sertifikat</span>
+                    </a>
+                  </td>
+                  <td class="vs-status-cell">
+                    <span class="vs-status vs-status--pending">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="12" cy="12" r="9"/>
+                        <path d="M12 7.5V12l3 1.8"/>
+                      </svg>
+                      <span>Menunggu Verifikasi</span>
+                    </span>
+                  </td>
+                  <td class="vs-decision-cell">
+                    <div class="vs-actions">
+                      <label class="vs-action vs-action--approve" for="vs-modal-approve">Setujui</label>
+                      <label class="vs-action vs-action--revision" for="vs-modal-revision">Minta Perbaikan</label>
+                      <label class="vs-action vs-action--reject" for="vs-modal-reject">Tolak</label>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr class="vs-row vs-row--pending">
+                  <td>
+                    <span class="vs-student-name">Joko Prasetyo</span>
+                    <span class="vs-student-npm">NPM: 07352311016</span>
+                  </td>
+                  <td>
+                    <span class="vs-competition-name">Kompetisi Startup Inovasi Digital</span>
+                    <span class="vs-competition-org">Kementerian Investasi &amp; DKI</span>
+                    <span class="vs-competition-date">Tgl Pengajuan: 2024-04-18</span>
+                  </td>
+                  <td>
+                    <span class="vs-rank">Harapan 1</span>
+                    <span class="vs-level">Akademik &middot; Tingkat Nasional</span>
+                  </td>
+                  <td class="vs-document-cell">
+                    <a class="vs-document-link" href="../../assets/dokumen/sertifikat-gemastik-xvi-smart-city.pdf" target="_blank" rel="noopener">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/>
+                        <path d="M14 3v5h5"/>
+                        <path d="M9 13h6M9 17h6"/>
+                      </svg>
+                      <span>Lihat Sertifikat</span>
+                    </a>
+                  </td>
+                  <td class="vs-status-cell">
+                    <span class="vs-status vs-status--pending">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="12" cy="12" r="9"/>
+                        <path d="M12 7.5V12l3 1.8"/>
+                      </svg>
+                      <span>Menunggu Verifikasi</span>
+                    </span>
+                  </td>
+                  <td class="vs-decision-cell">
+                    <div class="vs-actions">
+                      <label class="vs-action vs-action--approve" for="vs-modal-approve">Setujui</label>
+                      <label class="vs-action vs-action--revision" for="vs-modal-revision">Minta Perbaikan</label>
+                      <label class="vs-action vs-action--reject" for="vs-modal-reject">Tolak</label>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr class="vs-row vs-row--pending">
+                  <td>
+                    <span class="vs-student-name">Panji Wibowo</span>
+                    <span class="vs-student-npm">NPM: 07352111022</span>
+                  </td>
+                  <td>
+                    <span class="vs-competition-name">Gemastik XVI - Divisi Smart City</span>
+                    <span class="vs-competition-org">Pusprenas Kemendikbudristek &amp; UB</span>
+                    <span class="vs-competition-date">Tgl Pengajuan: 2024-10-06</span>
+                  </td>
+                  <td>
+                    <span class="vs-rank">Juara 1</span>
+                    <span class="vs-level">Akademik &middot; Tingkat Nasional</span>
+                  </td>
+                  <td class="vs-document-cell">
+                    <a class="vs-document-link" href="../../assets/dokumen/sertifikat-gemastik-xvi-smart-city.pdf" target="_blank" rel="noopener">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/>
+                        <path d="M14 3v5h5"/>
+                        <path d="M9 13h6M9 17h6"/>
+                      </svg>
+                      <span>Lihat Sertifikat</span>
+                    </a>
+                  </td>
+                  <td class="vs-status-cell">
+                    <span class="vs-status vs-status--pending">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="12" cy="12" r="9"/>
+                        <path d="M12 7.5V12l3 1.8"/>
+                      </svg>
+                      <span>Menunggu Verifikasi</span>
+                    </span>
+                  </td>
+                  <td class="vs-decision-cell">
+                    <div class="vs-actions">
+                      <label class="vs-action vs-action--approve" for="vs-modal-approve">Setujui</label>
+                      <label class="vs-action vs-action--revision" for="vs-modal-revision">Minta Perbaikan</label>
+                      <label class="vs-action vs-action--reject" for="vs-modal-reject">Tolak</label>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr class="vs-row vs-row--pending">
+                  <td>
+                    <span class="vs-student-name">Vina Amelia</span>
+                    <span class="vs-student-npm">NPM: 07352311009</span>
+                  </td>
+                  <td>
+                    <span class="vs-competition-name">Kompetisi Line Follower Robotik Kampus</span>
+                    <span class="vs-competition-org">Himpunan Mahasiswa Elektro</span>
+                    <span class="vs-competition-date">Tgl Pengajuan: 2024-11-12</span>
+                  </td>
+                  <td>
+                    <span class="vs-rank">Juara 3</span>
+                    <span class="vs-level">Akademik &middot; Tingkat Kampus</span>
+                  </td>
+                  <td class="vs-document-cell">
+                    <a class="vs-document-link" href="../../assets/dokumen/sertifikat-gemastik-xvi-smart-city.pdf" target="_blank" rel="noopener">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/>
+                        <path d="M14 3v5h5"/>
+                        <path d="M9 13h6M9 17h6"/>
+                      </svg>
+                      <span>Lihat Sertifikat</span>
+                    </a>
+                  </td>
+                  <td class="vs-status-cell">
+                    <span class="vs-status vs-status--pending">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="12" cy="12" r="9"/>
+                        <path d="M12 7.5V12l3 1.8"/>
+                      </svg>
+                      <span>Menunggu Verifikasi</span>
+                    </span>
+                  </td>
+                  <td class="vs-decision-cell">
+                    <div class="vs-actions">
+                      <label class="vs-action vs-action--approve" for="vs-modal-approve">Setujui</label>
+                      <label class="vs-action vs-action--revision" for="vs-modal-revision">Minta Perbaikan</label>
+                      <label class="vs-action vs-action--reject" for="vs-modal-reject">Tolak</label>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr class="vs-row vs-row--pending">
+                  <td>
+                    <span class="vs-student-name">Nabila Putri Kirana</span>
+                    <span class="vs-student-npm">NPM: 07352111002</span>
+                  </td>
+                  <td>
+                    <span class="vs-competition-name">National Hackathon Data Science 2025</span>
+                    <span class="vs-competition-org">Institut Teknologi Bandung</span>
+                    <span class="vs-competition-date">Tgl Pengajuan: 2025-01-22</span>
+                  </td>
+                  <td>
+                    <span class="vs-rank">Juara 2</span>
+                    <span class="vs-level">Akademik &middot; Tingkat Nasional</span>
+                  </td>
+                  <td class="vs-document-cell">
+                    <a class="vs-document-link" href="../../assets/dokumen/sertifikat-national-hackathon-data-science-2025.pdf" target="_blank" rel="noopener">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/>
+                        <path d="M14 3v5h5"/>
+                        <path d="M9 13h6M9 17h6"/>
+                      </svg>
+                      <span>Lihat Sertifikat</span>
+                    </a>
+                  </td>
+                  <td class="vs-status-cell">
+                    <span class="vs-status vs-status--pending">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="12" cy="12" r="9"/>
+                        <path d="M12 7.5V12l3 1.8"/>
+                      </svg>
+                      <span>Menunggu Verifikasi</span>
+                    </span>
+                  </td>
+                  <td class="vs-decision-cell">
+                    <div class="vs-actions">
+                      <label class="vs-action vs-action--approve" for="vs-modal-approve">Setujui</label>
+                      <label class="vs-action vs-action--revision" for="vs-modal-revision">Minta Perbaikan</label>
+                      <label class="vs-action vs-action--reject" for="vs-modal-reject">Tolak</label>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr class="vs-row vs-row--pending">
+                  <td>
+                    <span class="vs-student-name">Fajar Nugroho</span>
+                    <span class="vs-student-npm">NPM: 07352211018</span>
+                  </td>
+                  <td>
+                    <span class="vs-competition-name">Lomba Desain UI/UX Nasional</span>
+                    <span class="vs-competition-org">Asosiasi Desainer Digital Indonesia</span>
+                    <span class="vs-competition-date">Tgl Pengajuan: 2025-02-09</span>
+                  </td>
+                  <td>
+                    <span class="vs-rank">Juara 1</span>
+                    <span class="vs-level">Nonakademik &middot; Tingkat Nasional</span>
+                  </td>
+                  <td class="vs-document-cell">
+                    <a class="vs-document-link" href="../../assets/dokumen/sertifikat-national-hackathon-data-science-2025.pdf" target="_blank" rel="noopener">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/>
+                        <path d="M14 3v5h5"/>
+                        <path d="M9 13h6M9 17h6"/>
+                      </svg>
+                      <span>Lihat Sertifikat</span>
+                    </a>
+                  </td>
+                  <td class="vs-status-cell">
+                    <span class="vs-status vs-status--pending">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="12" cy="12" r="9"/>
+                        <path d="M12 7.5V12l3 1.8"/>
+                      </svg>
+                      <span>Menunggu Verifikasi</span>
+                    </span>
+                  </td>
+                  <td class="vs-decision-cell">
+                    <div class="vs-actions">
+                      <label class="vs-action vs-action--approve" for="vs-modal-approve">Setujui</label>
+                      <label class="vs-action vs-action--revision" for="vs-modal-revision">Minta Perbaikan</label>
+                      <label class="vs-action vs-action--reject" for="vs-modal-reject">Tolak</label>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr class="vs-row vs-row--pending">
+                  <td>
+                    <span class="vs-student-name">Dimas Wahyu Pratama</span>
+                    <span class="vs-student-npm">NPM: 07352411005</span>
+                  </td>
+                  <td>
+                    <span class="vs-competition-name">International Youth AI Innovation Forum 2026</span>
+                    <span class="vs-competition-org">IEEE Computer Society Chapter</span>
+                    <span class="vs-competition-date">Tgl Pengajuan: 2025-11-24</span>
+                  </td>
+                  <td>
+                    <span class="vs-rank">Peserta / Penyaji</span>
+                    <span class="vs-level">Akademik &middot; Tingkat Internasional</span>
+                  </td>
+                  <td class="vs-document-cell">
+                    <a class="vs-document-link" href="../../assets/dokumen/sertifikat-international-youth-ai-innovation-forum-2026.pdf" target="_blank" rel="noopener">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/>
+                        <path d="M14 3v5h5"/>
+                        <path d="M9 13h6M9 17h6"/>
+                      </svg>
+                      <span>Lihat Sertifikat</span>
+                    </a>
+                  </td>
+                  <td class="vs-status-cell">
+                    <span class="vs-status vs-status--pending">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="12" cy="12" r="9"/>
+                        <path d="M12 7.5V12l3 1.8"/>
+                      </svg>
+                      <span>Menunggu Verifikasi</span>
+                    </span>
+                  </td>
+                  <td class="vs-decision-cell">
+                    <div class="vs-actions">
+                      <label class="vs-action vs-action--approve" for="vs-modal-approve">Setujui</label>
+                      <label class="vs-action vs-action--revision" for="vs-modal-revision">Minta Perbaikan</label>
+                      <label class="vs-action vs-action--reject" for="vs-modal-reject">Tolak</label>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr class="vs-row vs-row--pending">
+                  <td>
+                    <span class="vs-student-name">Kevin Ardiansyah</span>
+                    <span class="vs-student-npm">NPM: 07352211027</span>
+                  </td>
+                  <td>
+                    <span class="vs-competition-name">Turnamen Futsal Mahasiswa Antaruniversitas</span>
+                    <span class="vs-competition-org">BAPOMI Jawa Barat</span>
+                    <span class="vs-competition-date">Tgl Pengajuan: 2025-12-02</span>
+                  </td>
+                  <td>
+                    <span class="vs-rank">Juara 2</span>
+                    <span class="vs-level">Nonakademik &middot; Tingkat Provinsi</span>
+                  </td>
+                  <td class="vs-document-cell">
+                    <a class="vs-document-link" href="../../assets/dokumen/sertifikat-turnamen-catur-jawa-barat-2025.pdf" target="_blank" rel="noopener">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/>
+                        <path d="M14 3v5h5"/>
+                        <path d="M9 13h6M9 17h6"/>
+                      </svg>
+                      <span>Lihat Sertifikat</span>
+                    </a>
+                  </td>
+                  <td class="vs-status-cell">
+                    <span class="vs-status vs-status--pending">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="12" cy="12" r="9"/>
+                        <path d="M12 7.5V12l3 1.8"/>
+                      </svg>
+                      <span>Menunggu Verifikasi</span>
+                    </span>
+                  </td>
+                  <td class="vs-decision-cell">
+                    <div class="vs-actions">
+                      <label class="vs-action vs-action--approve" for="vs-modal-approve">Setujui</label>
+                      <label class="vs-action vs-action--revision" for="vs-modal-revision">Minta Perbaikan</label>
+                      <label class="vs-action vs-action--reject" for="vs-modal-reject">Tolak</label>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr class="vs-row vs-row--history">
+                  <td>
+                    <span class="vs-student-name">Devanka Shankara</span>
+                    <span class="vs-student-npm">NPM: 07352411036</span>
+                  </td>
+                  <td>
+                    <span class="vs-competition-name">Gemastik XVI - Divisi Smart City</span>
+                    <span class="vs-competition-org">Pusprenas Kemendikbudristek &amp; UB</span>
+                    <span class="vs-competition-date">Tgl Pengajuan: 2025-08-14</span>
+                  </td>
+                  <td>
+                    <span class="vs-rank">Juara 1</span>
+                    <span class="vs-level">Akademik &middot; Tingkat Nasional</span>
+                  </td>
+                  <td class="vs-document-cell">
+                    <a class="vs-document-link" href="../../assets/dokumen/sertifikat-gemastik-xvi-smart-city.pdf" target="_blank" rel="noopener">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/>
+                        <path d="M14 3v5h5"/>
+                        <path d="M9 13h6M9 17h6"/>
+                      </svg>
+                      <span>Lihat Sertifikat</span>
+                    </a>
+                  </td>
+                  <td class="vs-status-cell">
+                    <span class="vs-status vs-status--verified">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="12" cy="12" r="9"/>
+                        <path d="m8.4 12.2 2.4 2.4 4.8-5"/>
+                      </svg>
+                      <span>Diverifikasi</span>
+                    </span>
+                  </td>
+                  <td class="vs-decision-cell">
+                    <span class="vs-decision vs-decision--approved">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="m5 12.5 4.2 4.2L19 6.8"/>
+                      </svg>
+                      <span>Disetujui</span>
+                    </span>
+                  </td>
+                </tr>
+
+                <tr class="vs-row vs-row--history">
+                  <td>
+                    <span class="vs-student-name">Siti Nurhaliza</span>
+                    <span class="vs-student-npm">NPM: 07352311004</span>
+                  </td>
+                  <td>
+                    <span class="vs-competition-name">Turnamen Catur Mahasiswa Wilayah Jawa Barat</span>
+                    <span class="vs-competition-org">BAPOMI Jawa Barat</span>
+                    <span class="vs-competition-date">Tgl Pengajuan: 2024-04-10</span>
+                  </td>
+                  <td>
+                    <span class="vs-rank">Juara 3</span>
+                    <span class="vs-level">Nonakademik &middot; Tingkat Provinsi</span>
+                  </td>
+                  <td class="vs-document-cell">
+                    <a class="vs-document-link" href="../../assets/dokumen/sertifikat-turnamen-catur-jawa-barat-2025.pdf" target="_blank" rel="noopener">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/>
+                        <path d="M14 3v5h5"/>
+                        <path d="M9 13h6M9 17h6"/>
+                      </svg>
+                      <span>Lihat Sertifikat</span>
+                    </a>
+                  </td>
+                  <td class="vs-status-cell">
+                    <span class="vs-status vs-status--revision">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M12 8v5"/>
+                        <path d="M12 16.5h.01"/>
+                        <circle cx="12" cy="12" r="9"/>
+                      </svg>
+                      <span>Perlu Perbaikan</span>
+                    </span>
+                  </td>
+                  <td class="vs-decision-cell">
+                    <span class="vs-decision vs-decision--revision">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M4 12a8 8 0 1 0 2.34-5.66"/>
+                        <path d="M4 4v5h5"/>
+                      </svg>
+                      <span>Perlu Perbaikan</span>
+                    </span>
+                  </td>
+                </tr>
+
+                <tr class="vs-row vs-row--history">
+                  <td>
+                    <span class="vs-student-name">Bayu Aji Pamungkas</span>
+                    <span class="vs-student-npm">NPM: 07352111010</span>
+                  </td>
+                  <td>
+                    <span class="vs-competition-name">National Hackathon Data Science 2025</span>
+                    <span class="vs-competition-org">Institut Teknologi Bandung</span>
+                    <span class="vs-competition-date">Tgl Pengajuan: 2025-03-03</span>
+                  </td>
+                  <td>
+                    <span class="vs-rank">Juara 2</span>
+                    <span class="vs-level">Akademik &middot; Tingkat Nasional</span>
+                  </td>
+                  <td class="vs-document-cell">
+                    <a class="vs-document-link" href="../../assets/dokumen/sertifikat-national-hackathon-data-science-2025.pdf" target="_blank" rel="noopener">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/>
+                        <path d="M14 3v5h5"/>
+                        <path d="M9 13h6M9 17h6"/>
+                      </svg>
+                      <span>Lihat Sertifikat</span>
+                    </a>
+                  </td>
+                  <td class="vs-status-cell">
+                    <span class="vs-status vs-status--rejected">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="12" cy="12" r="9"/>
+                        <path d="m9 9 6 6M15 9l-6 6"/>
+                      </svg>
+                      <span>Ditolak</span>
+                    </span>
+                  </td>
+                  <td class="vs-decision-cell">
+                    <span class="vs-decision vs-decision--rejected">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="m6 6 12 12M18 6 6 18"/>
+                      </svg>
+                      <span>Ditolak</span>
+                    </span>
+                  </td>
+                </tr>
+
+                <tr class="vs-row vs-row--history">
+                  <td>
+                    <span class="vs-student-name">Nabila Putri Kirana</span>
+                    <span class="vs-student-npm">NPM: 07352111002</span>
+                  </td>
+                  <td>
+                    <span class="vs-competition-name">Gemastik XVI - Divisi Smart City</span>
+                    <span class="vs-competition-org">Pusprenas Kemendikbudristek &amp; UB</span>
+                    <span class="vs-competition-date">Tgl Pengajuan: 2025-07-28</span>
+                  </td>
+                  <td>
+                    <span class="vs-rank">Juara 1</span>
+                    <span class="vs-level">Akademik &middot; Tingkat Nasional</span>
+                  </td>
+                  <td class="vs-document-cell">
+                    <a class="vs-document-link" href="../../assets/dokumen/sertifikat-gemastik-xvi-smart-city.pdf" target="_blank" rel="noopener">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/>
+                        <path d="M14 3v5h5"/>
+                        <path d="M9 13h6M9 17h6"/>
+                      </svg>
+                      <span>Lihat Sertifikat</span>
+                    </a>
+                  </td>
+                  <td class="vs-status-cell">
+                    <span class="vs-status vs-status--verified">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="12" cy="12" r="9"/>
+                        <path d="m8.4 12.2 2.4 2.4 4.8-5"/>
+                      </svg>
+                      <span>Diverifikasi</span>
+                    </span>
+                  </td>
+                  <td class="vs-decision-cell">
+                    <span class="vs-decision vs-decision--approved">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="m5 12.5 4.2 4.2L19 6.8"/>
+                      </svg>
+                      <span>Disetujui</span>
+                    </span>
+                  </td>
+                </tr>
+
+                <tr class="vs-row vs-row--history">
+                  <td>
+                    <span class="vs-student-name">Muhammad Fajar Ramadhan</span>
+                    <span class="vs-student-npm">NPM: 07352211003</span>
+                  </td>
+                  <td>
+                    <span class="vs-competition-name">National Hackathon Data Science 2025</span>
+                    <span class="vs-competition-org">Institut Teknologi Bandung</span>
+                    <span class="vs-competition-date">Tgl Pengajuan: 2025-05-16</span>
+                  </td>
+                  <td>
+                    <span class="vs-rank">Juara 2</span>
+                    <span class="vs-level">Akademik &middot; Tingkat Nasional</span>
+                  </td>
+                  <td class="vs-document-cell">
+                    <a class="vs-document-link" href="../../assets/dokumen/sertifikat-national-hackathon-data-science-2025.pdf" target="_blank" rel="noopener">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/>
+                        <path d="M14 3v5h5"/>
+                        <path d="M9 13h6M9 17h6"/>
+                      </svg>
+                      <span>Lihat Sertifikat</span>
+                    </a>
+                  </td>
+                  <td class="vs-status-cell">
+                    <span class="vs-status vs-status--verified">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="12" cy="12" r="9"/>
+                        <path d="m8.4 12.2 2.4 2.4 4.8-5"/>
+                      </svg>
+                      <span>Diverifikasi</span>
+                    </span>
+                  </td>
+                  <td class="vs-decision-cell">
+                    <span class="vs-decision vs-decision--approved">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="m5 12.5 4.2 4.2L19 6.8"/>
+                      </svg>
+                      <span>Disetujui</span>
+                    </span>
+                  </td>
+                </tr>
+
+                <tr class="vs-row vs-row--history">
+                  <td>
+                    <span class="vs-student-name">Rina Kurniawati</span>
+                    <span class="vs-student-npm">NPM: 07352211031</span>
+                  </td>
+                  <td>
+                    <span class="vs-competition-name">Kompetisi Matematika Terapan</span>
+                    <span class="vs-competition-org">HIMATIKA Universitas</span>
+                    <span class="vs-competition-date">Tgl Pengajuan: 2025-06-19</span>
+                  </td>
+                  <td>
+                    <span class="vs-rank">Juara 2</span>
+                    <span class="vs-level">Akademik &middot; Tingkat Provinsi</span>
+                  </td>
+                  <td class="vs-document-cell">
+                    <a class="vs-document-link" href="../../assets/dokumen/sertifikat-turnamen-catur-jawa-barat-2025.pdf" target="_blank" rel="noopener">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/>
+                        <path d="M14 3v5h5"/>
+                        <path d="M9 13h6M9 17h6"/>
+                      </svg>
+                      <span>Lihat Sertifikat</span>
+                    </a>
+                  </td>
+                  <td class="vs-status-cell">
+                    <span class="vs-status vs-status--rejected">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="12" cy="12" r="9"/>
+                        <path d="m9 9 6 6M15 9l-6 6"/>
+                      </svg>
+                      <span>Ditolak</span>
+                    </span>
+                  </td>
+                  <td class="vs-decision-cell">
+                    <span class="vs-decision vs-decision--rejected">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="m6 6 12 12M18 6 6 18"/>
+                      </svg>
+                      <span>Ditolak</span>
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="vs-table-bottom">
+            <span class="vs-table-footer vs-table-footer--pending">Menampilkan 10 pengajuan yang menunggu verifikasi</span>
+            <span class="vs-table-footer vs-table-footer--history">Menampilkan 6 riwayat terbaru dari 60 pengajuan</span>
+          </div>
+        </section>
+      </main>
+
+      <footer class="page-footer vs-page-footer">
+        <p>&copy; 2026 SIPRESMA <span class="footer-separator">&middot;</span> Sistem Informasi Prestasi Mahasiswa</p>
+      </footer>
+    </div>
+
+    <div class="vs-modal vs-modal--approve" role="dialog" aria-modal="true" aria-labelledby="vs-modal-approve-title">
+      <label class="vs-modal-backdrop" for="vs-modal-approve" aria-label="Tutup dialog"></label>
+      <div class="vs-modal-dialog">
+        <div class="vs-modal-head">
+          <span class="vs-modal-icon vs-modal-icon--approve" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/>
+              <path d="m8.6 12 2.2 2.2 4.6-4.7"/>
+            </svg>
+          </span>
+          <div class="vs-modal-heading">
+            <span class="vs-modal-eyebrow">Keputusan Verifikasi</span>
+            <h2 id="vs-modal-approve-title">Konfirmasi Keputusan Verifikasi</h2>
+          </div>
+          <label class="vs-modal-close" for="vs-modal-approve" aria-label="Tutup dialog">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true">
+              <path d="m6 6 12 12M18 6 6 18"/>
+            </svg>
+          </label>
+        </div>
+
+        <div class="vs-modal-body">
+          <div class="vs-modal-summary">
+            <span class="vs-modal-summary-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M8 4h8v5a4 4 0 0 1-8 0V4Z"/>
+                <path d="M8 5H5.6a2.4 2.4 0 0 0 0 4.8H8"/>
+                <path d="M16 5h2.4a2.4 2.4 0 0 1 0 4.8H16"/>
+                <path d="M12 13v3"/>
+                <path d="M9 20h6"/>
+                <path d="M9 20l3-3.4 3 3.4"/>
+              </svg>
+            </span>
+            <div class="vs-modal-summary-copy">
+              <span class="vs-modal-competition">Gemastik XVI - Divisi Smart City</span>
+              <span class="vs-modal-student">Nabila Putri Kirana <span>(NIM: 07352111002)</span></span>
+              <span class="vs-modal-meta">Juara 1 &middot; Akademik &middot; Tingkat Nasional</span>
+            </div>
+          </div>
+
+          <label class="vs-field-label" for="vs-reason-approve">Catatan Keputusan / Alasan untuk Mahasiswa:</label>
+          <textarea class="vs-reason" id="vs-reason-approve" rows="4" placeholder="Tuliskan alasan verifikasi...">Sertifikat telah diverifikasi keabsahannya dan sesuai dengan ketentuan prestasi universitas.</textarea>
+        </div>
+
+        <div class="vs-modal-foot">
+          <label class="vs-modal-btn vs-modal-btn--cancel" for="vs-modal-approve">Batal</label>
+          <label class="vs-modal-btn vs-modal-btn--approve" for="vs-modal-approve">Konfirmasi Persetujuan</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="vs-modal vs-modal--revision" role="dialog" aria-modal="true" aria-labelledby="vs-modal-revision-title">
+      <label class="vs-modal-backdrop" for="vs-modal-revision" aria-label="Tutup dialog"></label>
+      <div class="vs-modal-dialog">
+        <div class="vs-modal-head">
+          <span class="vs-modal-icon vs-modal-icon--revision" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/>
+              <path d="M12 8v5"/>
+              <path d="M12 16.5h.01"/>
+            </svg>
+          </span>
+          <div class="vs-modal-heading">
+            <span class="vs-modal-eyebrow">Keputusan Verifikasi</span>
+            <h2 id="vs-modal-revision-title">Konfirmasi Keputusan Verifikasi</h2>
+          </div>
+          <label class="vs-modal-close" for="vs-modal-revision" aria-label="Tutup dialog">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true">
+              <path d="m6 6 12 12M18 6 6 18"/>
+            </svg>
+          </label>
+        </div>
+
+        <div class="vs-modal-body">
+          <div class="vs-modal-summary">
+            <span class="vs-modal-summary-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M8 4h8v5a4 4 0 0 1-8 0V4Z"/>
+                <path d="M8 5H5.6a2.4 2.4 0 0 0 0 4.8H8"/>
+                <path d="M16 5h2.4a2.4 2.4 0 0 1 0 4.8H16"/>
+                <path d="M12 13v3"/>
+                <path d="M9 20h6"/>
+                <path d="M9 20l3-3.4 3 3.4"/>
+              </svg>
+            </span>
+            <div class="vs-modal-summary-copy">
+              <span class="vs-modal-competition">Gemastik XVI - Divisi Smart City</span>
+              <span class="vs-modal-student">Nabila Putri Kirana <span>(NIM: 07352111002)</span></span>
+              <span class="vs-modal-meta">Juara 1 &middot; Akademik &middot; Tingkat Nasional</span>
+            </div>
+          </div>
+
+          <label class="vs-field-label" for="vs-reason-revision">Catatan Keputusan / Alasan untuk Mahasiswa:</label>
+          <textarea class="vs-reason" id="vs-reason-revision" rows="4" placeholder="Tuliskan alasan verifikasi...">Scan sertifikat kurang jelas/terpotong. Harap unggah ulang dokumen yang beresolusi tinggi.</textarea>
+        </div>
+
+        <div class="vs-modal-foot">
+          <label class="vs-modal-btn vs-modal-btn--cancel" for="vs-modal-revision">Batal</label>
+          <label class="vs-modal-btn vs-modal-btn--revision" for="vs-modal-revision">Konfirmasi Minta Perbaikan</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="vs-modal vs-modal--reject" role="dialog" aria-modal="true" aria-labelledby="vs-modal-reject-title">
+      <label class="vs-modal-backdrop" for="vs-modal-reject" aria-label="Tutup dialog"></label>
+      <div class="vs-modal-dialog">
+        <div class="vs-modal-head">
+          <span class="vs-modal-icon vs-modal-icon--reject" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/>
+              <path d="m9 9 6 6"/>
+              <path d="m15 9-6 6"/>
+            </svg>
+          </span>
+          <div class="vs-modal-heading">
+            <span class="vs-modal-eyebrow">Keputusan Verifikasi</span>
+            <h2 id="vs-modal-reject-title">Konfirmasi Keputusan Verifikasi</h2>
+          </div>
+          <label class="vs-modal-close" for="vs-modal-reject" aria-label="Tutup dialog">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true">
+              <path d="m6 6 12 12M18 6 6 18"/>
+            </svg>
+          </label>
+        </div>
+
+        <div class="vs-modal-body">
+          <div class="vs-modal-summary">
+            <span class="vs-modal-summary-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M8 4h8v5a4 4 0 0 1-8 0V4Z"/>
+                <path d="M8 5H5.6a2.4 2.4 0 0 0 0 4.8H8"/>
+                <path d="M16 5h2.4a2.4 2.4 0 0 1 0 4.8H16"/>
+                <path d="M12 13v3"/>
+                <path d="M9 20h6"/>
+                <path d="M9 20l3-3.4 3 3.4"/>
+              </svg>
+            </span>
+            <div class="vs-modal-summary-copy">
+              <span class="vs-modal-competition">Gemastik XVI - Divisi Smart City</span>
+              <span class="vs-modal-student">Nabila Putri Kirana <span>(NIM: 07352111002)</span></span>
+              <span class="vs-modal-meta">Juara 1 &middot; Akademik &middot; Tingkat Nasional</span>
+            </div>
+          </div>
+
+          <label class="vs-field-label" for="vs-reason-reject">Catatan Keputusan / Alasan untuk Mahasiswa:</label>
+          <textarea class="vs-reason" id="vs-reason-reject" rows="4" placeholder="Tuliskan alasan verifikasi...">Nama peserta tidak terverifikasi atau tidak sesuai dengan kepesertaan kompetisi.</textarea>
+        </div>
+
+        <div class="vs-modal-foot">
+          <label class="vs-modal-btn vs-modal-btn--cancel" for="vs-modal-reject">Batal</label>
+          <label class="vs-modal-btn vs-modal-btn--reject" for="vs-modal-reject">Konfirmasi Penolakan</label>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

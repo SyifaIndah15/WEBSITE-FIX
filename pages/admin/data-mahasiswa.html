@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="Pengelolaan profil akademik, riwayat capaian prestasi, dan akun mahasiswa Program Studi Teknik Informatika SIPRESMA.">
+  <title>Data Mahasiswa &amp; Akademik - SIPRESMA</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../../css/shared/motion.css">
+  <link rel="stylesheet" href="../../css/admin/dashboard.css">
+  <link rel="stylesheet" href="../../css/admin/sidebar.css">
+  <link rel="stylesheet" href="../../css/admin/content.css">
+  <link rel="stylesheet" href="../../css/admin/data-mahasiswa.css">
+</head>
+
+<body>
+
+  <div class="dashboard-layout">
+    <input class="sidebar-toggle-input" type="checkbox" id="sidebar-toggle" aria-controls="sidebar"
+      aria-label="Buka atau tutup menu navigasi">
+
+    <aside class="sidebar" id="sidebar">
+      <a class="sidebar-brand" href="dashboard.html" aria-label="SIPRESMA Dashboard Admin">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"
+            stroke-linejoin="round">
+            <circle cx="12" cy="8" r="5.6" />
+            <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11" />
+          </svg>
+        </span>
+        <span class="brand-copy">
+          <span class="brand-name">SIPRESMA</span>
+          <span class="brand-tagline">Prestasi Mahasiswa</span>
+        </span>
+      </a>
+
+      <div class="access-row">
+        <svg class="access-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" />
+          <path d="m9 12 2 2 4-4" />
+        </svg>
+        <span class="access-label">Hak Akses:</span>
+        <span class="access-role">Administrator</span>
+      </div>
+
+      <div class="sidebar-menu">
+        <p class="menu-label">Menu Utama</p>
+        <nav class="sidebar-nav" aria-label="Navigasi utama">
+          <a class="nav-link" href="dashboard.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+              stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="3" width="7" height="7" rx="1" />
+              <rect x="14" y="3" width="7" height="7" rx="1" />
+              <rect x="3" y="14" width="7" height="7" rx="1" />
+              <rect x="14" y="14" width="7" height="7" rx="1" />
+            </svg>
+            <span>Dashboard</span>
+          </a>
+
+          <a class="nav-link is-active" href="data-mahasiswa.html" aria-current="page">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+              stroke-linejoin="round" aria-hidden="true">
+              <circle cx="8.6" cy="8.2" r="3.2" />
+              <path d="M2.8 19.2c.4-3.5 2.6-5.5 5.8-5.5s5.4 2 5.8 5.5" />
+              <path d="M15.8 5.3a3 3 0 0 1 0 5.5" />
+              <path d="M17.6 13.9c2.1.6 3.4 2.4 3.6 5.3" />
+            </svg>
+            <span>Data Mahasiswa &amp; Akademik</span>
+          </a>
+
+          <a class="nav-link" href="data-dosen.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+              stroke-linejoin="round" aria-hidden="true">
+              <path d="m3 8 9-5 9 5-9 5-9-5Z" />
+              <path d="M7 10v5c3 3 7 3 10 0v-5" />
+              <path d="M21 8v7" />
+            </svg>
+            <span>Data Dosen</span>
+          </a>
+
+          <a class="nav-link" href="daftar-prestasi.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+              stroke-linejoin="round" aria-hidden="true">
+              <path d="M8 4h8v5a4 4 0 0 1-8 0V4Z" />
+              <path d="M8 5H5.6a2.4 2.4 0 0 0 0 4.8H8" />
+              <path d="M16 5h2.4a2.4 2.4 0 0 1 0 4.8H16" />
+              <path d="M12 13v3" />
+              <path d="M9 20h6" />
+              <path d="M9 20l3-3.4 3 3.4" />
+            </svg>
+            <span>Data Prestasi Mahasiswa</span>
+          </a>
+
+          <a class="nav-link" href="verifikasi-prestasi.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+              stroke-linejoin="round" aria-hidden="true">
+              <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z" />
+              <path d="M14 3v5h5" />
+              <path d="m9 14 2 2 4-4" />
+            </svg>
+            <span>Verifikasi Sertifikat</span>
+          </a>
+
+          <a class="nav-link" href="hasil-klasifikasi.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+              stroke-linejoin="round" aria-hidden="true">
+              <path d="M4 19V5" />
+              <path d="M4 19h16" />
+              <path d="M8 15v-4" />
+              <path d="M12 15V8" />
+              <path d="M16 15v-6" />
+            </svg>
+            <span>Hasil Klasifikasi</span>
+          </a>
+
+          <a class="nav-link" href="reset-password.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+              stroke-linejoin="round" aria-hidden="true">
+              <path
+                d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z" />
+              <circle cx="16.5" cy="7.5" r=".5" fill="currentColor" />
+            </svg>
+            <span>Reset Password</span>
+          </a>
+
+          <a class="nav-link" href="profil.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+              stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="8" r="3.7" />
+              <path d="M5.3 20c.5-3.9 3-6.1 6.7-6.1s6.2 2.2 6.7 6.1" />
+            </svg>
+            <span>Profil Saya</span>
+          </a>
+        </nav>
+      </div>
+
+      <div class="sidebar-decoration" aria-hidden="true">
+        <svg viewBox="0 0 253 42" preserveAspectRatio="none">
+          <g fill="none" stroke="#b99555" stroke-width="1" vector-effect="non-scaling-stroke">
+            <path d="M-4 23C35 12 66 12 104 18C142 24 166 35 204 30C226 27 241 18 257 12" stroke-opacity=".38" />
+            <path d="M-4 33C38 22 72 23 110 29C148 35 172 41 210 36C231 33 244 27 257 22" stroke-opacity=".24" />
+          </g>
+        </svg>
+      </div>
+
+      <div class="sidebar-footer">
+        <a class="logout-link" href="../../index.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+            stroke-linejoin="round" aria-hidden="true">
+            <path d="M10 20.5H6.5A2.5 2.5 0 0 1 4 18V6a2.5 2.5 0 0 1 2.5-2.5H10" />
+            <path d="M14.5 16.5 19 12l-4.5-4.5" />
+            <path d="M19 12H9.5" />
+          </svg>
+          <span>Keluar (Logout)</span>
+        </a>
+      </div>
+    </aside>
+
+    <label class="sidebar-overlay" for="sidebar-toggle" aria-label="Tutup menu navigasi"></label>
+
+    <div class="main-shell">
+      <header class="topbar">
+        <label class="menu-toggle menu-toggle--desktop" for="sidebar-toggle">
+          <svg viewBox="0 0 20 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+            aria-hidden="true">
+            <path d="M1 1h18M1 7h18M1 13h18" />
+          </svg>
+        </label>
+
+        <label class="menu-toggle menu-toggle--mobile" for="sidebar-toggle">
+          <svg viewBox="0 0 20 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+            aria-hidden="true">
+            <path d="M1 1h18M1 7h18M1 13h18" />
+          </svg>
+        </label>
+
+        <div class="topbar-heading">
+          <nav class="breadcrumbs" aria-label="Breadcrumb">
+            <span class="crumb-brand">SIPRESMA</span>
+            <span class="crumb-sep" aria-hidden="true">/</span>
+            <span>Admin</span>
+            <span class="crumb-sep" aria-hidden="true">/</span>
+            <span class="crumb-current" aria-current="page">Data Mahasiswa &amp; Akademik</span>
+          </nav>
+          <h1 class="page-title">Data Mahasiswa &amp; Akademik</h1>
+        </div>
+
+        <svg class="topbar-waves" viewBox="0 0 1228 64" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0 58C170 58 280 38 430 38C580 38 620 52 770 49C920 46 1010 18 1135 17C1180 17 1205 19 1228 21"
+            fill="none" stroke="#c6a86f" stroke-width="1" vector-effect="non-scaling-stroke" />
+        </svg>
+      </header>
+
+      <main class="page-content dm-page">
+        <section class="dm-heading" aria-labelledby="dm-title">
+          <div class="dm-heading-copy">
+            <h2 id="dm-title">Data Mahasiswa &amp; Akademik</h2>
+            <p>Pengelolaan profil akademik, riwayat capaian prestasi, dan pembuatan akun mahasiswa Program Studi Teknik
+              Informatika.</p>
+          </div>
+
+          <div class="dm-actions">
+            <button class="dm-button dm-button--outline" type="button" id="dm-create-account-button"
+              aria-haspopup="dialog" aria-controls="dm-account-modal">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"
+                stroke-linejoin="round" aria-hidden="true">
+                <circle cx="9" cy="8" r="3.6" />
+                <path d="M2.8 20c.4-3.7 2.6-5.8 6.2-5.8s5.8 2.1 6.2 5.8" />
+                <path d="M18.5 8v6M15.5 11h6" />
+              </svg>
+              <span>Buat Akun Mahasiswa</span>
+            </button>
+
+            <button class="dm-button dm-button--gold" type="button" id="dm-add-student-button" aria-haspopup="dialog"
+              aria-controls="dm-student-modal">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                aria-hidden="true">
+                <path d="M12 5v14M5 12h14" />
+              </svg>
+              <span>Tambah Data Mahasiswa</span>
+            </button>
+          </div>
+        </section>
+
+        <section class="dm-filter" aria-label="Pencarian dan filter data mahasiswa">
+          <label class="dm-search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+              aria-hidden="true">
+              <circle cx="11" cy="11" r="7" />
+              <path d="m16 16 5 5" />
+            </svg>
+            <span class="dm-sr-only">Cari data mahasiswa</span>
+            <input type="search" placeholder="Cari berdasarkan nama, NIM, atau email...">
+          </label>
+
+          <div class="dm-filter-right">
+            <div class="dm-study-program">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 5h18l-7 8v6l-4 2v-8Z" />
+              </svg>
+              <span>Program Studi: <strong>Teknik Informatika</strong></span>
+            </div>
+
+            <div class="dm-category-filter">
+              <label for="dm-category" id="dm-category-label">Kategori:</label>
+              <div class="dm-category-select" id="dm-category-select">
+                <button class="dm-category-trigger" type="button" id="dm-category" aria-haspopup="listbox"
+                  aria-expanded="false" aria-controls="dm-category-menu"
+                  aria-labelledby="dm-category-label dm-category-value">
+                  <span class="dm-category-value" id="dm-category-value">Semua Kategori</span>
+                  <span class="dm-category-caret" aria-hidden="true"></span>
+                </button>
+                <ul class="dm-category-menu" id="dm-category-menu" role="listbox" aria-labelledby="dm-category-label">
+                  <li class="dm-category-option is-selected" role="option" tabindex="-1" data-value="Semua Kategori"
+                    aria-selected="true">Semua Kategori</li>
+                  <li class="dm-category-option" role="option" tabindex="-1" data-value="Tinggi" aria-selected="false">
+                    Tinggi</li>
+                  <li class="dm-category-option" role="option" tabindex="-1" data-value="Sedang" aria-selected="false">
+                    Sedang</li>
+                  <li class="dm-category-option" role="option" tabindex="-1" data-value="Rendah" aria-selected="false">
+                    Rendah</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="dm-table-card" aria-labelledby="dm-table-caption">
+          <h2 class="dm-sr-only" id="dm-table-caption">Daftar data mahasiswa Program Studi Teknik Informatika</h2>
+
+          <div class="dm-table-scroll" tabindex="0">
+            <table class="dm-table">
+              <colgroup>
+                <col class="dm-col-student">
+                <col class="dm-col-ipk">
+                <col class="dm-col-academic">
+                <col class="dm-col-nonacademic">
+                <col class="dm-col-category">
+                <col class="dm-col-data">
+              </colgroup>
+              <thead>
+                <tr>
+                  <th scope="col">NIM &amp; Mahasiswa</th>
+                  <th scope="col">IPK</th>
+                  <th scope="col">Prestasi Akademik</th>
+                  <th scope="col">Prestasi Non-Akademik</th>
+                  <th scope="col">Kategori Prestasi</th>
+                  <th scope="col">Data</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <span class="dm-student-name">Devanka Shankara</span>
+                    <span class="dm-student-meta">NIM: 07352411036 &middot; Angkatan 2024</span>
+                  </td>
+                  <td class="dm-ipk">3.88</td>
+                  <td class="dm-achievement"><strong>4</strong><small>Nasional</small></td>
+                  <td class="dm-achievement"><strong>2</strong><small>Provinsi</small></td>
+                  <td><span class="dm-badge dm-badge--high">Tinggi</span></td>
+                  <td class="dm-data-cell">
+                    <div class="dm-row-actions">
+                      <button class="dm-icon-button dm-icon-button--edit" type="button"
+                        aria-label="Edit data Devanka Shankara" title="Edit">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+                          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <path d="m14 5 5 5M4 20l4.5-1 11-11a2.1 2.1 0 0 0-3-3l-11 11L4 20Z" />
+                        </svg>
+                      </button>
+                      <button class="dm-icon-button dm-icon-button--delete" type="button"
+                        aria-label="Hapus data Devanka Shankara" title="Hapus">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+                          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <path d="M4 7h16M10 11v6m4-6v6M5 7l1 14h12l1-14M9 7V4h6v3" />
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <span class="dm-student-name">Nabila Putri Kirana</span>
+                    <span class="dm-student-meta">NIM: 07352111002 &middot; Angkatan 2021</span>
+                  </td>
+                  <td class="dm-ipk">3.92</td>
+                  <td class="dm-achievement"><strong>4</strong><small>Nasional</small></td>
+                  <td class="dm-achievement"><strong>2</strong><small>Provinsi</small></td>
+                  <td><span class="dm-badge dm-badge--high">Tinggi</span></td>
+                  <td class="dm-data-cell">
+                    <div class="dm-row-actions">
+                      <button class="dm-icon-button dm-icon-button--edit" type="button"
+                        aria-label="Edit data Nabila Putri Kirana" title="Edit">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+                          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <path d="m14 5 5 5M4 20l4.5-1 11-11a2.1 2.1 0 0 0-3-3l-11 11L4 20Z" />
+                        </svg>
+                      </button>
+                      <button class="dm-icon-button dm-icon-button--delete" type="button"
+                        aria-label="Hapus data Nabila Putri Kirana" title="Hapus">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+                          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <path d="M4 7h16M10 11v6m4-6v6M5 7l1 14h12l1-14M9 7V4h6v3" />
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <span class="dm-student-name">Muhammad Fajar Ramadhan</span>
+                    <span class="dm-student-meta">NIM: 07352211003 &middot; Angkatan 2022</span>
+                  </td>
+                  <td class="dm-ipk">3.85</td>
+                  <td class="dm-achievement"><strong>5</strong><small>Internasional</small></td>
+                  <td class="dm-achievement"><strong>3</strong><small>Nasional</small></td>
+                  <td><span class="dm-badge dm-badge--high">Tinggi</span></td>
+                  <td class="dm-data-cell">
+                    <div class="dm-row-actions">
+                      <button class="dm-icon-button dm-icon-button--edit" type="button"
+                        aria-label="Edit data Muhammad Fajar Ramadhan" title="Edit">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+                          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <path d="m14 5 5 5M4 20l4.5-1 11-11a2.1 2.1 0 0 0-3-3l-11 11L4 20Z" />
+                        </svg>
+                      </button>
+                      <button class="dm-icon-button dm-icon-button--delete" type="button"
+                        aria-label="Hapus data Muhammad Fajar Ramadhan" title="Hapus">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+                          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <path d="M4 7h16M10 11v6m4-6v6M5 7l1 14h12l1-14M9 7V4h6v3" />
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <span class="dm-student-name">Siti Nurhaliza</span>
+                    <span class="dm-student-meta">NIM: 07352311004 &middot; Angkatan 2023</span>
+                  </td>
+                  <td class="dm-ipk">3.79</td>
+                  <td class="dm-achievement"><strong>3</strong><small>Nasional</small></td>
+                  <td class="dm-achievement"><strong>1</strong><small>Provinsi</small></td>
+                  <td><span class="dm-badge dm-badge--high">Tinggi</span></td>
+                  <td class="dm-data-cell">
+                    <div class="dm-row-actions">
+                      <button class="dm-icon-button dm-icon-button--edit" type="button"
+                        aria-label="Edit data Siti Nurhaliza" title="Edit">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+                          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <path d="m14 5 5 5M4 20l4.5-1 11-11a2.1 2.1 0 0 0-3-3l-11 11L4 20Z" />
+                        </svg>
+                      </button>
+                      <button class="dm-icon-button dm-icon-button--delete" type="button"
+                        aria-label="Hapus data Siti Nurhaliza" title="Hapus">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+                          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <path d="M4 7h16M10 11v6m4-6v6M5 7l1 14h12l1-14M9 7V4h6v3" />
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <span class="dm-student-name">Dimas Wahyu Pratama</span>
+                    <span class="dm-student-meta">NIM: 07352411005 &middot; Angkatan 2024</span>
+                  </td>
+                  <td class="dm-ipk">3.90</td>
+                  <td class="dm-achievement"><strong>4</strong><small>Internasional</small></td>
+                  <td class="dm-achievement"><strong>2</strong><small>Nasional</small></td>
+                  <td><span class="dm-badge dm-badge--high">Tinggi</span></td>
+                  <td class="dm-data-cell">
+                    <div class="dm-row-actions">
+                      <button class="dm-icon-button dm-icon-button--edit" type="button"
+                        aria-label="Edit data Dimas Wahyu Pratama" title="Edit">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+                          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <path d="m14 5 5 5M4 20l4.5-1 11-11a2.1 2.1 0 0 0-3-3l-11 11L4 20Z" />
+                        </svg>
+                      </button>
+                      <button class="dm-icon-button dm-icon-button--delete" type="button"
+                        aria-label="Hapus data Dimas Wahyu Pratama" title="Hapus">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+                          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <path d="M4 7h16M10 11v6m4-6v6M5 7l1 14h12l1-14M9 7V4h6v3" />
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <span class="dm-student-name">Anisa Rahmawati</span>
+                    <span class="dm-student-meta">NIM: 07352111006 &middot; Angkatan 2021</span>
+                  </td>
+                  <td class="dm-ipk">3.82</td>
+                  <td class="dm-achievement"><strong>5</strong><small>Nasional</small></td>
+                  <td class="dm-achievement"><strong>3</strong><small>Provinsi</small></td>
+                  <td><span class="dm-badge dm-badge--high">Tinggi</span></td>
+                  <td class="dm-data-cell">
+                    <div class="dm-row-actions">
+                      <button class="dm-icon-button dm-icon-button--edit" type="button"
+                        aria-label="Edit data Anisa Rahmawati" title="Edit">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+                          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <path d="m14 5 5 5M4 20l4.5-1 11-11a2.1 2.1 0 0 0-3-3l-11 11L4 20Z" />
+                        </svg>
+                      </button>
+                      <button class="dm-icon-button dm-icon-button--delete" type="button"
+                        aria-label="Hapus data Anisa Rahmawati" title="Hapus">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+                          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <path d="M4 7h16M10 11v6m4-6v6M5 7l1 14h12l1-14M9 7V4h6v3" />
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <span class="dm-student-name">Kevin Sanjaya</span>
+                    <span class="dm-student-meta">NIM: 07352211007 &middot; Angkatan 2022</span>
+                  </td>
+                  <td class="dm-ipk">3.75</td>
+                  <td class="dm-achievement"><strong>3</strong><small>Internasional</small></td>
+                  <td class="dm-achievement"><strong>1</strong><small>Nasional</small></td>
+                  <td><span class="dm-badge dm-badge--high">Tinggi</span></td>
+                  <td class="dm-data-cell">
+                    <div class="dm-row-actions">
+                      <button class="dm-icon-button dm-icon-button--edit" type="button"
+                        aria-label="Edit data Kevin Sanjaya" title="Edit">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+                          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <path d="m14 5 5 5M4 20l4.5-1 11-11a2.1 2.1 0 0 0-3-3l-11 11L4 20Z" />
+                        </svg>
+                      </button>
+                      <button class="dm-icon-button dm-icon-button--delete" type="button"
+                        aria-label="Hapus data Kevin Sanjaya" title="Hapus">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+                          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <path d="M4 7h16M10 11v6m4-6v6M5 7l1 14h12l1-14M9 7V4h6v3" />
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <span class="dm-student-name">Rian Hidayat</span>
+                    <span class="dm-student-meta">NIM: 07352311008 &middot; Angkatan 2023</span>
+                  </td>
+                  <td class="dm-ipk">3.84</td>
+                  <td class="dm-achievement"><strong>4</strong><small>Nasional</small></td>
+                  <td class="dm-achievement"><strong>2</strong><small>Provinsi</small></td>
+                  <td><span class="dm-badge dm-badge--high">Tinggi</span></td>
+                  <td class="dm-data-cell">
+                    <div class="dm-row-actions">
+                      <button class="dm-icon-button dm-icon-button--edit" type="button"
+                        aria-label="Edit data Rian Hidayat" title="Edit">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+                          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <path d="m14 5 5 5M4 20l4.5-1 11-11a2.1 2.1 0 0 0-3-3l-11 11L4 20Z" />
+                        </svg>
+                      </button>
+                      <button class="dm-icon-button dm-icon-button--delete" type="button"
+                        aria-label="Hapus data Rian Hidayat" title="Hapus">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+                          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <path d="M4 7h16M10 11v6m4-6v6M5 7l1 14h12l1-14M9 7V4h6v3" />
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <span class="dm-student-name">Putri Ayu Lestari</span>
+                    <span class="dm-student-meta">NIM: 07352411009 &middot; Angkatan 2024</span>
+                  </td>
+                  <td class="dm-ipk">3.61</td>
+                  <td class="dm-achievement"><strong>5</strong><small>Internasional</small></td>
+                  <td class="dm-achievement"><strong>3</strong><small>Nasional</small></td>
+                  <td><span class="dm-badge dm-badge--medium">Sedang</span></td>
+                  <td class="dm-data-cell">
+                    <div class="dm-row-actions">
+                      <button class="dm-icon-button dm-icon-button--edit" type="button"
+                        aria-label="Edit data Putri Ayu Lestari" title="Edit">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+                          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <path d="m14 5 5 5M4 20l4.5-1 11-11a2.1 2.1 0 0 0-3-3l-11 11L4 20Z" />
+                        </svg>
+                      </button>
+                      <button class="dm-icon-button dm-icon-button--delete" type="button"
+                        aria-label="Hapus data Putri Ayu Lestari" title="Hapus">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+                          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <path d="M4 7h16M10 11v6m4-6v6M5 7l1 14h12l1-14M9 7V4h6v3" />
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="dm-table-bottom">
+            <span>Menampilkan 60 dari 60 data mahasiswa Teknik Informatika</span>
+            <span>Total 6 variabel input klasifikasi</span>
+          </div>
+        </section>
+      </main>
+
+      <footer class="page-footer dm-page-footer">
+        <p>&copy; 2026 SIPRESMA <span class="footer-separator">&middot;</span> Sistem Informasi Prestasi Mahasiswa</p>
+      </footer>
+    </div>
+  </div>
+
+  <div class="dm-modal" id="dm-account-modal" hidden>
+    <div class="dm-modal__backdrop" data-dm-account-close></div>
+    <div class="dm-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="dm-account-modal-title"
+      tabindex="-1">
+      <div class="dm-modal__header">
+        <h2 class="dm-modal__title" id="dm-account-modal-title">Buat Akun Mahasiswa Baru</h2>
+        <button class="dm-modal__close" type="button" aria-label="Tutup formulir buat akun" data-dm-account-close>
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"
+            aria-hidden="true">
+            <path d="M1.5 1.5 10.5 10.5M10.5 1.5 1.5 10.5" />
+          </svg>
+        </button>
+      </div>
+
+      <form class="dm-account-form" id="dm-account-form">
+        <div class="dm-account-body">
+          <p class="dm-account-description">Data yang dimasukkan akan tersimpan sebagai data mahasiswa dan otomatis
+            membuat akun login (Password default sama dengan NIM).</p>
+
+          <div class="dm-account-grid">
+            <div class="dm-account-field">
+              <label for="dm-account-nim">NIM Mahasiswa</label>
+              <input id="dm-account-nim" name="nim" type="text" inputmode="numeric" placeholder="Contoh: 07352411036"
+                autocomplete="off" required>
+            </div>
+
+            <div class="dm-account-field">
+              <label for="dm-account-year">Angkatan</label>
+              <input id="dm-account-year" name="year" type="text" inputmode="numeric" placeholder="Contoh: 2024"
+                autocomplete="off" required>
+            </div>
+
+            <div class="dm-account-field dm-account-field--full">
+              <label for="dm-account-name">Nama Lengkap</label>
+              <input id="dm-account-name" name="name" type="text" placeholder="Nama lengkap mahasiswa"
+                autocomplete="name" required>
+            </div>
+
+            <div class="dm-account-field dm-account-field--full">
+              <label for="dm-account-email">Email Kampus</label>
+              <input id="dm-account-email" name="email" type="email" placeholder="Contoh: mahasiswa@student.univ.ac.id"
+                autocomplete="email" required>
+              <p class="dm-account-helper">Alamat email resmi kampus mahasiswa untuk aktivasi akun</p>
+            </div>
+          </div>
+
+          <div class="dm-account-program">
+            <span class="dm-account-program__label">Program Studi:</span>
+            <span class="dm-account-program__value">Teknik Informatika</span>
+          </div>
+        </div>
+
+        <div class="dm-account-footer">
+          <button class="dm-account-button dm-account-button--secondary" type="button"
+            data-dm-account-close>Batal</button>
+          <button class="dm-account-button dm-account-button--primary" type="submit">Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="dm-modal" id="dm-student-modal" hidden>
+    <div class="dm-modal__backdrop" data-dm-student-close></div>
+    <div class="dm-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="dm-student-modal-title"
+      tabindex="-1">
+      <div class="dm-modal__header">
+        <h2 class="dm-modal__title" id="dm-student-modal-title">Tambah Data Mahasiswa</h2>
+        <button class="dm-modal__close" type="button" aria-label="Tutup formulir tambah data mahasiswa"
+          data-dm-student-close>
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"
+            aria-hidden="true">
+            <path d="M1.5 1.5 10.5 10.5M10.5 1.5 1.5 10.5" />
+          </svg>
+        </button>
+      </div>
+
+      <form class="dm-account-form" id="dm-student-form">
+        <div class="dm-account-body">
+          <p class="dm-account-description">Data yang dimasukkan akan tersimpan sebagai data mahasiswa dan otomatis
+            membuat akun login (Password default sama dengan NIM).</p>
+
+          <div class="dm-account-grid">
+            <div class="dm-account-field">
+              <label for="dm-student-nim">NIM Mahasiswa</label>
+              <input id="dm-student-nim" name="nim" type="text" inputmode="numeric" pattern="[0-9]+"
+                title="NIM hanya boleh berisi angka." placeholder="Contoh: 07352411036" autocomplete="off" required>
+            </div>
+
+            <div class="dm-account-field">
+              <label for="dm-student-year">Angkatan</label>
+              <input id="dm-student-year" name="year" type="text" inputmode="numeric" pattern="[0-9]{4}"
+                title="Angkatan harus terdiri dari 4 digit tahun." placeholder="Contoh: 2024" autocomplete="off"
+                required>
+            </div>
+
+            <div class="dm-account-field dm-account-field--full">
+              <label for="dm-student-name">Nama Lengkap</label>
+              <input id="dm-student-name" name="name" type="text" placeholder="Nama lengkap mahasiswa"
+                autocomplete="name" required>
+            </div>
+
+            <div class="dm-account-field dm-account-field--full">
+              <label for="dm-student-ipk">Indeks Prestasi Kumulatif (IPK)</label>
+              <input id="dm-student-ipk" name="ipk" type="text" inputmode="decimal"
+                pattern="(?:[0-3](?:[.,][0-9]{1,2})?|4(?:[.,]0{1,2})?)" title="Masukkan IPK antara 0.00 dan 4.00."
+                value="0" autocomplete="off" aria-describedby="dm-student-ipk-helper" required>
+              <p class="dm-account-helper" id="dm-student-ipk-helper">Nilai angka IPK mahasiswa antara 0.00 hingga 4.00
+              </p>
+            </div>
+          </div>
+
+          <div class="dm-account-program">
+            <span class="dm-account-program__label">Program Studi:</span>
+            <span class="dm-account-program__value">Teknik Informatika</span>
+          </div>
+        </div>
+
+        <div class="dm-account-footer">
+          <button class="dm-account-button dm-account-button--secondary" type="button"
+            data-dm-student-close>Batal</button>
+          <button class="dm-account-button dm-account-button--primary" type="submit">Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="dm-modal" id="dm-edit-modal" hidden>
+    <div class="dm-modal__backdrop" data-dm-edit-close></div>
+    <div class="dm-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="dm-edit-modal-title" tabindex="-1">
+      <div class="dm-modal__header">
+        <h2 class="dm-modal__title" id="dm-edit-modal-title">Edit Data Mahasiswa</h2>
+        <button class="dm-modal__close" type="button" aria-label="Tutup formulir edit data mahasiswa"
+          data-dm-edit-close>
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"
+            aria-hidden="true">
+            <path d="M1.5 1.5 10.5 10.5M10.5 1.5 1.5 10.5" />
+          </svg>
+        </button>
+      </div>
+
+      <form class="dm-account-form" id="dm-edit-form">
+        <div class="dm-account-body">
+          <p class="dm-account-description">Perbarui informasi data mahasiswa Program Studi Teknik Informatika.</p>
+
+          <div class="dm-account-grid">
+            <div class="dm-account-field">
+              <label for="dm-edit-nim">NIM Mahasiswa</label>
+              <input id="dm-edit-nim" name="nim" type="text" inputmode="numeric" pattern="[0-9]+"
+                title="NIM hanya boleh berisi angka." placeholder="Contoh: 07352411036" autocomplete="off" required>
+            </div>
+
+            <div class="dm-account-field">
+              <label for="dm-edit-year">Angkatan</label>
+              <input id="dm-edit-year" name="year" type="text" inputmode="numeric" pattern="[0-9]{4}"
+                title="Angkatan harus terdiri dari 4 digit tahun." placeholder="Contoh: 2024" autocomplete="off"
+                required>
+            </div>
+
+            <div class="dm-account-field dm-account-field--full">
+              <label for="dm-edit-name">Nama Lengkap</label>
+              <input id="dm-edit-name" name="name" type="text" placeholder="Nama lengkap mahasiswa" autocomplete="name"
+                required>
+            </div>
+
+            <div class="dm-account-field dm-account-field--full">
+              <label for="dm-edit-ipk">Indeks Prestasi Kumulatif (IPK)</label>
+              <input id="dm-edit-ipk" name="ipk" type="text" inputmode="decimal"
+                pattern="(?:[0-3](?:[.,][0-9]{1,2})?|4(?:[.,]0{1,2})?)" title="Masukkan IPK antara 0.00 dan 4.00."
+                autocomplete="off" aria-describedby="dm-edit-ipk-helper" required>
+              <p class="dm-account-helper" id="dm-edit-ipk-helper">Nilai angka IPK mahasiswa antara 0.00 hingga 4.00</p>
+            </div>
+          </div>
+
+          <div class="dm-account-program">
+            <span class="dm-account-program__label">Program Studi:</span>
+            <span class="dm-account-program__value">Teknik Informatika</span>
+          </div>
+        </div>
+
+        <div class="dm-account-footer">
+          <button class="dm-account-button dm-account-button--secondary" type="button" data-dm-edit-close>Batal</button>
+          <button class="dm-account-button dm-account-button--primary dm-account-button--save" type="submit">Simpan
+            Perubahan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="dm-modal" id="dm-delete-modal" hidden>
+    <div class="dm-modal__backdrop" data-dm-delete-close></div>
+    <div class="dm-modal__dialog dm-confirm-dialog" role="alertdialog" aria-modal="true"
+      aria-labelledby="dm-delete-modal-title" aria-describedby="dm-delete-description" tabindex="-1">
+      <span class="dm-confirm-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"
+          stroke-linejoin="round">
+          <path d="M4 7h16M10 11v6m4-6v6M5 7l1 14h12l1-14M9 7V4h6v3" />
+        </svg>
+      </span>
+      <h2 class="dm-confirm-title" id="dm-delete-modal-title">Hapus Data Mahasiswa?</h2>
+      <p class="dm-confirm-description" id="dm-delete-description">Tindakan ini akan menghapus data akademik mahasiswa
+        dan akun login terkait.</p>
+      <p class="dm-confirm-identity" id="dm-delete-identity"></p>
+      <div class="dm-confirm-actions">
+        <button class="dm-account-button dm-confirm-button dm-confirm-button--secondary" type="button"
+          data-dm-delete-close>Batal</button>
+        <button class="dm-account-button dm-confirm-button dm-confirm-button--danger" type="button"
+          id="dm-confirm-delete-button">Ya, Hapus</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../js/admin/data-mahasiswa.js"></script>
+</body>
+
+</html>

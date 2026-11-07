@@ -1,0 +1,427 @@
+/* =========================================================
+   VARIABEL WARNA POPUP SIPRESMA
+   ========================================================= */
+:root {
+  --sip-popup-surface: #f8f3ee; /* Warna latar utama popup. */
+  --sip-popup-surface-soft: #fbf6eb; /* Warna latar popup dengan nuansa lebih lembut. */
+  --sip-popup-accent: #d4af65; /* Warna emas utama sebagai aksen. */
+  --sip-popup-accent-strong: #b89550; /* Warna emas yang lebih gelap untuk penekanan. */
+  --sip-popup-hover: #e9dcc2; /* Warna latar ketika elemen diarahkan atau dipilih. */
+  --sip-popup-text: #30291f; /* Warna teks utama popup. */
+  --sip-popup-muted: #796f62; /* Warna teks sekunder atau teks yang lebih redup. */
+  --sip-popup-border: #ede6d9; /* Warna garis tepi popup dan komponennya. */
+  --sip-popup-shadow: 0 16px 38px rgba(53, 41, 24, 0.18), 0 3px 9px rgba(53, 41, 24, 0.07); /* Memberikan efek bayangan pada popup. */
+}
+
+/* =========================================================
+   MENYEMBUNYIKAN TOMBOL PASSWORD BAWAAN BROWSER
+   ========================================================= */
+
+/* Menyembunyikan tombol tampil password bawaan browser agar ikon mata tidak tampil ganda */
+input[type="password"]::-ms-reveal {
+  display: none; /* Menghilangkan ikon bawaan browser Microsoft Edge atau Internet Explorer. */
+}
+
+/* =========================================================
+   PENGATURAN SELECT ASLI
+   ========================================================= */
+.sip-native-select {
+  position: absolute !important; /* Memposisikan elemen secara absolut terhadap elemen induknya. */
+  inset: 0 !important; /* Mengatur jarak atas, kanan, bawah, dan kiri menjadi 0. */
+  width: 100% !important; /* Membuat lebar elemen memenuhi seluruh area induknya. */
+  height: 100% !important; /* Membuat tinggi elemen memenuhi seluruh area induknya. */
+  margin: 0 !important; /* Menghilangkan margin bawaan. */
+  padding: 0 !important; /* Menghilangkan padding bawaan. */
+  opacity: 0 !important; /* Membuat elemen tidak terlihat secara visual. */
+  pointer-events: none !important; /* Menonaktifkan interaksi pointer pada elemen. */
+}
+
+/* =========================================================
+   TOMBOL PEMICU DROPDOWN CUSTOM
+   ========================================================= */
+.sip-select-trigger {
+  overflow: hidden; /* Menyembunyikan teks yang keluar dari batas elemen. */
+  text-align: left; /* Mengatur teks agar rata kiri. */
+  text-overflow: ellipsis; /* Menampilkan tanda titik tiga jika teks terlalu panjang. */
+  white-space: nowrap; /* Mencegah teks berpindah ke baris berikutnya. */
+}
+
+/* =========================================================
+   KONDISI TOMBOL DROPDOWN KETIKA DINONAKTIFKAN
+   ========================================================= */
+.sip-select-trigger:disabled {
+  cursor: not-allowed; /* Menampilkan kursor larangan ketika tombol tidak dapat digunakan. */
+  opacity: 0.6; /* Membuat tombol terlihat lebih redup. */
+}
+
+/* =========================================================
+   TAMPILAN POPUP DROPDOWN CUSTOM
+   ========================================================= */
+.sip-select-popup {
+  position: fixed; /* Memposisikan popup berdasarkan area tampilan browser. */
+  z-index: 1200; /* Mengatur urutan tumpukan agar popup tampil di atas elemen lain. */
+  box-sizing: border-box; /* Memasukkan padding dan border ke dalam perhitungan ukuran elemen. */
+  min-width: 150px; /* Menentukan lebar minimum popup sebesar 150 piksel. */
+  padding: 5px; /* Memberikan jarak antara isi popup dan garis tepinya. */
+  overflow-x: hidden; /* Menyembunyikan scroll horizontal. */
+  overflow-y: auto; /* Menampilkan scroll vertikal jika isi popup melebihi tinggi yang tersedia. */
+  font-family: var(--font-main, inherit); /* Menggunakan jenis font utama atau mewarisi font dari elemen induk. */
+  font-size: 11px; /* Mengatur ukuran teks sebesar 11 piksel. */
+  font-weight: 400; /* Mengatur ketebalan teks menjadi normal. */
+  line-height: 16px; /* Mengatur jarak tinggi antarbaris teks. */
+  color: var(--sip-popup-text); /* Menggunakan warna teks utama popup. */
+  background: var(--sip-popup-surface); /* Memberikan warna latar utama popup. */
+  border: 1px solid var(--sip-popup-border); /* Memberikan garis tepi tipis pada popup. */
+  border-radius: 9px; /* Membuat sudut popup membulat. */
+  box-shadow: var(--sip-popup-shadow); /* Memberikan efek bayangan pada popup. */
+  overscroll-behavior: contain; /* Mencegah efek scroll diteruskan ke halaman di belakang popup. */
+  scrollbar-width: none; /* Menyembunyikan scrollbar pada browser yang mendukung properti ini. */
+  -ms-overflow-style: none; /* Menyembunyikan scrollbar pada browser Microsoft lama. */
+  animation: sip-select-popup-enter 0.14s ease-out; /* Memberikan animasi ketika popup dropdown muncul. */
+}
+
+/* Menyembunyikan popup ketika memiliki atribut hidden. */
+.sip-select-popup[hidden] {
+  display: none !important; /* Memastikan popup tidak ditampilkan. */
+}
+
+/* Menyembunyikan scrollbar pada browser berbasis WebKit. */
+.sip-select-popup::-webkit-scrollbar {
+  display: none; /* Menghilangkan tampilan scrollbar. */
+}
+
+/* =========================================================
+   TAMPILAN SETIAP PILIHAN DROPDOWN
+   ========================================================= */
+.sip-select-option {
+  display: flex; /* Menggunakan Flexbox untuk mengatur isi pilihan dropdown. */
+  align-items: center; /* Membuat isi pilihan berada di tengah secara vertikal. */
+  min-height: 33px; /* Menentukan tinggi minimum setiap pilihan. */
+  padding: 7px 10px; /* Memberikan jarak bagian dalam atas-bawah dan kiri-kanan. */
+  overflow: hidden; /* Menyembunyikan isi yang keluar dari batas elemen. */
+  color: var(--sip-popup-text); /* Menggunakan warna teks utama popup. */
+  white-space: nowrap; /* Mencegah teks pilihan berpindah baris. */
+  cursor: pointer; /* Mengubah kursor menjadi tangan ketika diarahkan ke pilihan. */
+  user-select: none; /* Mencegah teks pilihan diseleksi secara langsung. */
+  border-radius: 6px; /* Membuat sudut setiap pilihan membulat. */
+  transition: background-color 0.12s ease, color 0.12s ease; /* Memberikan transisi halus pada perubahan warna latar dan teks. */
+}
+
+/* Memberikan jarak antara satu pilihan dropdown dengan pilihan berikutnya. */
+.sip-select-option + .sip-select-option {
+  margin-top: 2px; /* Memberikan jarak atas sebesar 2 piksel. */
+}
+
+/* =========================================================
+   TEKS LABEL PILIHAN DROPDOWN
+   ========================================================= */
+.sip-select-option-label {
+  min-width: 0; /* Mengizinkan elemen mengecil sesuai ruang yang tersedia. */
+  overflow: hidden; /* Menyembunyikan teks yang melebihi batas elemen. */
+  text-overflow: ellipsis; /* Menampilkan titik tiga jika teks terlalu panjang. */
+}
+
+/* =========================================================
+   KONDISI PILIHAN DROPDOWN YANG SEDANG AKTIF
+   ========================================================= */
+.sip-select-option.is-active {
+  color: var(--sip-popup-text); /* Menggunakan warna teks utama popup. */
+  background: var(--sip-popup-hover); /* Memberikan warna latar khusus pada pilihan aktif. */
+}
+
+/* =========================================================
+   KONDISI PILIHAN DROPDOWN YANG SUDAH DIPILIH
+   ========================================================= */
+.sip-select-option[aria-selected="true"] {
+  font-weight: 600; /* Membuat teks pilihan menjadi lebih tebal. */
+  color: #fffdf8; /* Mengubah warna teks menjadi putih gading. */
+  background: var(--sip-popup-accent-strong); /* Memberikan latar emas gelap pada pilihan yang dipilih. */
+}
+
+/* =========================================================
+   TAMPILAN POPUP LUPA PASSWORD
+   ========================================================= */
+.forgot-dialog {
+  background: var(--sip-popup-surface-soft); /* Memberikan warna latar lembut pada popup lupa password. */
+  border-color: var(--sip-popup-border); /* Mengatur warna garis tepi popup. */
+}
+
+/* Bagian header popup lupa password. */
+.forgot-header {
+  background: linear-gradient(180deg, var(--sip-popup-surface) 0%, var(--sip-popup-hover) 100%); /* Memberikan gradasi warna dari atas ke bawah. */
+  border-bottom-color: var(--sip-popup-border); /* Mengatur warna garis bawah header. */
+}
+
+/* Ikon pada header popup lupa password. */
+.forgot-header-icon {
+  color: var(--sip-popup-accent-strong); /* Memberikan warna emas gelap pada ikon. */
+  background: var(--sip-popup-surface); /* Memberikan latar pada area ikon. */
+  border-color: var(--sip-popup-border); /* Mengatur warna garis tepi ikon. */
+}
+
+/* Judul popup lupa password. */
+.forgot-title {
+  color: var(--sip-popup-text); /* Menggunakan warna teks utama. */
+}
+
+/* Teks pendukung dan deskripsi popup lupa password. */
+.forgot-subtitle,
+.forgot-description {
+  color: var(--sip-popup-muted); /* Menggunakan warna teks sekunder. */
+}
+
+/* Tombol untuk menutup popup lupa password. */
+.forgot-close {
+  color: var(--sip-popup-muted); /* Mengatur warna ikon tombol tutup. */
+}
+
+/* Tampilan tombol tutup ketika diarahkan kursor. */
+.forgot-close:hover {
+  color: var(--sip-popup-text); /* Mengubah warna ikon menjadi warna teks utama. */
+  background: var(--sip-popup-hover); /* Memberikan warna latar ketika tombol diarahkan kursor. */
+}
+
+/* Area input pada popup lupa password. */
+.forgot-control {
+  background: var(--sip-popup-surface); /* Memberikan warna latar pada kolom input. */
+  border-color: var(--sip-popup-border); /* Mengatur warna garis tepi kolom input. */
+}
+
+/* Tampilan kolom input ketika sedang difokuskan. */
+.forgot-control:focus-within {
+  border-color: var(--sip-popup-accent); /* Mengubah garis tepi menjadi warna emas saat input aktif. */
+  box-shadow: 0 0 0 3px rgba(212, 175, 101, 0.16); /* Memberikan efek lingkaran bayangan tipis di sekitar input. */
+}
+
+/* =========================================================
+   TOMBOL SEKUNDER POPUP LUPA PASSWORD
+   ========================================================= */
+.forgot-button--secondary {
+  color: var(--sip-popup-text); /* Mengatur warna teks tombol sekunder. */
+  background: var(--sip-popup-hover); /* Memberikan warna latar tombol sekunder. */
+  border-color: var(--sip-popup-hover); /* Mengatur warna garis tepi tombol. */
+}
+
+/* Tampilan tombol sekunder ketika diarahkan kursor. */
+.forgot-button--secondary:hover {
+  background: #e0d1b4; /* Mengubah warna latar menjadi lebih gelap. */
+  border-color: var(--sip-popup-accent); /* Mengubah garis tepi menjadi warna emas. */
+}
+
+/* =========================================================
+   TOMBOL UTAMA POPUP LUPA PASSWORD
+   ========================================================= */
+.forgot-button--primary {
+  background: linear-gradient(90deg, var(--sip-popup-accent) 0%, var(--sip-popup-accent-strong) 100%); /* Memberikan gradasi warna emas dari kiri ke kanan. */
+}
+
+/* =========================================================
+   RINGKASAN INFORMASI POPUP LUPA PASSWORD
+   ========================================================= */
+.forgot-summary {
+  background: var(--sip-popup-surface); /* Memberikan warna latar pada area ringkasan. */
+  border-color: var(--sip-popup-border); /* Mengatur warna garis tepi ringkasan. */
+}
+
+/* Garis pemisah bagian catatan ringkasan. */
+.forgot-summary-note {
+  border-top-color: var(--sip-popup-border); /* Mengatur warna garis bagian atas catatan. */
+}
+
+/* =========================================================
+   FOKUS KEYBOARD POPUP LUPA PASSWORD
+   ========================================================= */
+.forgot-close:focus-visible,
+.forgot-button:focus-visible {
+  outline-color: var(--sip-popup-accent); /* Memberikan warna emas pada garis penanda fokus keyboard. */
+}
+
+/* =========================================================
+   TAMPILAN POPUP GANTI PASSWORD
+   ========================================================= */
+.password-dialog {
+  background: var(--sip-popup-surface-soft); /* Memberikan warna latar lembut pada popup ganti password. */
+  border-color: var(--sip-popup-border); /* Mengatur warna garis tepi popup. */
+}
+
+/* Bagian header popup ganti password. */
+.password-dialog-header {
+  background: linear-gradient(90deg, var(--sip-popup-surface) 0%, var(--sip-popup-hover) 100%); /* Memberikan gradasi warna emas lembut dari kiri ke kanan. */
+  border-bottom-color: var(--sip-popup-border); /* Mengatur warna garis bawah header. */
+}
+
+/* Ikon kunci pada header popup ganti password. */
+.password-dialog-icon {
+  color: var(--sip-popup-accent-strong); /* Memberikan warna emas gelap pada ikon. */
+  background: var(--sip-popup-surface); /* Memberikan warna latar pada area ikon. */
+  border-color: var(--sip-popup-border); /* Mengatur warna garis tepi ikon. */
+}
+
+/* Judul popup ganti password. */
+.password-dialog-title {
+  color: var(--sip-popup-text); /* Menggunakan warna teks utama popup. */
+}
+
+/* Deskripsi atau petunjuk pengisian password. */
+.password-description {
+  color: var(--sip-popup-muted); /* Menggunakan warna teks sekunder. */
+}
+
+/* Tombol untuk menutup popup ganti password. */
+.password-close {
+  color: var(--sip-popup-muted); /* Mengatur warna ikon tombol tutup. */
+}
+
+/* Tampilan tombol tutup ketika diarahkan kursor. */
+.password-close:hover {
+  color: var(--sip-popup-text); /* Mengubah warna ikon menjadi warna teks utama. */
+  background: var(--sip-popup-hover); /* Memberikan warna latar ketika tombol diarahkan kursor. */
+}
+
+/* Garis tepi kolom input password. */
+.password-input {
+  border-color: var(--sip-popup-border); /* Menggunakan warna garis tepi sesuai tema popup. */
+}
+
+/* =========================================================
+   IKON GEMBOK PADA KOLOM PASSWORD
+   ========================================================= */
+.password-control-icon {
+  display: block; /* Membuat elemen ikon ditampilkan sebagai blok. */
+}
+
+/* Membuat bagian-bagian ikon gembok menggunakan pseudo-element. */
+.password-control-icon::before,
+.password-control-icon::after {
+  position: absolute; /* Memposisikan bagian ikon secara absolut. */
+  box-sizing: border-box; /* Memasukkan padding dan border ke dalam perhitungan ukuran. */
+  content: ""; /* Membuat pseudo-element agar dapat ditampilkan. */
+  border: 1.3px solid currentColor; /* Memberikan garis tepi dengan warna mengikuti warna teks elemen. */
+}
+
+/* Bagian lengkungan atas ikon gembok. */
+.password-control-icon::before {
+  top: 3px; /* Mengatur jarak bagian atas sebesar 3 piksel. */
+  left: 4.3px; /* Mengatur jarak bagian kiri sebesar 4,3 piksel. */
+  width: 6.4px; /* Mengatur lebar lengkungan gembok. */
+  height: 3.5px; /* Mengatur tinggi lengkungan gembok. */
+  border-bottom: 0; /* Menghilangkan garis bawah agar membentuk lengkungan terbuka. */
+  border-radius: 3.2px 3.2px 0 0; /* Membulatkan kedua sudut bagian atas. */
+}
+
+/* Bagian badan ikon gembok. */
+.password-control-icon::after {
+  top: 6.5px; /* Mengatur jarak badan gembok dari bagian atas. */
+  left: 2px; /* Mengatur jarak badan gembok dari bagian kiri. */
+  width: 11px; /* Mengatur lebar badan gembok. */
+  height: 5.5px; /* Mengatur tinggi badan gembok. */
+  border-radius: 1.3px; /* Membuat sudut badan gembok sedikit membulat. */
+}
+
+/* =========================================================
+   BAGIAN TOMBOL AKSI POPUP GANTI PASSWORD
+   ========================================================= */
+.password-actions {
+  border-top-color: var(--sip-popup-border); /* Mengatur warna garis pemisah di atas tombol aksi. */
+}
+
+/* =========================================================
+   TOMBOL SEKUNDER POPUP GANTI PASSWORD
+   ========================================================= */
+.password-button--secondary {
+  color: var(--sip-popup-text); /* Mengatur warna teks tombol sekunder. */
+  background: var(--sip-popup-surface); /* Memberikan warna latar tombol sekunder. */
+  border-color: var(--sip-popup-border); /* Mengatur warna garis tepi tombol. */
+}
+
+/* Tampilan tombol sekunder ketika diarahkan kursor. */
+.password-button--secondary:hover {
+  background: var(--sip-popup-hover); /* Mengubah warna latar tombol ketika diarahkan kursor. */
+  border-color: var(--sip-popup-accent); /* Mengubah garis tepi menjadi warna emas. */
+}
+
+/* =========================================================
+   TOMBOL UTAMA POPUP GANTI PASSWORD
+   ========================================================= */
+.password-button--primary {
+  background: linear-gradient(90deg, var(--sip-popup-accent) 0%, var(--sip-popup-accent-strong) 100%); /* Memberikan gradasi warna emas pada tombol utama. */
+}
+
+/* Tampilan tombol utama ketika diarahkan kursor. */
+.password-button--primary:hover {
+  background: linear-gradient(90deg, #c9a451 0%, #a98643 100%); /* Mengubah gradasi menjadi warna emas yang lebih gelap. */
+}
+
+/* =========================================================
+   FOKUS KEYBOARD POPUP GANTI PASSWORD
+   ========================================================= */
+.password-close:focus-visible,
+.password-button:focus-visible {
+  outline-color: var(--sip-popup-accent); /* Memberikan warna emas pada garis penanda fokus keyboard. */
+}
+
+/* =========================================================
+   TAMPILAN NOTIFIKASI TOAST
+   ========================================================= */
+.toast {
+  background: #ffffff; /* Memberikan warna latar putih pada notifikasi. */
+  border-color: #e7dfd0; /* Mengatur warna garis tepi notifikasi. */
+  border-left: 3px solid #b4523e; /* Memberikan garis aksen merah kecokelatan di sisi kiri notifikasi. */
+  box-shadow: var(--sip-popup-shadow); /* Memberikan efek bayangan pada notifikasi. */
+}
+
+/* Teks utama pada notifikasi toast. */
+.toast-copy strong {
+  color: var(--sip-popup-text); /* Menggunakan warna teks utama. */
+}
+
+/* Teks pendukung pada notifikasi toast. */
+.toast-copy span {
+  color: var(--sip-popup-muted); /* Menggunakan warna teks sekunder. */
+}
+
+/* Tombol untuk menutup notifikasi toast. */
+.toast-close {
+  color: var(--sip-popup-muted); /* Mengatur warna ikon tombol tutup. */
+}
+
+/* Tampilan tombol tutup notifikasi ketika diarahkan kursor. */
+.toast-close:hover {
+  color: var(--sip-popup-text); /* Mengubah warna ikon menjadi warna teks utama. */
+  background: var(--sip-popup-hover); /* Memberikan warna latar ketika diarahkan kursor. */
+}
+
+/* Tampilan fokus keyboard pada tombol tutup notifikasi. */
+.toast-close:focus-visible {
+  outline-color: var(--sip-popup-accent); /* Memberikan warna emas pada garis penanda fokus keyboard. */
+}
+
+/* =========================================================
+   ANIMASI KEMUNCULAN POPUP DROPDOWN
+   ========================================================= */
+@keyframes sip-select-popup-enter {
+  from {
+    opacity: 0; /* Kondisi awal: popup tidak terlihat. */
+    transform: translateY(-2px) scale(0.99); /* Popup dimulai sedikit lebih tinggi dan sedikit lebih kecil. */
+  }
+
+  to {
+    opacity: 1; /* Kondisi akhir: popup terlihat sepenuhnya. */
+    transform: translateY(0) scale(1); /* Popup kembali ke posisi dan ukuran normal. */
+  }
+}
+
+/* =========================================================
+   PENGATURAN GERAKAN MINIMAL
+   ========================================================= */
+@media (prefers-reduced-motion: reduce) {
+  /* Mengurangi animasi popup dropdown untuk pengguna yang memilih gerakan minimal. */
+  .sip-select-popup {
+    animation: none; /* Menonaktifkan animasi kemunculan popup. */
+  }
+
+  /* Mengurangi efek transisi pada pilihan dropdown. */
+  .sip-select-option {
+    transition: none; /* Menonaktifkan transisi perubahan warna pilihan. */
+  }
+}

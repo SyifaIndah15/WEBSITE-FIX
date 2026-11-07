@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Profil administrator sistem SIPRESMA beserta informasi identitas dan pengelolaan kredensial akun portal.">
+  <title>Profil Saya - SIPRESMA</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Roboto:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../../css/shared/motion.css">
+  <link rel="stylesheet" href="../../css/admin/dashboard.css">
+  <link rel="stylesheet" href="../../css/admin/sidebar.css">
+  <link rel="stylesheet" href="../../css/admin/content.css">
+  <link rel="stylesheet" href="../../css/shared/overlays.css">
+  <link rel="stylesheet" href="../../css/admin/profil.css">
+</head>
+<body class="profile-page">
+
+  <div class="dashboard-layout">
+
+    <input class="sidebar-toggle-input" type="checkbox" id="sidebar-toggle" aria-controls="sidebar" aria-label="Buka atau tutup menu navigasi">
+
+    <aside class="sidebar" id="sidebar">
+
+      <a class="sidebar-brand" href="dashboard.html" aria-label="SIPRESMA Dashboard Admin">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="8" r="5.6"/>
+            <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>
+          </svg>
+        </span>
+        <span class="brand-copy">
+          <span class="brand-name">SIPRESMA</span>
+          <span class="brand-tagline">Prestasi Mahasiswa</span>
+        </span>
+      </a>
+
+      <div class="access-row">
+        <svg class="access-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/>
+          <path d="m9 12 2 2 4-4"/>
+        </svg>
+        <span class="access-label">Hak Akses:</span>
+        <span class="access-role">Administrator</span>
+      </div>
+
+      <div class="sidebar-menu">
+        <p class="menu-label">Menu Utama</p>
+        <nav class="sidebar-nav" aria-label="Navigasi utama">
+
+          <a class="nav-link" href="dashboard.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="3" width="7" height="7" rx="1"/>
+              <rect x="14" y="3" width="7" height="7" rx="1"/>
+              <rect x="3" y="14" width="7" height="7" rx="1"/>
+              <rect x="14" y="14" width="7" height="7" rx="1"/>
+            </svg>
+            <span>Dashboard</span>
+          </a>
+
+          <a class="nav-link" href="data-mahasiswa.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="8.6" cy="8.2" r="3.2"/>
+              <path d="M2.8 19.2c.4-3.5 2.6-5.5 5.8-5.5s5.4 2 5.8 5.5"/>
+              <path d="M15.8 5.3a3 3 0 0 1 0 5.5"/>
+              <path d="M17.6 13.9c2.1.6 3.4 2.4 3.6 5.3"/>
+            </svg>
+            <span>Data Mahasiswa &amp; Akademik</span>
+          </a>
+
+          <a class="nav-link" href="data-dosen.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m3 8 9-5 9 5-9 5-9-5Z"/>
+              <path d="M7 10v5c3 3 7 3 10 0v-5"/>
+              <path d="M21 8v7"/>
+            </svg>
+            <span>Data Dosen</span>
+          </a>
+
+          <a class="nav-link" href="daftar-prestasi.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M8 4h8v5a4 4 0 0 1-8 0V4Z"/>
+              <path d="M8 5H5.6a2.4 2.4 0 0 0 0 4.8H8"/>
+              <path d="M16 5h2.4a2.4 2.4 0 0 1 0 4.8H16"/>
+              <path d="M12 13v3"/>
+              <path d="M9 20h6"/>
+              <path d="M9 20l3-3.4 3 3.4"/>
+            </svg>
+            <span>Data Prestasi Mahasiswa</span>
+          </a>
+
+          <a class="nav-link" href="verifikasi-prestasi.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/>
+              <path d="M14 3v5h5"/>
+              <path d="m9 14 2 2 4-4"/>
+            </svg>
+            <span>Verifikasi Sertifikat</span>
+          </a>
+
+          <a class="nav-link" href="hasil-klasifikasi.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4 19V5"/>
+              <path d="M4 19h16"/>
+              <path d="M8 15v-4"/>
+              <path d="M12 15V8"/>
+              <path d="M16 15v-6"/>
+            </svg>
+            <span>Hasil Klasifikasi</span>
+          </a>
+
+          <a class="nav-link" href="reset-password.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/>
+              <circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/>
+            </svg>
+            <span>Reset Password</span>
+          </a>
+
+          <a class="nav-link is-active" href="profil.html" aria-current="page">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="8" r="3.7"/>
+              <path d="M5.3 20c.5-3.9 3-6.1 6.7-6.1s6.2 2.2 6.7 6.1"/>
+            </svg>
+            <span>Profil Saya</span>
+          </a>
+
+        </nav>
+      </div>
+
+      <div class="sidebar-decoration" aria-hidden="true">
+        <svg viewBox="0 0 253 42" preserveAspectRatio="none">
+          <g fill="none" stroke="#b99555" stroke-width="1" vector-effect="non-scaling-stroke">
+            <path d="M-4 23C35 12 66 12 104 18C142 24 166 35 204 30C226 27 241 18 257 12" stroke-opacity=".38"/>
+            <path d="M-4 33C38 22 72 23 110 29C148 35 172 41 210 36C231 33 244 27 257 22" stroke-opacity=".24"/>
+          </g>
+        </svg>
+      </div>
+
+      <div class="sidebar-footer">
+        <a class="logout-link" href="../../index.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M10 20.5H6.5A2.5 2.5 0 0 1 4 18V6a2.5 2.5 0 0 1 2.5-2.5H10"/>
+            <path d="M14.5 16.5 19 12l-4.5-4.5"/>
+            <path d="M19 12H9.5"/>
+          </svg>
+          <span>Keluar (Logout)</span>
+        </a>
+      </div>
+
+    </aside>
+
+    <label class="sidebar-overlay" for="sidebar-toggle" aria-label="Tutup menu navigasi"></label>
+
+    <div class="main-shell">
+
+      <header class="topbar">
+        <label class="menu-toggle menu-toggle--desktop" for="sidebar-toggle">
+          <svg viewBox="0 0 20 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+            <path d="M1 1h18M1 7h18M1 13h18"/>
+          </svg>
+        </label>
+
+        <label class="menu-toggle menu-toggle--mobile" for="sidebar-toggle">
+          <svg viewBox="0 0 20 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+            <path d="M1 1h18M1 7h18M1 13h18"/>
+          </svg>
+        </label>
+
+        <div class="topbar-heading">
+          <nav class="breadcrumbs" aria-label="Breadcrumb">
+            <span class="crumb-brand">SIPRESMA</span>
+            <span class="crumb-sep" aria-hidden="true">/</span>
+            <span>Admin</span>
+            <span class="crumb-sep" aria-hidden="true">/</span>
+            <span class="crumb-current" aria-current="page">Profil Saya</span>
+          </nav>
+          <h1 class="page-title">Profil Saya</h1>
+        </div>
+
+        <svg class="topbar-waves" viewBox="0 0 1228 64" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0 58C170 58 280 38 430 38C580 38 620 52 770 49C920 46 1010 18 1135 17C1180 17 1205 19 1228 21" fill="none" stroke="#c6a86f" stroke-width="1" vector-effect="non-scaling-stroke"/>
+        </svg>
+      </header>
+
+      <main class="page-content profile-content" id="profile-content">
+        <div class="profile-shell">
+
+          <header class="profile-heading">
+            <h2 class="profile-title" id="profile-title">Profil Saya (Administrator Sistem)</h2>
+            <p class="profile-description">Identitas pengelola sistem dan pengelolaan kredensial akun portal SIPRESMA.</p>
+          </header>
+
+          <section class="profile-card" aria-labelledby="profile-title">
+
+            <div class="profile-cover" aria-hidden="true">
+              <svg class="profile-cover-waves" viewBox="0 0 768 113" preserveAspectRatio="none">
+                <g fill="none" stroke="#c8a667" stroke-width="1" vector-effect="non-scaling-stroke">
+                  <path d="M-12 41C84 22 153 22 245 37C337 52 402 78 497 69C584 61 642 29 780 16" stroke-opacity=".36"/>
+                  <path d="M-9 83C87 63 162 63 251 77C340 91 416 107 507 98C600 89 672 57 781 45" stroke-opacity=".22"/>
+                  <path d="M-6 108C88 93 168 94 256 105C345 116 421 127 512 119C605 111 681 88 782 73" stroke-opacity=".14"/>
+                </g>
+              </svg>
+            </div>
+
+            <div class="profile-avatar" role="img" aria-label="Ilustrasi foto profil Bambang Sudarsono">
+              <svg viewBox="0 0 64 64" aria-hidden="true">
+                <rect width="64" height="64" rx="7" fill="#fffaf2"/>
+                <path d="M7 65c1.1-12.8 10-19.9 25-19.9S56 52.2 57 65H7Z" fill="#86cfe2"/>
+                <path d="M26.1 40.5h11.8v9.9c0 3.2-2.6 5.2-5.9 5.2s-5.9-2-5.9-5.2v-9.9Z" fill="#efb083"/>
+                <path d="M25.8 54.1 32 59l6.2-4.9 5.5 2.8c1.8 1 2.9 2.7 3.3 5.6H7c.4-2.9 1.5-4.6 3.3-5.6l5.5-2.8Z" fill="#f8fcff"/>
+                <circle cx="17.6" cy="30.5" r="3.1" fill="#f2b184"/>
+                <circle cx="46.4" cy="30.5" r="3.1" fill="#f2b184"/>
+                <circle cx="32" cy="29.2" r="14.3" fill="#f4b88a"/>
+                <path d="M17.2 30.2c-.9-11 4.9-19.7 14.7-19.7 9.9 0 15.6 8.6 14.9 19.7-.1 2.2-.6 3.7-1.3 5 .1-6.2-1.3-10-4.9-11.8-4.6 3.2-11.8 4.4-17.2 2.3-3.2-1.2-4.5.9-4.8 4.8-.2 1.8-1.2 1.7-1.4-.3Z" fill="#e88a3e"/>
+                <path d="M19.1 20.2c2.2-5.8 7.1-9 13.5-9 6.5 0 11.2 3.4 13.1 9.2-2.6-2.7-6.1-4.1-10.5-4.1-5.6 0-10.1 1.4-16.1 3.9Z" fill="#f09a4d"/>
+                <path d="M27 29.2h.01M37 29.2h.01" stroke="#4a3327" stroke-width="2.2" stroke-linecap="round"/>
+                <path d="M27.1 35.3c2.6 2.7 7.2 2.7 9.8 0" fill="none" stroke="#b65f53" stroke-width="1.5" stroke-linecap="round"/>
+                <circle cx="22.8" cy="34.1" r="1.7" fill="#f19a91" opacity=".48"/>
+                <circle cx="41.2" cy="34.1" r="1.7" fill="#f19a91" opacity=".48"/>
+              </svg>
+            </div>
+
+            <div class="profile-body">
+
+              <div class="profile-identity">
+                <div>
+                  <h3 class="profile-name">Bambang Sudarsono, S.Kom., M.Cs.</h3>
+                  <p class="profile-meta">
+                    <span>Username: admin</span>
+                    <span class="profile-meta-dot" aria-hidden="true">-</span>
+                    <span>Administrator Utama</span>
+                  </p>
+                </div>
+
+                <span class="profile-role-badge" aria-label="Peran: Administrator Sistem">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/>
+                    <path d="m9 12 2 2 4-4"/>
+                  </svg>
+                  <span>Administrator Sistem</span>
+                </span>
+              </div>
+
+              <div class="profile-divider" aria-hidden="true"></div>
+
+              <dl class="profile-details">
+
+                <div class="profile-detail">
+                  <dt>Program Studi:</dt>
+                  <dd>Teknik Informatika</dd>
+                </div>
+
+                <div class="profile-detail">
+                  <dt>Email Akun:</dt>
+                  <dd class="profile-email">admin@univ.ac.id</dd>
+                </div>
+
+                <div class="profile-detail">
+                  <dt>Fakultas:</dt>
+                  <dd>Fakultas Teknologi Informasi</dd>
+                </div>
+
+                <div class="profile-detail">
+                  <dt>Hak Otorisasi Sistem:</dt>
+                  <dd>Pengelolaan Penuh (Full Control Data &amp; Verifikasi)</dd>
+                </div>
+              </dl>
+            </div>
+          </section>
+
+          <div class="profile-security" id="profile-security">
+
+            <div class="profile-success" id="password-success" role="status" aria-live="polite" tabindex="-1">
+              <span class="profile-success-icon" aria-hidden="true">
+                <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="10" cy="10" r="7.4"/>
+                  <path d="m6.6 10.1 2.2 2.2 4.7-4.7"/>
+                </svg>
+              </span>
+              <div class="profile-success-copy">
+                <strong>Password Berhasil Diperbarui!</strong>
+                <p>Kata sandi baru telah tersimpan dan akan digunakan pada saat Anda login berikutnya.</p>
+              </div>
+            </div>
+
+            <a class="profile-password-button" id="open-password" href="#password-modal" aria-haspopup="dialog" aria-controls="password-modal">
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M5.8 8.2V6.5a4.2 4.2 0 0 1 8.4 0v1.7"/>
+                <rect x="3.8" y="8.2" width="12.4" height="8.1" rx="1.5"/>
+                <path d="M10 11.5v2.1"/>
+              </svg>
+              <span>Ganti Password</span>
+            </a>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <div class="password-modal" id="password-modal">
+
+    <a class="password-backdrop" id="password-backdrop" href="#profile-content" tabindex="-1" aria-label="Tutup popup ganti password"></a>
+
+    <section class="password-dialog profile-password-dialog" id="password-dialog" role="dialog" aria-modal="true" aria-labelledby="password-title" aria-describedby="password-description" tabindex="-1">
+
+      <header class="password-dialog-header profile-password-header">
+
+        <span class="profile-password-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/>
+            <circle cx="16.5" cy="7.5" r="1.5" fill="currentColor" stroke="none"/>
+          </svg>
+        </span>
+
+        <h2 class="password-dialog-title" id="password-title">Ganti Password Akun</h2>
+
+        <a class="password-close" id="close-password" href="#profile-content" aria-label="Tutup popup ganti password">
+          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.45" stroke-linecap="round" aria-hidden="true">
+            <path d="m2.2 2.2 9.6 9.6M11.8 2.2 2.2 11.8"/>
+          </svg>
+        </a>
+      </header>
+
+      <form class="password-form" id="password-form" method="get" action="#password-success">
+
+        <p class="password-description" id="password-description">Silakan masukkan password lama Anda, kemudian buat password baru dengan minimal 6 karakter.</p>
+
+        <p class="password-form-error" id="password-form-error" role="alert" hidden></p>
+
+        <div class="password-field">
+          <label class="password-label" for="old-password">Password Lama</label>
+
+          <div class="password-control">
+
+            <span class="password-control-icon" aria-hidden="true">
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="4.4" y="8.2" width="11.2" height="8" rx="1.8"/>
+                <path d="M6.8 8.2V6.4a3.2 3.2 0 0 1 6.4 0v1.8"/>
+              </svg>
+            </span>
+
+            <input class="password-input" id="old-password" type="password" placeholder="Masukkan password saat ini" autocomplete="current-password" required aria-describedby="old-password-error">
+
+            <span class="password-toggle password-toggle--static" aria-hidden="true">
+              <svg class="eye-open" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2.8 10c1.2-2.9 3.8-5.8 7.2-5.8s6 2.9 7.2 5.8c-1.2 2.9-3.8 5.8-7.2 5.8S4 12.9 2.8 10Z"/>
+                <circle cx="10" cy="10" r="2.3"/>
+              </svg>
+            </span>
+          </div>
+
+          <p class="password-error" id="old-password-error" role="alert" hidden>Password lama wajib diisi.</p>
+        </div>
+
+        <div class="password-field">
+          <label class="password-label" for="new-password">Password Baru</label>
+
+          <div class="password-control">
+
+            <span class="password-control-icon" aria-hidden="true">
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="4.4" y="8.2" width="11.2" height="8" rx="1.8"/>
+                <path d="M6.8 8.2V6.4a3.2 3.2 0 0 1 6.4 0v1.8"/>
+              </svg>
+            </span>
+
+            <input class="password-input" id="new-password" type="password" placeholder="Minimal 6 karakter" autocomplete="new-password" minlength="6" required aria-describedby="new-password-error">
+
+            <span class="password-toggle password-toggle--static" aria-hidden="true">
+              <svg class="eye-open" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2.8 10c1.2-2.9 3.8-5.8 7.2-5.8s6 2.9 7.2 5.8c-1.2 2.9-3.8 5.8-7.2 5.8S4 12.9 2.8 10Z"/>
+                <circle cx="10" cy="10" r="2.3"/>
+              </svg>
+            </span>
+          </div>
+
+          <p class="password-error" id="new-password-error" role="alert" hidden>Password baru minimal 6 karakter.</p>
+        </div>
+
+        <div class="password-field">
+          <label class="password-label" for="confirm-password">Konfirmasi Password Baru</label>
+
+          <div class="password-control">
+
+            <span class="password-control-icon" aria-hidden="true">
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="4.4" y="8.2" width="11.2" height="8" rx="1.8"/>
+                <path d="M6.8 8.2V6.4a3.2 3.2 0 0 1 6.4 0v1.8"/>
+              </svg>
+            </span>
+
+            <input class="password-input" id="confirm-password" type="password" placeholder="Ulangi password baru" autocomplete="new-password" minlength="6" required aria-describedby="confirm-password-error">
+
+            <span class="password-toggle password-toggle--static" aria-hidden="true">
+              <svg class="eye-open" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2.8 10c1.2-2.9 3.8-5.8 7.2-5.8s6 2.9 7.2 5.8c-1.2 2.9-3.8 5.8-7.2 5.8S4 12.9 2.8 10Z"/>
+                <circle cx="10" cy="10" r="2.3"/>
+              </svg>
+            </span>
+          </div>
+
+          <p class="password-error" id="confirm-password-error" role="alert" hidden>Konfirmasi password wajib diisi.</p>
+        </div>
+
+        <div class="password-actions">
+
+          <a class="password-button password-button--secondary" id="cancel-password" href="#profile-content">Batal</a>
+
+          <button class="password-button password-button--primary" id="save-password" type="submit">Simpan Perubahan</button>
+        </div>
+      </form>
+    </section>
+  </div>
+</body>
+</html>

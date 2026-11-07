@@ -1,0 +1,1106 @@
+/* Menyembunyikan elemen yang memiliki atribut hidden.
+   !important memastikan elemen tetap tersembunyi. */
+[hidden] {
+  display: none !important;
+}
+
+/* Mengatur background khusus untuk halaman pengajuan prestasi. */
+body.apply-page {
+  background-color: #f8f3e7;
+  background-image:
+    /* Efek cahaya lembut di sudut kiri atas. */
+    radial-gradient(ellipse 34% 16% at 0% 0%, rgba(248, 243, 230, 0.92) 0%, rgba(248, 243, 230, 0) 100%),
+    /* Efek cahaya lembut di sudut kanan atas. */
+    radial-gradient(ellipse 34% 18% at 100% 0%, rgba(248, 243, 230, 0.78) 0%, rgba(248, 243, 230, 0) 100%),
+    /* Gradasi warna cream dari atas ke bawah halaman. */
+    linear-gradient(180deg, #f5ebd6 0%, #f3e9d4 10%, #f3e8d3 24%, #f4ead6 42%, #f5eddc 62%, #f7f1e2 75%, #f8f3e7 80%, #f8f3e7 100%);
+  background-attachment: fixed;
+}
+
+/* Mengatur jarak bagian konten halaman pengajuan dari bagian atas. */
+.apply-content {
+  padding-top: 32px;
+}
+
+/* Membatasi lebar area utama formulir pengajuan prestasi. */
+.apply-shell {
+  width: 100%;
+  max-width: 768px;
+}
+
+/* Memberikan jarak di bawah bagian judul halaman. */
+.apply-heading {
+  margin-bottom: 24px;
+}
+
+/* Mengatur tampilan judul halaman pengajuan prestasi. */
+.apply-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 25px;
+  letter-spacing: -0.05px;
+  color: #30291f;
+  position: relative;
+  top: 1px;
+}
+
+/* Mengatur teks deskripsi yang berada di bawah judul. */
+.apply-description {
+  margin: 6px 0 0;
+  font-size: 11.1px;
+  font-weight: 400;
+  line-height: 16px;
+  letter-spacing: 0;
+  color: #7b7164;
+}
+
+/* Mengatur tampilan card utama yang membungkus formulir. */
+.apply-card {
+  overflow: visible;
+  background: #fbf6eb;
+  border: 1px solid #e6d8be;
+  border-radius: 11px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 253, 247, 0.7),
+    0 1px 2px rgba(94, 71, 36, 0.035);
+}
+
+/* Mengatur informasi mahasiswa pada bagian atas formulir. */
+.student-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  height: 49px;
+  margin: 32px 31px 18px 33px;
+  padding: 0 19px 0 15px;
+  font-size: 11.4px;
+  font-weight: 400;
+  line-height: 16px;
+  letter-spacing: 0;
+  color: #7b7164;
+  background: #e9dcc2;
+  border-radius: 8px;
+}
+
+/* Mengatur posisi dan tampilan paragraf pada informasi mahasiswa. */
+.student-bar p {
+  position: relative;
+  top: -1px;
+  margin: 0;
+  white-space: nowrap;
+}
+
+/* Memberikan penegasan pada teks penting di informasi mahasiswa. */
+.student-bar strong {
+  font-weight: 600;
+  color: #30291f;
+}
+
+/* Mengatur warna teks tambahan pada informasi mahasiswa. */
+.student-bar span {
+  color: #7b7164;
+}
+
+/* Mengatur jarak bagian dalam formulir. */
+.apply-form {
+  padding: 0 31px 20px 33px;
+}
+
+/* Memastikan setiap kelompok field formulir dapat menyesuaikan lebar. */
+.form-field {
+  min-width: 0;
+}
+
+/* Memberikan jarak antara satu field dengan field berikutnya. */
+.form-field + .form-field {
+  margin-top: 20px;
+}
+
+/* Menyembunyikan field capaian lainnya secara default. */
+#capaian-lainnya-field {
+  display: none;
+}
+
+/* Menampilkan field capaian lainnya ketika pilihan Lainnya dipilih. */
+.apply-form:has(#peringkat-lainnya:checked) #capaian-lainnya-field {
+  display: block;
+}
+
+/* Mengatur field formulir dalam dua kolom. */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 19px 16px;
+  margin-top: 20px;
+}
+
+/* Menghilangkan jarak atas tambahan pada field di dalam grid. */
+.form-grid > .form-field {
+  margin-top: 0;
+}
+
+/* Memberikan jarak antara grid dan field setelahnya. */
+.form-grid + .form-field {
+  margin-top: 20px;
+}
+
+/* Mengatur tampilan label pada setiap field formulir. */
+.form-label {
+  display: block;
+  margin: 0 0 4px;
+  font-size: 11.2px;
+  font-weight: 600;
+  line-height: 16px;
+  letter-spacing: 0;
+  color: #30291f;
+}
+
+/* Mengatur tampilan umum input dan kontrol formulir. */
+.form-control {
+  width: 100%;
+  height: 31px;
+  padding: 0 12px;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: normal;
+  color: #30291f;
+  appearance: none;
+  background: #f8f3e7;
+  border: 1px solid #eee8da;
+  border-radius: 8px;
+  box-shadow: inset 0 1px 1px rgba(104, 81, 47, 0.02);
+  transition: border-color 0.16s ease, box-shadow 0.16s ease, background-color 0.16s ease;
+}
+
+/* Mengatur tampilan teks petunjuk di dalam input. */
+.form-control::placeholder {
+  font-size: 11px;
+  color: #ada598;
+  opacity: 1;
+}
+
+/* Mengubah warna border ketika input disentuh atau diarahkan kursor. */
+.form-control:hover {
+  border-color: #d9c9ac;
+}
+
+/* Memberikan penanda visual ketika input sedang dipilih atau aktif. */
+.form-control:focus {
+  outline: 0;
+  background: #fbf7ed;
+  border-color: #bd9b58;
+  box-shadow: 0 0 0 2px rgba(193, 160, 90, 0.13);
+}
+
+/* Memberikan tampilan khusus pada input yang ditandai tidak valid. */
+.form-control.is-invalid {
+  background: #fbf4ec;
+  border-color: #cd7b68;
+  box-shadow: 0 0 0 2px rgba(181, 87, 67, 0.08);
+}
+
+/* Menyembunyikan pesan kesalahan formulir secara default. */
+.field-error {
+  display: none;
+  margin: 4px 0 0;
+  font-size: 9.6px;
+  font-weight: 500;
+  line-height: 13px;
+  color: #b4523e;
+}
+
+/* Menyusun judul dan keterangan pesan kesalahan upload dalam dua baris. */
+#evidence-file-error strong,
+#evidence-file-error span {
+  display: block;
+}
+
+/* Memberikan jarak tipis antara judul dan keterangan kesalahan upload. */
+#evidence-file-error span {
+  margin-top: 1px;
+  font-weight: 400;
+}
+
+/* Menampilkan pesan kesalahan ketika input atau file tidak valid. */
+.form-field:has(.form-control:user-invalid) .field-error,
+.form-field:has(.file-input:user-invalid) .field-error,
+.form-field:has(.form-control.is-invalid) .field-error,
+.form-field:has(.file-input.is-invalid) .field-error {
+  display: block;
+}
+
+/* Memberikan tampilan error pada input yang tidak lolos validasi browser. */
+.form-control:user-invalid {
+  background: #fbf4ec;
+  border-color: #cd7b68;
+  box-shadow: 0 0 0 2px rgba(181, 87, 67, 0.08);
+}
+
+/* Menjadi wadah untuk tombol pilihan atau dropdown. */
+.select-field {
+  position: relative;
+}
+
+.select-input {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  opacity: 0;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* Mengatur tampilan tombol pemicu dropdown. */
+.select-trigger {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 36px;
+  padding: 0 36px 0 15px;
+  align-items: center;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1;
+  color: #30291f;
+  text-align: left;
+  appearance: none;
+  background: #f8f3e7;
+  border: 1px solid #eee8da;
+  border-radius: 8px;
+  box-shadow: inset 0 1px 1px rgba(104, 81, 47, 0.02);
+  cursor: pointer;
+  user-select: none;
+  transition: border-color 0.16s ease, box-shadow 0.16s ease, background-color 0.16s ease;
+}
+
+.select-trigger-value {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.select-value-label {
+  display: none;
+}
+
+/* Mengubah warna border dropdown ketika kursor diarahkan ke atasnya. */
+.select-trigger:hover {
+  border-color: #d9c9ac;
+}
+
+/* Memberikan penanda fokus pada dropdown saat dipilih melalui keyboard. */
+.select-trigger:focus-visible {
+  outline: 0;
+  border-color: #bd9b58;
+  box-shadow: 0 0 0 2px rgba(193, 160, 90, 0.18);
+}
+
+#jenis-prestasi-akademik:checked ~ .select-trigger .select-value-label--akademik,
+#jenis-prestasi-non-akademik:checked ~ .select-trigger .select-value-label--non-akademik,
+#tingkat-kejuaraan-nasional:checked ~ .select-trigger .select-value-label--nasional,
+#tingkat-kejuaraan-internasional:checked ~ .select-trigger .select-value-label--internasional,
+#tingkat-kejuaraan-provinsi:checked ~ .select-trigger .select-value-label--provinsi,
+#tingkat-kejuaraan-kabupaten-kota:checked ~ .select-trigger .select-value-label--kabupaten-kota,
+#tingkat-kejuaraan-kampus:checked ~ .select-trigger .select-value-label--kampus,
+#peringkat-juara-1:checked ~ .select-trigger .select-value-label--juara-1,
+#peringkat-juara-2:checked ~ .select-trigger .select-value-label--juara-2,
+#peringkat-juara-3:checked ~ .select-trigger .select-value-label--juara-3,
+#peringkat-harapan-1:checked ~ .select-trigger .select-value-label--harapan-1,
+#peringkat-harapan-2:checked ~ .select-trigger .select-value-label--harapan-2,
+#peringkat-lainnya:checked ~ .select-trigger .select-value-label--lainnya,
+#tahun-pelaksanaan-2026:checked ~ .select-trigger .select-value-label--2026,
+#tahun-pelaksanaan-2025:checked ~ .select-trigger .select-value-label--2025,
+#tahun-pelaksanaan-2024:checked ~ .select-trigger .select-value-label--2024,
+#tahun-pelaksanaan-2023:checked ~ .select-trigger .select-value-label--2023,
+#tahun-pelaksanaan-2022:checked ~ .select-trigger .select-value-label--2022,
+#tahun-pelaksanaan-2021:checked ~ .select-trigger .select-value-label--2021,
+#tahun-pelaksanaan-2020:checked ~ .select-trigger .select-value-label--2020 {
+  display: inline;
+}
+
+.select-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  z-index: 25;
+  display: none;
+  width: 100%;
+  padding: 3px;
+  overflow: hidden;
+  background: #fffdf8;
+  border: 1px solid #d8d1c4;
+  border-radius: 6px;
+  box-shadow: 0 10px 26px rgba(72, 54, 27, 0.16);
+}
+
+.select-trigger:focus .select-menu,
+.select-trigger:focus-within .select-menu {
+  display: block;
+}
+
+.select-item {
+  display: flex;
+  align-items: center;
+  height: 26px;
+  padding: 0 10px;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1;
+  color: #524635;
+  white-space: nowrap;
+  cursor: pointer;
+  border-bottom: 1px solid #ece5d9;
+  border-radius: 3px;
+  transition: background-color 140ms ease, color 140ms ease;
+}
+
+.select-item:last-child {
+  border-bottom: 0;
+}
+
+.select-item:hover {
+  background: #f4ead7;
+}
+
+#jenis-prestasi-akademik:checked ~ .select-trigger .select-menu .select-item--akademik,
+#jenis-prestasi-non-akademik:checked ~ .select-trigger .select-menu .select-item--non-akademik,
+#tingkat-kejuaraan-nasional:checked ~ .select-trigger .select-menu .select-item--nasional,
+#tingkat-kejuaraan-internasional:checked ~ .select-trigger .select-menu .select-item--internasional,
+#tingkat-kejuaraan-provinsi:checked ~ .select-trigger .select-menu .select-item--provinsi,
+#tingkat-kejuaraan-kabupaten-kota:checked ~ .select-trigger .select-menu .select-item--kabupaten-kota,
+#tingkat-kejuaraan-kampus:checked ~ .select-trigger .select-menu .select-item--kampus,
+#peringkat-juara-1:checked ~ .select-trigger .select-menu .select-item--juara-1,
+#peringkat-juara-2:checked ~ .select-trigger .select-menu .select-item--juara-2,
+#peringkat-juara-3:checked ~ .select-trigger .select-menu .select-item--juara-3,
+#peringkat-harapan-1:checked ~ .select-trigger .select-menu .select-item--harapan-1,
+#peringkat-harapan-2:checked ~ .select-trigger .select-menu .select-item--harapan-2,
+#peringkat-lainnya:checked ~ .select-trigger .select-menu .select-item--lainnya,
+#tahun-pelaksanaan-2026:checked ~ .select-trigger .select-menu .select-item--2026,
+#tahun-pelaksanaan-2025:checked ~ .select-trigger .select-menu .select-item--2025,
+#tahun-pelaksanaan-2024:checked ~ .select-trigger .select-menu .select-item--2024,
+#tahun-pelaksanaan-2023:checked ~ .select-trigger .select-menu .select-item--2023,
+#tahun-pelaksanaan-2022:checked ~ .select-trigger .select-menu .select-item--2022,
+#tahun-pelaksanaan-2021:checked ~ .select-trigger .select-menu .select-item--2021,
+#tahun-pelaksanaan-2020:checked ~ .select-trigger .select-menu .select-item--2020 {
+  font-weight: 600;
+  color: #fffdf7;
+  background: linear-gradient(90deg, #c5a25c 0%, #9d7a42 100%);
+}
+
+/* Mengatur posisi dan tampilan ikon panah dropdown. */
+.select-chevron {
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  width: 9px;
+  height: 6px;
+  color: #8a7b60;
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+
+/* Mengatur area unggah file atau bukti prestasi. */
+.upload-box {
+  min-height: 178px;
+  padding: 28px 20px 27px;
+  text-align: center;
+  background: #f8f3e7;
+  border: 1px dashed #dec289;
+  border-radius: 8px;
+  transition: border-color 0.18s ease, background-color 0.18s ease;
+}
+
+/* Mengubah tampilan area unggah ketika kursor diarahkan ke atasnya. */
+.upload-box:hover {
+  background: #faf6ec;
+  border-color: #d2b276;
+}
+
+/* Mengatur ukuran dan posisi ikon unggah file. */
+.upload-icon {
+  width: 30px;
+  height: 27px;
+  margin: 0 auto 9px;
+  color: #b89550;
+}
+
+/* Mengatur judul pada area unggah file. */
+.upload-title {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 16px;
+  color: #30291f;
+}
+
+/* Mengatur teks petunjuk tambahan pada area unggah file. */
+.upload-note {
+  margin: 6px 0 0;
+  font-size: 10.1px;
+  font-weight: 400;
+  line-height: 15px;
+  color: #7b7164;
+}
+
+/* Mengatur tampilan tombol untuk memilih file dari perangkat. */
+.upload-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 31px;
+  margin-top: 17px;
+  padding: 0 12px;
+  font-family: inherit;
+  font-size: 10.5px;
+  font-weight: 600;
+  line-height: 1;
+  color: #fffaf0;
+  text-decoration: none;
+  appearance: none;
+  cursor: pointer;
+  user-select: none;
+  background: #b89550;
+  border: 1px solid #b89550;
+  border-radius: 4px;
+  transition: background-color 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease;
+}
+
+/* Mengubah warna tombol unggah ketika kursor diarahkan ke atasnya. */
+.upload-button:hover {
+  background: #aa8948;
+  border-color: #aa8948;
+}
+
+/* Memberikan garis fokus ketika tombol unggah dipilih melalui keyboard. */
+.upload-button:focus-visible {
+  outline: 2px solid #a98443;
+  outline-offset: 2px;
+}
+
+/* Memberikan penanda error pada tombol unggah ketika file tidak valid. */
+.upload-button.is-invalid {
+  border-color: #c46d59;
+  box-shadow: 0 0 0 2px rgba(181, 87, 67, 0.08);
+}
+
+/* Menyembunyikan input file asli secara visual tanpa menghapus fungsinya. */
+.file-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Menampilkan garis fokus pada tombol unggah ketika input file difokuskan. */
+.file-input:focus-visible ~ .upload-button {
+  outline: 2px solid #a98443;
+  outline-offset: 2px;
+}
+
+/* Mengatur tampilan informasi file yang sudah dipilih. */
+.file-status {
+  display: none;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px 6px;
+  margin-top: 8px;
+  padding: 6px 9px;
+  font-size: 9.5px;
+  line-height: 13px;
+  color: #675943;
+  text-align: left;
+  background: #fffdf7;
+  border: 1px solid #e4d6bd;
+  border-radius: 5px;
+}
+
+/* Menampilkan informasi file ketika input file berisi file yang valid. */
+.upload-box:has(.file-input:valid) .file-status {
+  display: flex;
+}
+
+/* Mengubah border area unggah jika file yang dipilih tidak valid. */
+.upload-box:has(.file-input:user-invalid),
+.upload-box:has(.file-input.is-invalid) {
+  border-color: #c46d59;
+}
+
+/* Mengatur wadah ikon file yang ditampilkan pada informasi file. */
+.file-icon {
+  display: grid;
+  flex: 0 0 18px;
+  place-items: center;
+  width: 18px;
+  height: 20px;
+  color: #ae8f55;
+}
+
+/* Mengatur ukuran ikon SVG pada informasi file. */
+.file-icon svg {
+  width: 15px;
+  height: 18px;
+}
+
+/* Mengatur tampilan nama file yang telah dipilih. */
+.file-name {
+  max-width: 320px;
+  overflow: hidden;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #514432;
+}
+
+/* Mengatur warna teks informasi ukuran file. */
+.file-size {
+  color: #978b79;
+}
+
+/* Mengatur tampilan keterangan bahwa file siap digunakan. */
+.file-ready {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  margin-left: auto;
+  font-size: 9.2px;
+  font-weight: 500;
+  color: #14815f;
+  white-space: nowrap;
+}
+
+/* Mengatur ukuran ikon pada keterangan file siap digunakan. */
+.file-ready svg {
+  width: 13px;
+  height: 13px;
+}
+
+/* Mengatur posisi tombol aksi pada bagian bawah formulir. */
+.form-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 18px;
+  padding-top: 12px;
+  border-top: 1px solid #e9dbc5;
+  box-shadow: inset 0 1px 0 #f7f0e2;
+}
+
+/* Mengatur tampilan dasar tombol pada formulir pengajuan. */
+.apply-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 37px;
+  padding: 0 20px;
+  font-family: inherit;
+  font-size: 11.5px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0;
+  white-space: nowrap;
+  appearance: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease, transform 0.16s ease;
+}
+
+/* Mengatur tampilan tombol sekunder, misalnya tombol Batal. */
+.apply-button--secondary {
+  min-width: 64px;
+  color: #6c5e4a;
+  background: #fffdf8;
+  border: 1px solid #d8c8ac;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+/* Mengubah tampilan tombol sekunder ketika kursor diarahkan ke atasnya. */
+.apply-button--secondary:hover {
+  color: #544631;
+  background: #faf3e4;
+  border-color: #cbb68f;
+}
+
+/* Mengatur tampilan tombol utama untuk mengirim pengajuan prestasi. */
+.apply-button--primary {
+  gap: 11px;
+  min-width: 203px;
+  color: #fff8ec;
+  background: linear-gradient(90deg, #d4ae65 0%, #b89550 100%);
+  border: 0;
+  box-shadow: none;
+}
+
+/* Mengubah warna tombol utama ketika kursor diarahkan ke atasnya. */
+.apply-button--primary:hover {
+  background: linear-gradient(90deg, #cba55d 0%, #ad8b49 100%);
+  border-color: transparent;
+}
+
+/* Memberikan efek tekanan saat tombol utama diklik. */
+.apply-button--primary:active {
+  transform: translateY(1px);
+}
+
+/* Memberikan garis fokus pada tombol ketika dipilih melalui keyboard. */
+.apply-button:focus-visible {
+  outline: 2px solid #a98443;
+  outline-offset: 2px;
+}
+
+/* Mengatur ukuran ikon SVG pada tombol utama. */
+.apply-button--primary svg {
+  flex: 0 0 15px;
+  width: 15px;
+  height: 15px;
+}
+
+/* Mengatur tampilan card ketika pengajuan berhasil dilakukan. */
+.success-card {
+  display: none;
+  width: 100%;
+  max-width: 679px;
+  padding: 26px 38px 27px;
+  text-align: center;
+  background: #fffdf8;
+  border: 1px solid #d8d1c4;
+  border-radius: 6px;
+  box-shadow: 0 10px 26px rgba(72, 54, 27, 0.16);
+}
+
+#success-panel:target {
+  display: block;
+}
+
+.apply-shell:has(#success-panel:target) #form-card {
+  display: none;
+}
+
+/* Mengatur wadah ikon tanda berhasil pada halaman konfirmasi. */
+.success-icon {
+  display: grid;
+  place-items: center;
+  width: 51px;
+  height: 51px;
+  margin: 0 auto 15px;
+  color: #a98443;
+  background: #f8eedb;
+  border: 1px solid #e2d0ad;
+  border-radius: 50%;
+  box-shadow: inset 0 1px 0 rgba(255, 253, 247, 0.6);
+}
+
+/* Mengatur ukuran ikon SVG pada tanda berhasil. */
+.success-icon svg {
+  width: 27px;
+  height: 27px;
+}
+
+/* Mengatur judul pada tampilan pengajuan berhasil. */
+.success-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 24px;
+  letter-spacing: -0.2px;
+  color: #30291f;
+}
+
+/* Menghilangkan garis fokus bawaan pada judul ketika difokuskan. */
+.success-title:focus {
+  outline: 0;
+}
+
+/* Mengatur teks penjelasan pada tampilan pengajuan berhasil. */
+.success-text {
+  max-width: 406px;
+  margin: 12px auto 0;
+  font-size: 10.7px;
+  font-weight: 400;
+  line-height: 17px;
+  color: #847867;
+}
+
+/* Memberikan penegasan pada bagian teks tertentu. */
+.success-text strong {
+  font-weight: 600;
+  color: #463f35;
+}
+
+/* Mengatur posisi tombol aksi pada tampilan pengajuan berhasil. */
+.success-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.success-actions .apply-button {
+  height: 32px;
+  padding: 0 15px;
+  font-size: 10.5px;
+  border-radius: 7px;
+}
+
+.success-actions .apply-button--secondary {
+  color: #6f6250;
+  background: #fbf6eb;
+  border-color: #d8c6a6;
+  box-shadow: inset 0 1px 0 rgba(255, 253, 247, 0.72);
+}
+
+.success-actions .apply-button--secondary:hover {
+  color: #524635;
+  background: #f4ead7;
+  border-color: #c9b289;
+}
+
+.success-actions .apply-button--primary {
+  min-width: 0;
+  padding: 0 16px;
+  gap: 0;
+  background: linear-gradient(90deg, #c5a25c 0%, #9d7a42 100%);
+}
+
+.success-actions .apply-button--primary:hover {
+  background: linear-gradient(90deg, #b89550 0%, #8d6c39 100%);
+}
+
+/* Mengatur tinggi area footer pada halaman pengajuan. */
+.apply-footer {
+  flex-basis: 64px;
+  height: 64px;
+}
+
+/* Mengatur posisi dan tampilan notifikasi sementara atau toast. */
+.toast {
+  position: fixed;
+  top: 76px;
+  right: 32px;
+  z-index: 180;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  width: 338px;
+  padding: 12px 12px 12px 13px;
+  background: #fffaf1;
+  border: 1px solid #e5d4bb;
+  border-left: 3px solid #b4523e;
+  border-radius: 8px;
+  box-shadow: 0 10px 28px rgba(63, 43, 20, 0.16);
+  animation: toast-enter 0.2s ease-out;
+}
+
+/* Mengatur ukuran dan posisi ikon pada notifikasi. */
+.toast-icon {
+  flex: 0 0 21px;
+  width: 21px;
+  height: 21px;
+  margin-top: 1px;
+  color: #b4523e;
+}
+
+/* Mengatur ukuran ikon SVG pada notifikasi. */
+.toast-icon svg {
+  width: 21px;
+  height: 21px;
+}
+
+/* Mengatur susunan teks di dalam notifikasi. */
+.toast-copy {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  text-align: left;
+}
+
+/* Mengatur tampilan judul notifikasi. */
+.toast-copy strong {
+  font-size: 11.5px;
+  font-weight: 600;
+  line-height: 16px;
+  color: #4f3029;
+}
+
+/* Mengatur tampilan pesan atau deskripsi notifikasi. */
+.toast-copy span {
+  margin-top: 2px;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 14px;
+  color: #8b7665;
+}
+
+/* Mengatur tombol untuk menutup notifikasi. */
+.toast-close {
+  display: grid;
+  flex: 0 0 22px;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  color: #a68e76;
+  background: transparent;
+  border: 0;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Mengubah tampilan tombol tutup notifikasi ketika diarahkan kursor. */
+.toast-close:hover {
+  color: #725d47;
+  background: #f3e8d6;
+}
+
+/* Memberikan garis fokus pada tombol tutup ketika dipilih melalui keyboard. */
+.toast-close:focus-visible {
+  outline: 2px solid #a98443;
+  outline-offset: 1px;
+}
+
+/* Mengatur ukuran ikon SVG pada tombol tutup notifikasi. */
+.toast-close svg {
+  width: 12px;
+  height: 12px;
+}
+
+/* Membuat animasi notifikasi muncul dari arah atas. */
+@keyframes toast-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Penyesuaian tampilan untuk layar tablet dan perangkat dengan lebar maksimal 960px. */
+@media (max-width: 960px) {
+  /* Mengurangi jarak atas konten pada layar yang lebih kecil. */
+  .apply-content {
+    padding-top: 28px;
+  }
+
+  /* Menyesuaikan batas lebar area formulir. */
+  .apply-shell {
+    max-width: 760px;
+  }
+}
+
+/* Penyesuaian tampilan untuk layar dengan lebar maksimal 720px. */
+@media (max-width: 720px) {
+  /* Mengurangi jarak atas konten. */
+  .apply-content {
+    padding-top: 24px;
+  }
+
+  /* Membuat informasi mahasiswa menyesuaikan tinggi kontennya. */
+  .student-bar {
+    height: auto;
+    padding-top: 9px;
+    padding-bottom: 9px;
+  }
+
+  /* Mengizinkan teks informasi mahasiswa berpindah ke baris berikutnya. */
+  .student-bar p {
+    white-space: normal;
+  }
+
+  /* Mengurangi padding horizontal formulir. */
+  .apply-form {
+    padding-right: 22px;
+    padding-left: 22px;
+  }
+}
+
+/* Penyesuaian tampilan untuk perangkat mobile dengan lebar maksimal 640px. */
+@media (max-width: 640px) {
+  /* Mengurangi jarak atas konten pada layar mobile. */
+  .apply-content {
+    padding-top: 16px;
+  }
+
+  /* Mengurangi jarak di bawah judul halaman. */
+  .apply-heading {
+    margin-bottom: 16px;
+  }
+
+  /* Menyesuaikan ukuran judul halaman untuk layar mobile. */
+  .apply-title {
+    font-size: 17px;
+    line-height: 23px;
+  }
+
+  /* Menyesuaikan jarak dan ukuran teks deskripsi. */
+  .apply-description {
+    margin-top: 2px;
+    font-size: 10.8px;
+    line-height: 16px;
+  }
+
+  /* Sedikit mengurangi lengkungan sudut card pada layar mobile. */
+  .apply-card {
+    border-radius: 10px;
+  }
+
+  /* Menyusun informasi mahasiswa secara vertikal. */
+  .student-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    margin: 16px 16px 14px;
+    padding: 10px 14px;
+    font-size: 10.8px;
+    line-height: 16px;
+    border-radius: 8px;
+  }
+
+  /* Menyesuaikan padding formulir pada layar mobile. */
+  .apply-form {
+    padding: 0 16px 18px;
+  }
+
+  /* Memperbesar tinggi input agar lebih mudah digunakan pada layar sentuh. */
+  .form-control {
+    height: 38px;
+    font-size: 11.5px;
+  }
+
+  /* Memperbesar tinggi dropdown pada layar mobile. */
+  .select-trigger {
+    height: 40px;
+    font-size: 11.5px;
+  }
+
+  /* Mengubah susunan field formulir menjadi satu kolom. */
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-top: 16px;
+  }
+
+  /* Menyesuaikan jarak antarfield ketika formulir menggunakan satu kolom. */
+  .form-grid + .form-field,
+  .form-field + .form-field {
+    margin-top: 16px;
+  }
+
+  /* Menyesuaikan tinggi dan padding area unggah file. */
+  .upload-box {
+    min-height: 0;
+    padding: 24px 16px 22px;
+  }
+
+  /* Menyesuaikan jarak bagian tombol aksi. */
+  .form-actions {
+    margin-top: 16px;
+    padding-top: 12px;
+  }
+
+  /* Menyesuaikan ukuran tombol agar nyaman digunakan pada layar mobile. */
+  .apply-button {
+    min-width: 0;
+    height: 38px;
+    font-size: 11px;
+  }
+
+  /* Membuat tombol utama memenuhi lebar area formulir pada mobile. */
+  .form-actions .apply-button--primary {
+    width: 100%;
+  }
+
+  /* Membatasi lebar nama file agar tidak memenuhi seluruh area. */
+  .file-name {
+    max-width: 190px;
+  }
+
+  /* Mengurangi padding card pengajuan berhasil. */
+  .success-card {
+    padding: 40px 20px 38px;
+  }
+
+  /* Menyusun tombol pada tampilan berhasil secara vertikal. */
+  .success-actions {
+    flex-direction: column;
+  }
+
+  /* Membuat tombol pada tampilan berhasil memenuhi lebar card. */
+  .success-actions .apply-button {
+    width: 100%;
+    height: 38px;
+    font-size: 11px;
+  }
+
+  /* Menyesuaikan posisi dan lebar notifikasi pada layar mobile. */
+  .toast {
+    top: 70px;
+    right: 16px;
+    left: 16px;
+    width: auto;
+  }
+}
+
+@media (min-width: 641px) {
+  .apply-content:has(#success-panel:target) {
+    padding-top: 19px;
+  }
+
+  .apply-shell:has(#success-panel:target) .apply-description {
+    margin-top: 0;
+  }
+}
+
+/* Penyesuaian tambahan untuk perangkat dengan lebar maksimal 380px. */
+@media (max-width: 380px) {
+  /* Mengurangi padding horizontal formulir. */
+  .apply-form {
+    padding-right: 12px;
+    padding-left: 12px;
+  }
+
+  /* Mengurangi margin informasi mahasiswa agar sesuai layar kecil. */
+  .student-bar {
+    margin-right: 12px;
+    margin-left: 12px;
+  }
+
+  /* Mengurangi padding area unggah file. */
+  .upload-box {
+    padding-right: 12px;
+    padding-left: 12px;
+  }
+
+  /* Menghilangkan jarak otomatis di sebelah kiri informasi file siap digunakan. */
+  .file-ready {
+    margin-left: 0;
+  }
+}
+
+/* Mengurangi atau menonaktifkan animasi bagi pengguna yang memilih pengurangan gerakan. */
+@media (prefers-reduced-motion: reduce) {
+  /* Menonaktifkan animasi notifikasi. */
+  .toast {
+    animation: none;
+  }
+}

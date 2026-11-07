@@ -1,0 +1,246 @@
+/* =========================================================
+   VARIABEL ANIMASI GLOBAL
+   ========================================================= */
+:root {
+  --motion-duration: 400ms; /* Menentukan durasi standar animasi selama 400 milidetik. */
+  --motion-ease: cubic-bezier(0.22, 1, 0.36, 1); /* Menentukan pola kecepatan animasi agar gerakannya terasa halus dan natural. */
+}
+
+/* =========================================================
+   ANIMASI FADE IN
+   ========================================================= */
+@keyframes motion-fade-in {
+  from {
+    opacity: 0; /* Kondisi awal: elemen tidak terlihat. */
+  }
+
+  to {
+    opacity: 1; /* Kondisi akhir: elemen terlihat sepenuhnya. */
+  }
+}
+
+/* =========================================================
+   ANIMASI FADE OUT
+   ========================================================= */
+@keyframes motion-fade-out {
+  from {
+    opacity: 1; /* Kondisi awal: elemen terlihat sepenuhnya. */
+  }
+
+  to {
+    opacity: 0; /* Kondisi akhir: elemen menjadi tidak terlihat. */
+  }
+}
+
+/* =========================================================
+   ANIMASI RISE IN (MUNCUL DARI BAWAH)
+   ========================================================= */
+@keyframes motion-rise-in {
+  from {
+    opacity: 0; /* Elemen awalnya tidak terlihat. */
+    transform: translate3d(0, 10px, 0); /* Elemen dimulai 10 piksel lebih rendah dari posisi aslinya. */
+  }
+
+  to {
+    opacity: 1; /* Elemen menjadi terlihat sepenuhnya. */
+    transform: translate3d(0, 0, 0); /* Elemen kembali ke posisi aslinya. */
+  }
+}
+
+/* =========================================================
+   ANIMASI RISE OUT (MENGHILANG KE BAWAH)
+   ========================================================= */
+@keyframes motion-rise-out {
+  from {
+    opacity: 1; /* Elemen awalnya terlihat sepenuhnya. */
+    transform: translate3d(0, 0, 0); /* Elemen berada di posisi aslinya. */
+  }
+
+  to {
+    opacity: 0; /* Elemen menjadi tidak terlihat. */
+    transform: translate3d(0, 6px, 0); /* Elemen bergerak 6 piksel ke bawah saat menghilang. */
+  }
+}
+
+/* =========================================================
+   ANIMASI POP IN (MUNCUL DENGAN EFEK MEMBESAR)
+   ========================================================= */
+@keyframes motion-pop-in {
+  from {
+    opacity: 0; /* Elemen awalnya tidak terlihat. */
+    transform: translate3d(0, 6px, 0) scale(0.985); /* Elemen sedikit lebih rendah dan berukuran 98,5% dari ukuran normal. */
+  }
+
+  to {
+    opacity: 1; /* Elemen terlihat sepenuhnya. */
+    transform: translate3d(0, 0, 0) scale(1); /* Elemen kembali ke posisi dan ukuran normal. */
+  }
+}
+
+/* =========================================================
+   ANIMASI POP OUT (MENGHILANG DENGAN EFEK MENGECIL)
+   ========================================================= */
+@keyframes motion-pop-out {
+  from {
+    opacity: 1; /* Elemen awalnya terlihat sepenuhnya. */
+    transform: translate3d(0, 0, 0) scale(1); /* Elemen berada pada posisi dan ukuran normal. */
+  }
+
+  to {
+    opacity: 0; /* Elemen menjadi tidak terlihat. */
+    transform: translate3d(0, 4px, 0) scale(0.99); /* Elemen sedikit bergerak ke bawah dan mengecil menjadi 99% dari ukuran normal. */
+  }
+}
+
+/* =========================================================
+   ANIMASI DROP IN (MUNCUL DARI ATAS)
+   ========================================================= */
+@keyframes motion-drop-in {
+  from {
+    opacity: 0; /* Elemen awalnya tidak terlihat. */
+    transform: translate3d(0, -8px, 0); /* Elemen dimulai 8 piksel lebih tinggi dari posisi aslinya. */
+  }
+
+  to {
+    opacity: 1; /* Elemen menjadi terlihat sepenuhnya. */
+    transform: translate3d(0, 0, 0); /* Elemen kembali ke posisi aslinya. */
+  }
+}
+
+/* =========================================================
+   ANIMASI DROP OUT (MENGHILANG KE ATAS)
+   ========================================================= */
+@keyframes motion-drop-out {
+  from {
+    opacity: 1; /* Elemen awalnya terlihat sepenuhnya. */
+    transform: translate3d(0, 0, 0); /* Elemen berada di posisi aslinya. */
+  }
+
+  to {
+    opacity: 0; /* Elemen menjadi tidak terlihat. */
+    transform: translate3d(0, -6px, 0); /* Elemen bergerak 6 piksel ke atas saat menghilang. */
+  }
+}
+
+@keyframes motion-dialog-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+.hk-summary-grid .hk-summary-card {
+  animation: motion-rise-in var(--motion-duration) var(--motion-ease) backwards;
+}
+
+.hk-summary-grid .hk-summary-card:nth-child(2) {
+  animation-delay: 70ms;
+}
+
+.hk-summary-grid .hk-summary-card:nth-child(3) {
+  animation-delay: 140ms;
+}
+
+.chart-grid .chart-card {
+  animation: motion-rise-in var(--motion-duration) var(--motion-ease) backwards;
+}
+
+.chart-grid .chart-card:nth-child(2) {
+  animation-delay: 60ms;
+}
+
+.chart-grid .chart-card:nth-child(3) {
+  animation-delay: 120ms;
+}
+
+.chart-grid .chart-card:nth-child(4) {
+  animation-delay: 180ms;
+}
+
+.chart-grid .chart-card:nth-child(5) {
+  animation-delay: 240ms;
+}
+
+:where(.hk-summary-card, .chart-card, .profile-card, .apply-card, .history-card, .dp-table-card, .dm-table-card, .dd-table-card, .vs-table-card, .hk-table-card, .rp-table-card) {
+  transition:
+    transform 220ms var(--motion-ease),
+    box-shadow 220ms var(--motion-ease);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  :is(.hk-summary-card, .chart-card, .profile-card, .apply-card, .history-card, .dp-table-card, .dm-table-card, .dd-table-card, .vs-table-card, .hk-table-card, .rp-table-card):hover {
+    transform: translate3d(0, -2px, 0);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 253, 247, 0.5),
+      0 8px 18px rgba(79, 58, 26, 0.08);
+  }
+}
+
+:where(.select-menu, .jenis-select-menu, .dm-category-menu, .dd-status-menu, .dp-select-menu, .chart-select-menu, .hk-select-menu) {
+  transform-origin: top center;
+  animation: motion-drop-in 180ms var(--motion-ease) both;
+}
+
+:where(.dm-table, .dd-table, .dp-table, .vs-table, .hk-table, .rp-table, .prestasi-table) tbody td {
+  transition: background-color 160ms ease;
+}
+
+:where(.nav-link, .logout-link) svg {
+  transition:
+    color 200ms var(--motion-ease),
+    transform 200ms var(--motion-ease);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  :where(.nav-link, .logout-link):hover svg {
+    transform: translateX(1px) scale(1.04);
+  }
+}
+
+:where(.dm-modal__close, .dd-modal__close, .vs-modal-close, .rp-modal-close) {
+  transition:
+    color 160ms ease,
+    background-color 160ms ease,
+    transform 160ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  :where(.dm-modal__close, .dd-modal__close, .vs-modal-close, .rp-modal-close):hover {
+    transform: scale(1.08);
+  }
+}
+
+.success-card,
+.forgot-success {
+  animation: motion-rise-in var(--motion-duration) var(--motion-ease) backwards;
+}
+
+/* =========================================================
+   PENGATURAN UNTUK PENGGUNA YANG MEMILIH GERAKAN MINIMAL
+   ========================================================= */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important; /* Menghilangkan efek scroll yang bergerak secara halus. */
+    transition-duration: 0.01ms !important; /* Memperpendek durasi transisi hingga hampir tidak terlihat. */
+    transition-delay: 0ms !important; /* Menghilangkan waktu tunggu sebelum transisi dimulai. */
+    animation-duration: 0.01ms !important; /* Memperpendek durasi animasi hingga hampir tidak terlihat. */
+    animation-delay: 0.01ms !important; /* Memperpendek waktu tunggu sebelum animasi dimulai. */
+    animation-iteration-count: 1 !important; /* Membatasi animasi agar hanya berjalan satu kali. */
+  }
+
+  :where(.stat-card, .hk-summary-card, .chart-card, .profile-card, .apply-card, .history-card, .dp-table-card, .dm-table-card, .dd-table-card, .vs-table-card, .hk-table-card, .rp-table-card):hover {
+    transform: none !important;
+  }
+
+  :where(.nav-link, .logout-link):hover svg,
+  :where(.dm-modal__close, .dd-modal__close, .vs-modal-close, .rp-modal-close):hover {
+    transform: none !important;
+  }
+}

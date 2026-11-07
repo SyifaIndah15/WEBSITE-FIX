@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <!-- Pengaturan karakter, tampilan responsif, deskripsi, dan judul halaman -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Dashboard dosen SIPRESMA untuk memantau prestasi dan hasil klasifikasi mahasiswa program studi.">
+  <title>Dashboard Dosen - SIPRESMA</title>
+
+  <!-- Menghubungkan Google Fonts untuk menggunakan jenis huruf Inter dan Roboto -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Roboto:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+
+  <!-- Menghubungkan file CSS untuk mengatur tampilan dan animasi dashboard dosen -->
+  <link rel="stylesheet" href="../../css/shared/motion.css">
+  <link rel="stylesheet" href="../../css/dosen/dashboard.css">
+  <link rel="stylesheet" href="../../css/dosen/sidebar.css">
+  <link rel="stylesheet" href="../../css/dosen/content.css">
+</head>
+<body>
+
+  <!-- Pembungkus utama seluruh tampilan dashboard -->
+  <div class="dashboard-layout">
+
+    <!-- Checkbox untuk mengontrol buka dan tutup sidebar tanpa JavaScript -->
+    <input class="sidebar-toggle-input" type="checkbox" id="sidebar-toggle" aria-controls="sidebar" aria-label="Buka atau tutup menu navigasi">
+
+    <!-- Bagian sidebar atau menu navigasi di sebelah kiri -->
+    <aside class="sidebar" id="sidebar">
+
+      <!-- Logo dan nama aplikasi SIPRESMA -->
+      <a class="sidebar-brand" href="dashboard.html" aria-label="SIPRESMA Dashboard Dosen">
+        <span class="brand-mark" aria-hidden="true">
+          <!-- SVG digunakan untuk menggambar ikon logo -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="8" r="5.6"/>
+            <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>
+          </svg>
+        </span>
+        <!-- Nama dan slogan aplikasi -->
+        <span class="brand-copy">
+          <span class="brand-name">SIPRESMA</span>
+          <span class="brand-tagline">Prestasi Mahasiswa</span>
+        </span>
+      </a>
+
+      <!-- Informasi hak akses pengguna yang sedang masuk -->
+      <div class="access-row">
+        <!-- Ikon penanda hak akses -->
+        <svg class="access-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/>
+          <path d="m9 12 2 2 4-4"/>
+        </svg>
+        <span class="access-label">Hak Akses:</span>
+        <span class="access-role">Dosen / Kaprodi</span>
+      </div>
+
+      <!-- Bagian menu navigasi utama sidebar -->
+      <div class="sidebar-menu">
+        <p class="menu-label">Menu Utama</p>
+        <nav class="sidebar-nav" aria-label="Navigasi utama">
+
+          <!-- Menu Dashboard yang sedang aktif -->
+          <a class="nav-link is-active" href="dashboard.html" aria-current="page">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="3" width="7" height="7" rx="1"/>
+              <rect x="14" y="3" width="7" height="7" rx="1"/>
+              <rect x="3" y="14" width="7" height="7" rx="1"/>
+              <rect x="14" y="14" width="7" height="7" rx="1"/>
+            </svg>
+            <span>Dashboard</span>
+          </a>
+
+          <!-- Menu untuk melihat data prestasi mahasiswa -->
+          <a class="nav-link" href="daftar-prestasi.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M8 4h8v5a4 4 0 0 1-8 0V4Z"/>
+              <path d="M8 5H5.6a2.4 2.4 0 0 0 0 4.8H8"/>
+              <path d="M16 5h2.4a2.4 2.4 0 0 1 0 4.8H16"/>
+              <path d="M12 13v3"/>
+              <path d="M9 20h6"/>
+              <path d="M9 20l3-3.4 3 3.4"/>
+            </svg>
+            <span>Data Prestasi Mahasiswa</span>
+          </a>
+
+          <!-- Menu untuk membuka halaman profil dosen -->
+          <a class="nav-link" href="profil.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="8" r="3.7"/>
+              <path d="M5.3 20c.5-3.9 3-6.1 6.7-6.1s6.2 2.2 6.7 6.1"/>
+            </svg>
+            <span>Profil Dosen</span>
+          </a>
+        </nav>
+      </div>
+
+      <!-- Hiasan gelombang pada bagian bawah sidebar -->
+      <div class="sidebar-decoration" aria-hidden="true">
+        <svg viewBox="0 0 253 42" preserveAspectRatio="none">
+          <g fill="none" stroke="#b99555" stroke-width="1" vector-effect="non-scaling-stroke">
+            <path d="M-4 23C35 12 66 12 104 18C142 24 166 35 204 30C226 27 241 18 257 12" stroke-opacity=".38"/>
+            <path d="M-4 33C38 22 72 23 110 29C148 35 172 41 210 36C231 33 244 27 257 22" stroke-opacity=".24"/>
+          </g>
+        </svg>
+      </div>
+
+      <!-- Bagian bawah sidebar yang berisi tombol keluar -->
+      <div class="sidebar-footer">
+        <a class="logout-link" href="../../index.html">
+          <!-- Ikon logout -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M10 20.5H6.5A2.5 2.5 0 0 1 4 18V6a2.5 2.5 0 0 1 2.5-2.5H10"/>
+            <path d="M14.5 16.5 19 12l-4.5-4.5"/>
+            <path d="M19 12H9.5"/>
+          </svg>
+          <span>Keluar (Logout)</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- Lapisan transparan untuk menutup sidebar ketika area di luar sidebar ditekan -->
+    <label class="sidebar-overlay" for="sidebar-toggle" aria-label="Tutup menu navigasi"></label>
+
+    <!-- Pembungkus bagian konten utama dashboard -->
+    <div class="main-shell">
+
+      <!-- Header bagian atas halaman dashboard -->
+      <header class="topbar">
+
+        <!-- Tombol untuk membuka atau menutup sidebar pada tampilan desktop -->
+        <label class="menu-toggle menu-toggle--desktop" for="sidebar-toggle">
+          <svg viewBox="0 0 20 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+            <path d="M1 1h18M1 7h18M1 13h18"/>
+          </svg>
+        </label>
+
+        <!-- Tombol untuk membuka atau menutup sidebar pada tampilan mobile -->
+        <label class="menu-toggle menu-toggle--mobile" for="sidebar-toggle">
+          <svg viewBox="0 0 20 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+            <path d="M1 1h18M1 7h18M1 13h18"/>
+          </svg>
+        </label>
+
+        <!-- Judul halaman dan breadcrumb sebagai penunjuk lokasi halaman -->
+        <div class="topbar-heading">
+          <nav class="breadcrumbs" aria-label="Breadcrumb">
+            <span class="crumb-brand">SIPRESMA</span>
+            <span class="crumb-sep" aria-hidden="true">/</span>
+            <span>Dosen</span>
+            <span class="crumb-sep" aria-hidden="true">/</span>
+            <span class="crumb-current" aria-current="page">Dashboard Utama</span>
+          </nav>
+          <h1 class="page-title">Dashboard Utama</h1>
+        </div>
+
+        <!-- Hiasan gelombang pada bagian header -->
+        <svg class="topbar-waves" viewBox="0 0 1228 64" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0 58C170 58 280 38 430 38C580 38 620 52 770 49C920 46 1010 18 1135 17C1180 17 1205 19 1228 21" fill="none" stroke="#c6a86f" stroke-width="1" vector-effect="non-scaling-stroke"/>
+        </svg>
+      </header>
+
+      <!-- Bagian utama yang menampung seluruh informasi dashboard -->
+      <main class="page-content">
+
+        <!-- Banner sambutan yang menampilkan informasi dosen -->
+        <section class="welcome-banner" aria-labelledby="banner-greeting">
+          <div class="banner-info">
+            <div class="banner-top">
+
+              <!-- Label status atau jabatan pengguna -->
+              <span class="status-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.084a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/>
+                  <path d="M22 10v6"/>
+                  <path d="M6 12v4.5c0 1.933 2.686 3.5 6 3.5s6-1.567 6-3.5V12"/>
+                </svg>
+                <span>Dosen Pembimbing / Kaprodi</span>
+              </span>
+
+              <!-- Informasi NIDN dan program studi dosen -->
+              <div class="banner-meta">
+                <span>NIDN: 0012058201</span>
+                <span>Program Studi Teknik Informatika</span>
+              </div>
+            </div>
+
+            <!-- Nama dosen dan pesan sambutan -->
+            <h2 class="banner-greeting" id="banner-greeting">Selamat Datang, Amal Khairan!</h2>
+            <p class="banner-subtitle">Pantau prestasi mahasiswa dan perkembangan klasifikasi prestasi di program studi Anda.</p>
+          </div>
+
+          <!-- Hiasan gelombang pada banner sambutan -->
+          <svg class="banner-waves" viewBox="0 0 620 120" preserveAspectRatio="none" aria-hidden="true">
+            <g fill="none" stroke="#c6a86f" stroke-width="1" vector-effect="non-scaling-stroke">
+              <path d="M20 34C95 33 160 20 245 20C330 20 370 38 445 38C520 38 570 20 620 21"/>
+              <path d="M80 63C160 62 225 49 305 49C385 49 430 66 505 65C560 64 590 53 620 53"/>
+              <path d="M0 94C90 94 180 81 270 82C360 83 420 98 505 96C560 95 595 86 620 86"/>
+            </g>
+          </svg>
+        </section>
+
+        <!-- Bagian kartu statistik ringkasan prestasi mahasiswa -->
+        <section class="stats-grid" aria-label="Ringkasan prestasi mahasiswa">
+
+          <!-- Kartu jumlah seluruh mahasiswa pada program studi -->
+          <article class="stat-card stat-card--total">
+            <h3 class="stat-label">Mahasiswa di Program Studi</h3>
+            <p class="stat-value">60 Mahasiswa</p>
+            <p class="stat-note">Data akademik terpantau</p>
+          </article>
+
+          <!-- Kartu jumlah mahasiswa dengan kategori prestasi tinggi -->
+          <article class="stat-card stat-card--high">
+            <h3 class="stat-label">Kategori Prestasi Tinggi</h3>
+            <p class="stat-value">30 Mahasiswa</p>
+            <p class="stat-note">50% dari prodi</p>
+          </article>
+
+          <!-- Kartu jumlah mahasiswa dengan kategori prestasi sedang -->
+          <article class="stat-card stat-card--medium">
+            <h3 class="stat-label">Kategori Prestasi Sedang</h3>
+            <p class="stat-value">20 Mahasiswa</p>
+            <p class="stat-note">33% dari prodi</p>
+          </article>
+
+          <!-- Kartu jumlah mahasiswa dengan kategori prestasi rendah -->
+          <article class="stat-card stat-card--low">
+            <h3 class="stat-label">Kategori Prestasi Rendah</h3>
+            <p class="stat-value">10 Mahasiswa</p>
+            <p class="stat-note">17% dari prodi</p>
+          </article>
+        </section>
+
+        <!-- Bagian tabel yang menampilkan data prestasi dan hasil klasifikasi mahasiswa -->
+        <section class="table-panel" aria-labelledby="table-title">
+
+          <!-- Judul tabel, jumlah data, dan petunjuk menggulir tabel -->
+          <header class="table-panel-header">
+            <div class="table-heading-copy">
+              <div class="table-heading-row">
+                <h2 class="table-title" id="table-title">Daftar Prestasi Mahasiswa &amp; Hasil Klasifikasi</h2>
+                <span class="data-count-pill">60 Data Mahasiswa</span>
+              </div>
+              <p class="table-subtitle">Data capaian prestasi mahasiswa pada Program Studi Teknik Informatika</p>
+            </div>
+            <p class="scroll-hint">Scroll ke bawah untuk melihat baris 1 &ndash; 60</p>
+          </header>
+
+          <!-- Area pembungkus tabel agar data dapat digulir jika melebihi ukuran layar -->
+          <div class="table-scroll" tabindex="0" aria-label="Tabel daftar prestasi mahasiswa, dapat digulir">
+
+            <!-- Tabel daftar mahasiswa beserta tahun, IPK, dan hasil klasifikasi -->
+            <table class="achievement-table">
+
+              <!-- Pengaturan kelompok kolom pada tabel -->
+              <colgroup>
+                <col class="col-student">
+                <col class="col-year">
+                <col class="col-ipk">
+                <col class="col-result">
+              </colgroup>
+
+              <!-- Bagian kepala tabel yang berisi nama setiap kolom -->
+              <thead>
+                <tr>
+                  <th scope="col">Nama Mahasiswa &amp; NPM</th>
+                  <th scope="col">Tahun</th>
+                  <th scope="col">IPK</th>
+                  <th scope="col">Hasil Klasifikasi</th>
+                </tr>
+              </thead>
+
+              <!-- Bagian isi tabel yang berisi 60 data mahasiswa -->
+
+              <tbody>
+                <!-- Data mahasiswa nomor 1 -->
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">1.</span><span class="student-name">Devanka Shankara</span></div>
+                    <div class="student-npm">NPM: 07352411036</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">3.88</td>
+                  <td class="result-cell"><span class="result-badge result-badge--high">Tinggi</span></td>
+                </tr>
+                <!-- Data mahasiswa nomor 2 -->
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">2.</span><span class="student-name">Nabila Putri Kirana</span></div>
+                    <div class="student-npm">NPM: 07352111002</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">3.92</td>
+                  <td class="result-cell"><span class="result-badge result-badge--high">Tinggi</span></td>
+                </tr>
+                <!-- Data mahasiswa nomor 3 -->
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">3.</span><span class="student-name">Muhammad Fajar Ramadhan</span></div>
+                    <div class="student-npm">NPM: 07352211003</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">3.85</td>
+                  <td class="result-cell"><span class="result-badge result-badge--high">Tinggi</span></td>
+                </tr>
+                <!-- Data mahasiswa nomor 4 -->
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">4.</span><span class="student-name">Siti Nurhaliza</span></div>
+                    <div class="student-npm">NPM: 07352311004</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">3.79</td>
+                  <td class="result-cell"><span class="result-badge result-badge--high">Tinggi</span></td>
+                </tr>
+                <!-- Data mahasiswa nomor 5 -->
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">5.</span><span class="student-name">Dimas Wahyu Pratama</span></div>
+                    <div class="student-npm">NPM: 07352411005</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">3.90</td>
+                  <td class="result-cell"><span class="result-badge result-badge--high">Tinggi</span></td>
+                </tr>
+                <!-- Data mahasiswa nomor 6 -->
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">6.</span><span class="student-name">Anisa Rahmawati</span></div>
+                    <div class="student-npm">NPM: 07352111006</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">3.82</td>
+                  <td class="result-cell"><span class="result-badge result-badge--high">Tinggi</span></td>
+                </tr>
+                <!-- Data mahasiswa nomor 7 -->
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">7.</span><span class="student-name">Rizky Aditya Nugraha</span></div>
+                    <div class="student-npm">NPM: 07352211007</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">3.87</td>
+                  <td class="result-cell"><span class="result-badge result-badge--high">Tinggi</span></td>
+                </tr>
+                <!-- Data mahasiswa nomor 8 -->
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">8.</span><span class="student-name">Putri Ayu Lestari</span></div>
+                    <div class="student-npm">NPM: 07352311008</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">3.81</td>
+                  <td class="result-cell"><span class="result-badge result-badge--high">Tinggi</span></td>
+                </tr>
+                <!-- Data mahasiswa nomor 9 -->
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">9.</span><span class="student-name">Bagas Prasetyo</span></div>
+                    <div class="student-npm">NPM: 07352411009</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">3.76</td>
+                  <td class="result-cell"><span class="result-badge result-badge--high">Tinggi</span></td>
+                </tr>
+                <!-- Data mahasiswa nomor 10 -->
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">10.</span><span class="student-name">Dewi Anggun Safitri</span></div>
+                    <div class="student-npm">NPM: 07352111010</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">3.89</td>
+                  <td class="result-cell"><span class="result-badge result-badge--high">Tinggi</span></td>
+                </tr>
+                <!-- Data mahasiswa nomor 11 -->
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">11.</span><span class="student-name">Fikri Haikal</span></div>
+                    <div class="student-npm">NPM: 07352211011</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">3.84</td>
+                  <td class="result-cell"><span class="result-badge result-badge--high">Tinggi</span></td>
+                </tr>
+                <!-- Data mahasiswa nomor 12 -->
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">12.</span><span class="student-name">Zahra Aulia</span></div>
+                    <div class="student-npm">NPM: 07352311012</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">3.74</td>
+                  <td class="result-cell"><span class="result-badge result-badge--high">Tinggi</span></td>
+                </tr>
+                <!-- Data mahasiswa nomor 13 -->
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">13.</span><span class="student-name">Rizka Amelia</span></div>
+                    <div class="student-npm">NPM: 07352411013</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">3.91</td>
+                  <td class="result-cell"><span class="result-badge result-badge--high">Tinggi</span></td>
+                </tr>
+                <!-- Data mahasiswa nomor 14 -->
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">14.</span><span class="student-name">Arif Setiawan</span></div>
+                    <div class="student-npm">NPM: 07352111014</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">3.78</td>
+                  <td class="result-cell"><span class="result-badge result-badge--high">Tinggi</span></td>
+                </tr>
+                <!-- Data mahasiswa nomor 15 -->
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">15.</span><span class="student-name">Indah Permata Sari</span></div>
+                    <div class="student-npm">NPM: 07352211015</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">3.86</td>
+                  <td class="result-cell"><span class="result-badge result-badge--high">Tinggi</span></td>
+                </tr>
+                <!-- Data mahasiswa nomor 16 -->
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">16.</span><span class="student-name">Yoga Pratama</span></div>
+                    <div class="student-npm">NPM: 07352311016</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">3.80</td>
+                  <td class="result-cell"><span class="result-badge result-badge--high">Tinggi</span></td>
+                </tr>
+                <!-- Data mahasiswa nomor 17 -->
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">17.</span><span class="student-name">Kartika Dewi</span></div>
+                    <div class="student-npm">NPM: 07352411017</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">3.83</td>
+                  <td class="result-cell"><span class="result-badge result-badge--high">Tinggi</span></td>
+                </tr>
+                <!-- Data mahasiswa nomor 18 -->
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">18.</span><span class="student-name">Lutfi Maulana</span></div>
+                    <div class="student-npm">NPM: 07352111018</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">3.93</td>
+                  <td class="result-cell"><span class="result-badge result-badge--high">Tinggi</span></td>
+                </tr>
+                <!-- Data mahasiswa nomor 19 -->
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">19.</span><span class="student-name">Maya Anggraini</span></div>
+                    <div class="student-npm">NPM: 07352211019</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">3.77</td>
+                  <td class="result-cell"><span class="result-badge result-badge--high">Tinggi</span></td>
+                </tr>
+                <!-- Data mahasiswa nomor 20 -->
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">20.</span><span class="student-name">Naufal Azhar</span></div>
+                    <div class="student-npm">NPM: 07352311020</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">3.86</td>
+                  <td class="result-cell"><span class="result-badge result-badge--high">Tinggi</span></td>
+                </tr>
+                <!-- Data mahasiswa nomor 21 -->
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">21.</span><span class="student-name">Olivia Safitri</span></div>
+                    <div class="student-npm">NPM: 07352411021</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">3.80</td>
+                  <td class="result-cell"><span class="result-badge result-badge--high">Tinggi</span></td>
+                </tr>
+                <!-- Data mahasiswa nomor 22 -->
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">22.</span><span class="student-name">Panji Wibowo</span></div>
+                    <div class="student-npm">NPM: 07352111022</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">3.94</td>
+                  <td class="result-cell"><span class="result-badge result-badge--high">Tinggi</span></td>
+                </tr>
+                <!-- Data mahasiswa nomor 23 -->
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">23.</span><span class="student-name">Qonita Zahra</span></div>
+                    <div class="student-npm">NPM: 07352211023</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">3.72</td>
+                  <td class="result-cell"><span class="result-badge result-badge--high">Tinggi</span></td>
+                </tr>
+                <!-- Data mahasiswa nomor 24 -->
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">24.</span><span class="student-name">Rina Kartika</span></div>
+                    <div class="student-npm">NPM: 07352311024</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">3.82</td>
+                  <td class="result-cell"><span class="result-badge result-badge--high">Tinggi</span></td>
+                </tr>
+                <!-- Data mahasiswa nomor 25 -->
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">25.</span><span class="student-name">Salsabila Putri</span></div>
+                    <div class="student-npm">NPM: 07352411025</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">3.75</td>
+                  <td class="result-cell"><span class="result-badge result-badge--high">Tinggi</span></td>
+                </tr>
+                <!-- Data mahasiswa nomor 26 -->
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">26.</span><span class="student-name">Andi Firmansyah</span></div>
+                    <div class="student-npm">NPM: 07352111026</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">3.88</td>
+                  <td class="result-cell"><span class="result-badge result-badge--high">Tinggi</span></td>
+                </tr>
+                <!-- Data mahasiswa nomor 27 -->
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">27.</span><span class="student-name">Citra Dewi</span></div>
+                    <div class="student-npm">NPM: 07352211027</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">3.90</td>
+                  <td class="result-cell"><span class="result-badge result-badge--high">Tinggi</span></td>
+                </tr>
+                <!-- Data mahasiswa nomor 28 -->
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">28.</span><span class="student-name">Hidayat Nur</span></div>
+                    <div class="student-npm">NPM: 07352311028</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">3.73</td>
+                  <td class="result-cell"><span class="result-badge result-badge--high">Tinggi</span></td>
+                </tr>
+                <!-- Data mahasiswa nomor 29 -->
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">29.</span><span class="student-name">Mega Puspita</span></div>
+                    <div class="student-npm">NPM: 07352411029</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">3.84</td>
+                  <td class="result-cell"><span class="result-badge result-badge--high">Tinggi</span></td>
+                </tr>
+                <!-- Data mahasiswa nomor 30 -->
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">30.</span><span class="student-name">Rafi Kurniawan</span></div>
+                    <div class="student-npm">NPM: 07352111030</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">3.79</td>
+                  <td class="result-cell"><span class="result-badge result-badge--high">Tinggi</span></td>
+                </tr>
+
+                <!-- Data mahasiswa nomor 31 sampai 50 dengan kategori prestasi sedang -->
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">31.</span><span class="student-name">Laila Nurjanah</span></div>
+                    <div class="student-npm">NPM: 07352211031</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">3.45</td>
+                  <td class="result-cell"><span class="result-badge result-badge--medium">Sedang</span></td>
+                </tr>
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">32.</span><span class="student-name">Bayu Saputra</span></div>
+                    <div class="student-npm">NPM: 07352311032</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">3.21</td>
+                  <td class="result-cell"><span class="result-badge result-badge--medium">Sedang</span></td>
+                </tr>
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">33.</span><span class="student-name">Nadia Rahma</span></div>
+                    <div class="student-npm">NPM: 07352411033</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">3.38</td>
+                  <td class="result-cell"><span class="result-badge result-badge--medium">Sedang</span></td>
+                </tr>
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">34.</span><span class="student-name">Gilang Ramadhan</span></div>
+                    <div class="student-npm">NPM: 07352111034</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">3.10</td>
+                  <td class="result-cell"><span class="result-badge result-badge--medium">Sedang</span></td>
+                </tr>
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">35.</span><span class="student-name">Vina Oktaviani</span></div>
+                    <div class="student-npm">NPM: 07352211035</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">3.47</td>
+                  <td class="result-cell"><span class="result-badge result-badge--medium">Sedang</span></td>
+                </tr>
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">36.</span><span class="student-name">Ilham Maulana</span></div>
+                    <div class="student-npm">NPM: 07352311036</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">3.29</td>
+                  <td class="result-cell"><span class="result-badge result-badge--medium">Sedang</span></td>
+                </tr>
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">37.</span><span class="student-name">Sari Wulandari</span></div>
+                    <div class="student-npm">NPM: 07352411037</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">3.34</td>
+                  <td class="result-cell"><span class="result-badge result-badge--medium">Sedang</span></td>
+                </tr>
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">38.</span><span class="student-name">Aditya Permana</span></div>
+                    <div class="student-npm">NPM: 07352111038</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">3.18</td>
+                  <td class="result-cell"><span class="result-badge result-badge--medium">Sedang</span></td>
+                </tr>
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">39.</span><span class="student-name">Fitri Handayani</span></div>
+                    <div class="student-npm">NPM: 07352211039</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">3.42</td>
+                  <td class="result-cell"><span class="result-badge result-badge--medium">Sedang</span></td>
+                </tr>
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">40.</span><span class="student-name">Reza Pratama</span></div>
+                    <div class="student-npm">NPM: 07352311040</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">3.05</td>
+                  <td class="result-cell"><span class="result-badge result-badge--medium">Sedang</span></td>
+                </tr>
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">41.</span><span class="student-name">Ayu Lestari</span></div>
+                    <div class="student-npm">NPM: 07352411041</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">3.36</td>
+                  <td class="result-cell"><span class="result-badge result-badge--medium">Sedang</span></td>
+                </tr>
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">42.</span><span class="student-name">Dwi Santoso</span></div>
+                    <div class="student-npm">NPM: 07352111042</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">3.24</td>
+                  <td class="result-cell"><span class="result-badge result-badge--medium">Sedang</span></td>
+                </tr>
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">43.</span><span class="student-name">Nisa Fadhilah</span></div>
+                    <div class="student-npm">NPM: 07352211043</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">3.49</td>
+                  <td class="result-cell"><span class="result-badge result-badge--medium">Sedang</span></td>
+                </tr>
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">44.</span><span class="student-name">Rendi Kurnia</span></div>
+                    <div class="student-npm">NPM: 07352311044</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">3.15</td>
+                  <td class="result-cell"><span class="result-badge result-badge--medium">Sedang</span></td>
+                </tr>
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">45.</span><span class="student-name">Melati Putri</span></div>
+                    <div class="student-npm">NPM: 07352411045</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">3.31</td>
+                  <td class="result-cell"><span class="result-badge result-badge--medium">Sedang</span></td>
+                </tr>
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">46.</span><span class="student-name">Farhan Akbar</span></div>
+                    <div class="student-npm">NPM: 07352111046</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">3.08</td>
+                  <td class="result-cell"><span class="result-badge result-badge--medium">Sedang</span></td>
+                </tr>
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">47.</span><span class="student-name">Ratna Sari</span></div>
+                    <div class="student-npm">NPM: 07352211047</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">3.40</td>
+                  <td class="result-cell"><span class="result-badge result-badge--medium">Sedang</span></td>
+                </tr>
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">48.</span><span class="student-name">Abdul Rahman</span></div>
+                    <div class="student-npm">NPM: 07352311048</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">3.26</td>
+                  <td class="result-cell"><span class="result-badge result-badge--medium">Sedang</span></td>
+                </tr>
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">49.</span><span class="student-name">Sinta Amelia</span></div>
+                    <div class="student-npm">NPM: 07352411049</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">3.12</td>
+                  <td class="result-cell"><span class="result-badge result-badge--medium">Sedang</span></td>
+                </tr>
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">50.</span><span class="student-name">Yusuf Maulana</span></div>
+                    <div class="student-npm">NPM: 07352111050</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">3.44</td>
+                  <td class="result-cell"><span class="result-badge result-badge--medium">Sedang</span></td>
+                </tr>
+
+                <!-- Data mahasiswa nomor 51 sampai 60 dengan kategori prestasi rendah -->
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">51.</span><span class="student-name">Taufik Hidayat</span></div>
+                    <div class="student-npm">NPM: 07352211051</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">2.98</td>
+                  <td class="result-cell"><span class="result-badge result-badge--low">Rendah</span></td>
+                </tr>
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">52.</span><span class="student-name">Wulan Sari</span></div>
+                    <div class="student-npm">NPM: 07352311052</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">2.85</td>
+                  <td class="result-cell"><span class="result-badge result-badge--low">Rendah</span></td>
+                </tr>
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">53.</span><span class="student-name">Eko Prasetyo</span></div>
+                    <div class="student-npm">NPM: 07352411053</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">2.74</td>
+                  <td class="result-cell"><span class="result-badge result-badge--low">Rendah</span></td>
+                </tr>
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">54.</span><span class="student-name">Dinda Permata</span></div>
+                    <div class="student-npm">NPM: 07352111054</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">2.92</td>
+                  <td class="result-cell"><span class="result-badge result-badge--low">Rendah</span></td>
+                </tr>
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">55.</span><span class="student-name">Arif Rahman</span></div>
+                    <div class="student-npm">NPM: 07352211055</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">2.65</td>
+                  <td class="result-cell"><span class="result-badge result-badge--low">Rendah</span></td>
+                </tr>
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">56.</span><span class="student-name">Nia Kurnia</span></div>
+                    <div class="student-npm">NPM: 07352311056</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">2.88</td>
+                  <td class="result-cell"><span class="result-badge result-badge--low">Rendah</span></td>
+                </tr>
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">57.</span><span class="student-name">Fajar Nugroho</span></div>
+                    <div class="student-npm">NPM: 07352411057</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">2.71</td>
+                  <td class="result-cell"><span class="result-badge result-badge--low">Rendah</span></td>
+                </tr>
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">58.</span><span class="student-name">Rani Oktaviani</span></div>
+                    <div class="student-npm">NPM: 07352111058</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">2.96</td>
+                  <td class="result-cell"><span class="result-badge result-badge--low">Rendah</span></td>
+                </tr>
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">59.</span><span class="student-name">Hendra Wijaya</span></div>
+                    <div class="student-npm">NPM: 07352211059</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">2.79</td>
+                  <td class="result-cell"><span class="result-badge result-badge--low">Rendah</span></td>
+                </tr>
+                <tr>
+                  <td class="student-cell">
+                    <div class="student-line"><span class="row-index" aria-hidden="true">60.</span><span class="student-name">Lestari Dewi</span></div>
+                    <div class="student-npm">NPM: 07352311060</div>
+                  </td>
+                  <td class="year-cell">2026</td>
+                  <td class="ipk-cell">2.90</td>
+                  <td class="result-cell"><span class="result-badge result-badge--low">Rendah</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+
+      <!-- Footer atau bagian paling bawah halaman dashboard -->
+      <footer class="page-footer">
+        <p>&copy; 2026 SIPRESMA <span class="footer-separator">&middot;</span> Sistem Informasi Prestasi Mahasiswa</p>
+      </footer>
+    </div>
+  </div>
+</body>
+</html>

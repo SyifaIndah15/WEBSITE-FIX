@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<!-- Menentukan bahwa dokumen menggunakan standar HTML5. -->
+
+<html lang="id">
+<!-- Menentukan bahasa utama halaman adalah Bahasa Indonesia. -->
+
+<head>
+  <!-- Mengatur karakter agar teks dan simbol tampil dengan benar. -->
+  <meta charset="UTF-8">
+
+  <!-- Mengatur tampilan halaman agar menyesuaikan ukuran layar perangkat. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Memberikan deskripsi singkat mengenai halaman untuk mesin pencari. -->
+  <meta name="description" content="Data prestasi mahasiswa Program Studi Teknik Informatika pada SIPRESMA.">
+
+  <!-- Menentukan judul halaman yang tampil pada tab browser. -->
+  <title>Data Prestasi Mahasiswa - SIPRESMA</title>
+
+  <!-- Menghubungkan halaman dengan layanan Google Fonts untuk mengambil jenis huruf Inter dan Roboto. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Roboto:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+
+  <!-- Menghubungkan file CSS untuk mengatur animasi umum. -->
+  <link rel="stylesheet" href="../../css/shared/motion.css">
+
+  <!-- Menghubungkan file CSS untuk tampilan dashboard dosen. -->
+  <link rel="stylesheet" href="../../css/dosen/dashboard.css">
+
+  <!-- Menghubungkan file CSS untuk tampilan sidebar dosen. -->
+  <link rel="stylesheet" href="../../css/dosen/sidebar.css">
+
+  <!-- Menghubungkan file CSS untuk mengatur bagian konten halaman dosen. -->
+  <link rel="stylesheet" href="../../css/dosen/content.css">
+
+  <!-- Menghubungkan file CSS khusus halaman daftar prestasi mahasiswa. -->
+  <link rel="stylesheet" href="../../css/dosen/daftar-prestasi.css">
+
+  <!-- Menghubungkan file CSS untuk mengatur tampilan popup atau overlay. -->
+  <link rel="stylesheet" href="../../css/shared/overlays.css">
+</head>
+
+<body>
+  <!-- Pembungkus utama seluruh tampilan dashboard. -->
+  <div class="dashboard-layout">
+
+    <!-- Checkbox digunakan sebagai pengendali buka dan tutup sidebar tanpa JavaScript. -->
+    <input class="sidebar-toggle-input" type="checkbox" id="sidebar-toggle" aria-controls="sidebar" aria-label="Buka atau tutup menu navigasi">
+
+    <!-- Bagian sidebar yang berisi identitas sistem dan menu navigasi. -->
+    <aside class="sidebar" id="sidebar">
+
+      <!-- Logo dan nama sistem SIPRESMA yang juga menjadi tautan menuju dashboard dosen. -->
+      <a class="sidebar-brand" href="dashboard.html" aria-label="SIPRESMA Dashboard Dosen">
+
+        <!-- Ikon logo SIPRESMA dibuat menggunakan SVG. -->
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="8" r="5.6"/>
+            <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>
+          </svg>
+        </span>
+
+        <!-- Teks nama dan keterangan singkat sistem. -->
+        <span class="brand-copy">
+          <span class="brand-name">SIPRESMA</span>
+          <span class="brand-tagline">Prestasi Mahasiswa</span>
+        </span>
+      </a>
+
+      <!-- Menampilkan informasi hak akses pengguna yang sedang menggunakan sistem. -->
+      <div class="access-row">
+
+        <!-- Ikon perisai sebagai penanda hak akses. -->
+        <svg class="access-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/>
+          <path d="m9 12 2 2 4-4"/>
+        </svg>
+
+        <!-- Label informasi hak akses. -->
+        <span class="access-label">Hak Akses:</span>
+
+        <!-- Menampilkan peran pengguna, yaitu Dosen atau Kaprodi. -->
+        <span class="access-role">Dosen / Kaprodi</span>
+      </div>
+
+      <!-- Bagian yang menampung seluruh menu navigasi sidebar. -->
+      <div class="sidebar-menu">
+
+        <!-- Judul kelompok menu. -->
+        <p class="menu-label">Menu Utama</p>
+
+        <!-- Daftar tautan navigasi utama dosen. -->
+        <nav class="sidebar-nav" aria-label="Navigasi utama">
+
+          <!-- Tautan menuju halaman dashboard dosen. -->
+          <a class="nav-link" href="dashboard.html">
+
+            <!-- Ikon dashboard berbentuk empat kotak. -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="3" width="7" height="7" rx="1"/>
+              <rect x="14" y="3" width="7" height="7" rx="1"/>
+              <rect x="3" y="14" width="7" height="7" rx="1"/>
+              <rect x="14" y="14" width="7" height="7" rx="1"/>
+            </svg>
+
+            <span>Dashboard</span>
+          </a>
+
+          <!-- Tautan menuju halaman daftar prestasi mahasiswa.
+               Class is-active menandakan halaman yang sedang dibuka. -->
+          <a class="nav-link is-active" href="daftar-prestasi.html" aria-current="page">
+
+            <!-- Ikon piala sebagai penanda menu data prestasi. -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M8 4h8v5a4 4 0 0 1-8 0V4Z"/>
+              <path d="M8 5H5.6a2.4 2.4 0 0 0 0 4.8H8"/>
+              <path d="M16 5h2.4a2.4 2.4 0 0 1 0 4.8H16"/>
+              <path d="M12 13v3"/>
+              <path d="M9 20h6"/>
+              <path d="M9 20l3-3.4 3 3.4"/>
+            </svg>
+
+            <span>Data Prestasi Mahasiswa</span>
+          </a>
+
+          <!-- Tautan menuju halaman profil dosen. -->
+          <a class="nav-link" href="profil.html">
+
+            <!-- Ikon profil pengguna. -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="8" r="3.7"/>
+              <path d="M5.3 20c.5-3.9 3-6.1 6.7-6.1s6.2 2.2 6.7 6.1"/>
+            </svg>
+
+            <span>Profil Dosen</span>
+          </a>
+        </nav>
+      </div>
+
+      <!-- Hiasan garis dekoratif pada bagian bawah sidebar. -->
+      <div class="sidebar-decoration" aria-hidden="true">
+        <svg viewBox="0 0 253 42" preserveAspectRatio="none">
+          <g fill="none" stroke="#b99555" stroke-width="1" vector-effect="non-scaling-stroke">
+            <path d="M-4 23C35 12 66 12 104 18C142 24 166 35 204 30C226 27 241 18 257 12" stroke-opacity=".38"/>
+            <path d="M-4 33C38 22 72 23 110 29C148 35 172 41 210 36C231 33 244 27 257 22" stroke-opacity=".24"/>
+          </g>
+        </svg>
+      </div>
+
+      <!-- Bagian bawah sidebar yang berisi tombol keluar dari sistem. -->
+      <div class="sidebar-footer">
+
+        <!-- Tautan keluar yang mengarahkan pengguna kembali ke halaman awal/login. -->
+        <a class="logout-link" href="../../index.html">
+
+          <!-- Ikon logout berbentuk pintu dan panah keluar. -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M10 20.5H6.5A2.5 2.5 0 0 1 4 18V6a2.5 2.5 0 0 1 2.5-2.5H10"/>
+            <path d="M14.5 16.5 19 12l-4.5-4.5"/>
+            <path d="M19 12H9.5"/>
+          </svg>
+
+          <span>Keluar (Logout)</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- Lapisan transparan untuk menutup sidebar ketika area di luar sidebar ditekan. -->
+    <label class="sidebar-overlay" for="sidebar-toggle" aria-label="Tutup menu navigasi"></label>
+
+    <!-- Pembungkus bagian utama halaman di sebelah kanan sidebar. -->
+    <div class="main-shell">
+
+      <!-- Bagian header atas yang berisi tombol menu dan informasi halaman. -->
+      <header class="topbar">
+
+        <!-- Tombol untuk membuka atau menutup sidebar pada tampilan desktop. -->
+        <label class="menu-toggle menu-toggle--desktop" for="sidebar-toggle" aria-label="Buka atau tutup sidebar">
+
+          <!-- Ikon tiga garis sebagai simbol menu. -->
+          <svg viewBox="0 0 20 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+            <path d="M1 1h18M1 7h18M1 13h18"/>
+          </svg>
+        </label>
+
+        <!-- Tombol untuk membuka atau menutup sidebar pada tampilan mobile. -->
+        <label class="menu-toggle menu-toggle--mobile" for="sidebar-toggle" aria-label="Buka atau tutup menu navigasi">
+
+          <!-- Ikon tiga garis sebagai simbol menu. -->
+          <svg viewBox="0 0 20 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+            <path d="M1 1h18M1 7h18M1 13h18"/>
+          </svg>
+        </label>
+
+        <!-- Informasi judul halaman dan posisi halaman pada navigasi. -->
+        <div class="topbar-heading">
+
+          <!-- Breadcrumb menunjukkan lokasi halaman yang sedang dibuka. -->
+          <nav class="breadcrumbs" aria-label="Breadcrumb">
+            <span class="crumb-brand">SIPRESMA</span>
+            <span class="crumb-sep" aria-hidden="true">/</span>
+            <span>Dosen</span>
+            <span class="crumb-sep" aria-hidden="true">/</span>
+            <span class="crumb-current" aria-current="page">Data Prestasi Mahasiswa</span>
+          </nav>
+
+          <!-- Judul utama halaman pada bagian header. -->
+          <h1 class="page-title">Data Prestasi Mahasiswa</h1>
+        </div>
+
+        <!-- Hiasan garis bergelombang pada bagian header. -->
+        <svg class="topbar-waves" viewBox="0 0 1228 64" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0 58C170 58 280 38 430 38C580 38 620 52 770 49C920 46 1010 18 1135 17C1180 17 1205 19 1228 21" fill="none" stroke="#c6a86f" stroke-width="1" vector-effect="non-scaling-stroke"/>
+        </svg>
+      </header>
+
+      <!-- Bagian konten utama halaman data prestasi mahasiswa. -->
+      <main class="page-content prestasi-content">
+
+        <!-- Judul dan deskripsi halaman data prestasi. -->
+        <header class="prestasi-heading">
+          <h2 class="prestasi-title">Data Prestasi Mahasiswa Program Studi</h2>
+          <p class="prestasi-description">Daftar pengajuan dan riwayat capaian kejuaraan mahasiswa</p>
+        </header>
+
+        <!-- Bagian pencarian dan filter data prestasi mahasiswa. -->
+        <section class="prestasi-toolbar" aria-label="Pencarian dan filter data prestasi">
+
+          <!-- Kolom pencarian berdasarkan nama, NPM, atau kompetisi. -->
+          <div class="prestasi-search">
+
+            <!-- Ikon kaca pembesar sebagai penanda kolom pencarian. -->
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+              <circle cx="9" cy="9" r="6"/>
+              <path d="m13.4 13.4 4.1 4.1"/>
+            </svg>
+
+            <!-- Input untuk memasukkan kata kunci pencarian. -->
+            <input id="prestasi-search" type="search" placeholder="Cari mahasiswa, NPM, atau kompetisi..." aria-label="Cari mahasiswa, NPM, atau kompetisi" autocomplete="off">
+          </div>
+
+          <!-- Kelompok pilihan filter untuk menyaring data prestasi. -->
+          <div class="prestasi-filters">
+
+            <!-- Filter berdasarkan jenis prestasi. -->
+            <div class="prestasi-filter">
+              <span class="prestasi-filter-label" id="filter-jenis-label">Jenis</span>
+
+              <input class="jenis-filter-input" type="radio" name="filter-jenis" id="filter-jenis-all" value="all" tabindex="-1" checked aria-label="Semua Jenis">
+              <input class="jenis-filter-input" type="radio" name="filter-jenis" id="filter-jenis-akademik" value="akademik" tabindex="-1" aria-label="Akademik">
+              <input class="jenis-filter-input" type="radio" name="filter-jenis" id="filter-jenis-nonakademik" value="nonakademik" tabindex="-1" aria-label="Nonakademik">
+
+              <!-- Pembungkus dropdown jenis prestasi. -->
+              <div class="prestasi-select-wrap jenis-select-wrap">
+
+                <div class="jenis-select" id="filter-jenis" tabindex="0" role="group" aria-labelledby="filter-jenis-label" aria-haspopup="listbox">
+                  <span class="jenis-select-value" aria-hidden="true">
+                    <span class="jenis-select-label jenis-select-label--all">Semua Jenis</span>
+                    <span class="jenis-select-label jenis-select-label--akademik">Akademik</span>
+                    <span class="jenis-select-label jenis-select-label--nonakademik">Nonakademik</span>
+                  </span>
+
+                  <!-- Ikon panah untuk menandakan bahwa elemen merupakan dropdown. -->
+                  <svg viewBox="0 0 12 8" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="m1 1.5 5 5 5-5"/>
+                  </svg>
+
+                  <div class="jenis-select-menu" role="listbox" aria-label="Pilih jenis prestasi">
+                    <label class="jenis-select-item jenis-select-item--all" for="filter-jenis-all">Semua Jenis</label>
+                    <label class="jenis-select-item jenis-select-item--akademik" for="filter-jenis-akademik">Akademik</label>
+                    <label class="jenis-select-item jenis-select-item--nonakademik" for="filter-jenis-nonakademik">Nonakademik</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Filter berdasarkan status verifikasi prestasi. -->
+            <div class="prestasi-filter">
+              <span class="prestasi-filter-label" id="filter-status-label">Status</span>
+
+              <input class="status-filter-input" type="radio" name="filter-status" id="filter-status-all" value="all" tabindex="-1" checked aria-label="Semua Status">
+              <input class="status-filter-input" type="radio" name="filter-status" id="filter-status-diverifikasi" value="diverifikasi" tabindex="-1" aria-label="Diverifikasi">
+              <input class="status-filter-input" type="radio" name="filter-status" id="filter-status-diajukan" value="diajukan" tabindex="-1" aria-label="Diajukan">
+              <input class="status-filter-input" type="radio" name="filter-status" id="filter-status-perlu-perbaikan" value="perlu-perbaikan" tabindex="-1" aria-label="Perlu Perbaikan">
+              <input class="status-filter-input" type="radio" name="filter-status" id="filter-status-ditolak" value="ditolak" tabindex="-1" aria-label="Ditolak">
+
+              <!-- Pembungkus dropdown status. -->
+              <div class="prestasi-select-wrap status-select-wrap">
+
+                <div class="jenis-select status-select" id="filter-status" tabindex="0" role="group" aria-labelledby="filter-status-label" aria-haspopup="listbox">
+                  <span class="jenis-select-value" aria-hidden="true">
+                    <span class="jenis-select-label jenis-select-label--status-all">Semua Status</span>
+                    <span class="jenis-select-label jenis-select-label--status-diverifikasi">Diverifikasi</span>
+                    <span class="jenis-select-label jenis-select-label--status-diajukan">Diajukan</span>
+                    <span class="jenis-select-label jenis-select-label--status-perlu-perbaikan">Perlu Perbaikan</span>
+                    <span class="jenis-select-label jenis-select-label--status-ditolak">Ditolak</span>
+                  </span>
+
+                  <!-- Ikon panah dropdown status. -->
+                  <svg viewBox="0 0 12 8" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="m1 1.5 5 5 5-5"/>
+                  </svg>
+
+                  <div class="jenis-select-menu status-select-menu" role="listbox" aria-labelledby="filter-status-label">
+                    <label class="jenis-select-item jenis-select-item--status-all" for="filter-status-all">Semua Status</label>
+                    <label class="jenis-select-item jenis-select-item--status-diverifikasi" for="filter-status-diverifikasi">Diverifikasi</label>
+                    <label class="jenis-select-item jenis-select-item--status-diajukan" for="filter-status-diajukan">Diajukan</label>
+                    <label class="jenis-select-item jenis-select-item--status-perlu-perbaikan" for="filter-status-perlu-perbaikan">Perlu Perbaikan</label>
+                    <label class="jenis-select-item jenis-select-item--status-ditolak" for="filter-status-ditolak">Ditolak</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Panel utama yang menampung tabel data prestasi mahasiswa. -->
+        <section class="prestasi-panel">
+
+          <!-- Pembungkus tabel yang memungkinkan tabel digulir jika ukurannya melebihi layar. -->
+          <div class="prestasi-table-scroll" tabindex="0" aria-label="Tabel data prestasi mahasiswa, dapat digulir">
+
+            <!-- Tabel untuk menampilkan daftar prestasi mahasiswa. -->
+            <table class="prestasi-table" aria-label="Data prestasi mahasiswa Program Studi Teknik Informatika">
+
+              <!-- Mengatur kelompok kolom dan kelas CSS masing-masing kolom. -->
+              <colgroup>
+                <col class="prestasi-col-student">
+                <col class="prestasi-col-activity">
+                <col class="prestasi-col-type">
+                <col class="prestasi-col-rank">
+                <col class="prestasi-col-year">
+                <col class="prestasi-col-status">
+                <col class="prestasi-col-certificate">
+              </colgroup>
+
+              <!-- Bagian kepala tabel yang berisi nama setiap kolom. -->
+              <thead>
+                <tr>
+                  <th scope="col">Nama Mahasiswa &amp; NPM</th>
+                  <th scope="col">Kegiatan Kompetisi</th>
+                  <th scope="col">Jenis &amp; Tingkat</th>
+                  <th scope="col">Peringkat</th>
+                  <th scope="col">Tahun</th>
+                  <th scope="col">Status Verifikasi</th>
+                  <th scope="col">Sertifikat</th>
+                </tr>
+              </thead>
+
+              <!-- Bagian isi tabel yang berisi data prestasi mahasiswa. -->
+              <tbody id="prestasi-rows">
+
+                <!-- Baris data prestasi pertama milik Devanka Shankara. -->
+                <!-- data-jenis dan data-status digunakan sebagai penanda jenis dan status data. -->
+                <tr class="prestasi-row" data-jenis="akademik" data-status="diverifikasi">
+
+                  <!-- Kolom nama dan NPM mahasiswa. -->
+                  <td class="prestasi-cell-student">
+                    <span class="prestasi-name">Devanka Shankara</span>
+                    <span class="prestasi-npm">NPM: 07352411036</span>
+                  </td>
+
+                  <!-- Kolom nama kompetisi dan penyelenggara. -->
+                  <td class="prestasi-cell-activity">
+                    <span class="prestasi-competition">Gemastik XVI - Divisi Smart City</span>
+                    <span class="prestasi-organizer">Puspresnas Kemendikbudristek &amp; UB</span>
+                  </td>
+
+                  <!-- Kolom jenis dan tingkat prestasi. -->
+                  <td class="prestasi-cell-type">
+                    <span class="prestasi-type">Akademik</span>
+                    <span class="prestasi-level">Tingkat Nasional</span>
+                  </td>
+
+                  <!-- Kolom peringkat yang diperoleh mahasiswa. -->
+                  <td class="prestasi-cell-rank">Juara 1</td>
+
+                  <!-- Kolom tahun pelaksanaan kompetisi. -->
+                  <td class="prestasi-cell-year">2025</td>
+
+                  <!-- Kolom status verifikasi pengajuan prestasi. -->
+                  <td class="prestasi-cell-status">
+                    <span class="verify-badge verify-badge--verified">
+
+                      <!-- Ikon centang menandakan prestasi sudah diverifikasi. -->
+                      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="8" cy="8" r="6.2"/>
+                        <path d="m5.2 8.1 1.8 1.8 3.9-4"/>
+                      </svg>
+
+                      diverifikasi
+                    </span>
+                  </td>
+
+                  <!-- Kolom tautan untuk membuka sertifikat prestasi. -->
+                  <td class="prestasi-cell-certificate">
+                    <a class="certificate-link" href="../../assets/dokumen/sertifikat-gemastik-xvi-smart-city.pdf" target="_blank" rel="noopener" aria-label="Buka sertifikat Gemastik XVI Divisi Smart City milik Devanka Shankara">
+
+                      <!-- Ikon dokumen sebagai penanda tautan sertifikat. -->
+                      <svg viewBox="0 0 20 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M4 1.5h8l4 4V22.5H4z"/>
+                        <path d="M12 1.5v4h4"/>
+                        <path d="M6.8 10.2h6.4M6.8 13.3h6.4M6.8 16.4h4.5"/>
+                      </svg>
+                    </a>
+                  </td>
+                </tr>
+
+                <!-- Baris data prestasi kedua milik Devanka Shankara. -->
+                <tr class="prestasi-row" data-jenis="akademik" data-status="diverifikasi">
+                  <td class="prestasi-cell-student">
+                    <span class="prestasi-name">Devanka Shankara</span>
+                    <span class="prestasi-npm">NPM: 07352411036</span>
+                  </td>
+                  <td class="prestasi-cell-activity">
+                    <span class="prestasi-competition">National Hackathon Data Science 2025</span>
+                    <span class="prestasi-organizer">Institut Teknologi Bandung</span>
+                  </td>
+                  <td class="prestasi-cell-type">
+                    <span class="prestasi-type">Akademik</span>
+                    <span class="prestasi-level">Tingkat Nasional</span>
+                  </td>
+                  <td class="prestasi-cell-rank">Juara 2</td>
+                  <td class="prestasi-cell-year">2025</td>
+                  <td class="prestasi-cell-status">
+                    <span class="verify-badge verify-badge--verified">
+                      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="8" cy="8" r="6.2"/>
+                        <path d="m5.2 8.1 1.8 1.8 3.9-4"/>
+                      </svg>
+                      diverifikasi
+                    </span>
+                  </td>
+                  <td class="prestasi-cell-certificate">
+                    <a class="certificate-link" href="../../assets/dokumen/sertifikat-national-hackathon-data-science-2025.pdf" target="_blank" rel="noopener" aria-label="Buka sertifikat National Hackathon Data Science 2025 milik Devanka Shankara">
+                      <svg viewBox="0 0 20 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M4 1.5h8l4 4V22.5H4z"/>
+                        <path d="M12 1.5v4h4"/>
+                        <path d="M6.8 10.2h6.4M6.8 13.3h6.4M6.8 16.4h4.5"/>
+                      </svg>
+                    </a>
+                  </td>
+                </tr>
+
+                <!-- Baris data prestasi ketiga, termasuk prestasi nonakademik. -->
+                <tr class="prestasi-row" data-jenis="nonakademik" data-status="diverifikasi">
+                  <td class="prestasi-cell-student">
+                    <span class="prestasi-name">Devanka Shankara</span>
+                    <span class="prestasi-npm">NPM: 07352411036</span>
+                  </td>
+                  <td class="prestasi-cell-activity">
+                    <span class="prestasi-competition">Turnamen Catur Mahasiswa Wilayah Jawa Barat</span>
+                    <span class="prestasi-organizer">BAPOMI Jawa Barat</span>
+                  </td>
+                  <td class="prestasi-cell-type">
+                    <span class="prestasi-type">Nonakademik</span>
+                    <span class="prestasi-level">Tingkat Provinsi</span>
+                  </td>
+                  <td class="prestasi-cell-rank">Juara 3</td>
+                  <td class="prestasi-cell-year">2025</td>
+                  <td class="prestasi-cell-status">
+                    <span class="verify-badge verify-badge--verified">
+                      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="8" cy="8" r="6.2"/>
+                        <path d="m5.2 8.1 1.8 1.8 3.9-4"/>
+                      </svg>
+                      diverifikasi
+                    </span>
+                  </td>
+                  <td class="prestasi-cell-certificate">
+                    <a class="certificate-link" href="../../assets/dokumen/sertifikat-turnamen-catur-jawa-barat-2025.pdf" target="_blank" rel="noopener" aria-label="Buka sertifikat Turnamen Catur Mahasiswa Wilayah Jawa Barat milik Devanka Shankara">
+                      <svg viewBox="0 0 20 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M4 1.5h8l4 4V22.5H4z"/>
+                        <path d="M12 1.5v4h4"/>
+                        <path d="M6.8 10.2h6.4M6.8 13.3h6.4M6.8 16.4h4.5"/>
+                      </svg>
+                    </a>
+                  </td>
+                </tr>
+
+                <!-- Baris data prestasi keempat dengan status masih diajukan. -->
+                <tr class="prestasi-row" data-jenis="akademik" data-status="diajukan">
+                  <td class="prestasi-cell-student">
+                    <span class="prestasi-name">Devanka Shankara</span>
+                    <span class="prestasi-npm">NPM: 07352411036</span>
+                  </td>
+                  <td class="prestasi-cell-activity">
+                    <span class="prestasi-competition">International Youth AI Innovation Forum 2026</span>
+                    <span class="prestasi-organizer">IEEE Computer Society Chapter</span>
+                  </td>
+                  <td class="prestasi-cell-type">
+                    <span class="prestasi-type">Akademik</span>
+                    <span class="prestasi-level">Tingkat Internasional</span>
+                  </td>
+                  <td class="prestasi-cell-rank">Peserta / Penyaji</td>
+                  <td class="prestasi-cell-year">2026</td>
+                  <td class="prestasi-cell-status">
+                    <span class="verify-badge verify-badge--pending">
+                      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="8" cy="8" r="6.2"/>
+                        <path d="M8 4.7v3.7l2.5 1.5"/>
+                      </svg>
+                      diajukan
+                    </span>
+                  </td>
+                  <td class="prestasi-cell-certificate">
+                    <a class="certificate-link" href="../../assets/dokumen/sertifikat-international-youth-ai-innovation-forum-2026.pdf" target="_blank" rel="noopener" aria-label="Buka sertifikat International Youth AI Innovation Forum 2026 milik Devanka Shankara">
+                      <svg viewBox="0 0 20 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M4 1.5h8l4 4V22.5H4z"/>
+                        <path d="M12 1.5v4h4"/>
+                        <path d="M6.8 10.2h6.4M6.8 13.3h6.4M6.8 16.4h4.5"/>
+                      </svg>
+                    </a>
+                  </td>
+                </tr>
+
+                <!-- Baris data prestasi kelima milik Nabila Putri Kirana. -->
+                <tr class="prestasi-row" data-jenis="akademik" data-status="diverifikasi">
+                  <td class="prestasi-cell-student">
+                    <span class="prestasi-name">Nabila Putri Kirana</span>
+                    <span class="prestasi-npm">NPM: 07352111002</span>
+                  </td>
+                  <td class="prestasi-cell-activity">
+                    <span class="prestasi-competition">Gemastik XVI - Divisi Smart City</span>
+                    <span class="prestasi-organizer">Puspresnas Kemendikbudristek &amp; UB</span>
+                  </td>
+                  <td class="prestasi-cell-type">
+                    <span class="prestasi-type">Akademik</span>
+                    <span class="prestasi-level">Tingkat Nasional</span>
+                  </td>
+                  <td class="prestasi-cell-rank">Juara 1</td>
+                  <td class="prestasi-cell-year">2025</td>
+                  <td class="prestasi-cell-status">
+                    <span class="verify-badge verify-badge--verified">
+                      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="8" cy="8" r="6.2"/>
+                        <path d="m5.2 8.1 1.8 1.8 3.9-4"/>
+                      </svg>
+                      diverifikasi
+                    </span>
+                  </td>
+                  <td class="prestasi-cell-certificate">
+                    <a class="certificate-link" href="../../assets/dokumen/sertifikat-gemastik-xvi-smart-city.pdf" target="_blank" rel="noopener" aria-label="Buka sertifikat Gemastik XVI Divisi Smart City milik Nabila Putri Kirana">
+                      <svg viewBox="0 0 20 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M4 1.5h8l4 4V22.5H4z"/>
+                        <path d="M12 1.5v4h4"/>
+                        <path d="M6.8 10.2h6.4M6.8 13.3h6.4M6.8 16.4h4.5"/>
+                      </svg>
+                    </a>
+                  </td>
+                </tr>
+
+                <!-- Baris data prestasi keenam milik Muhammad Fajar Ramadhan. -->
+                <tr class="prestasi-row" data-jenis="akademik" data-status="diverifikasi">
+                  <td class="prestasi-cell-student">
+                    <span class="prestasi-name">Muhammad Fajar Ramadhan</span>
+                    <span class="prestasi-npm">NPM: 07352211003</span>
+                  </td>
+                  <td class="prestasi-cell-activity">
+                    <span class="prestasi-competition">National Hackathon Data Science 2025</span>
+                    <span class="prestasi-organizer">Institut Teknologi Bandung</span>
+                  </td>
+                  <td class="prestasi-cell-type">
+                    <span class="prestasi-type">Akademik</span>
+                    <span class="prestasi-level">Tingkat Nasional</span>
+                  </td>
+                  <td class="prestasi-cell-rank">Juara 2</td>
+                  <td class="prestasi-cell-year">2026</td>
+                  <td class="prestasi-cell-status">
+                    <span class="verify-badge verify-badge--verified">
+                      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="8" cy="8" r="6.2"/>
+                        <path d="m5.2 8.1 1.8 1.8 3.9-4"/>
+                      </svg>
+                      diverifikasi
+                    </span>
+                  </td>
+                  <td class="prestasi-cell-certificate">
+                    <a class="certificate-link" href="../../assets/dokumen/sertifikat-national-hackathon-data-science-2025.pdf" target="_blank" rel="noopener" aria-label="Buka sertifikat National Hackathon Data Science 2025 milik Muhammad Fajar Ramadhan">
+                      <svg viewBox="0 0 20 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M4 1.5h8l4 4V22.5H4z"/>
+                        <path d="M12 1.5v4h4"/>
+                        <path d="M6.8 10.2h6.4M6.8 13.3h6.4M6.8 16.4h4.5"/>
+                      </svg>
+                    </a>
+                  </td>
+                </tr>
+
+                <!-- Baris data prestasi ketujuh milik Siti Nurhaliza. -->
+                <tr class="prestasi-row" data-jenis="nonakademik" data-status="diajukan">
+                  <td class="prestasi-cell-student">
+                    <span class="prestasi-name">Siti Nurhaliza</span>
+                    <span class="prestasi-npm">NPM: 07352311004</span>
+                  </td>
+                  <td class="prestasi-cell-activity">
+                    <span class="prestasi-competition">Turnamen Catur Mahasiswa Wilayah Jawa Barat</span>
+                    <span class="prestasi-organizer">BAPOMI Jawa Barat</span>
+                  </td>
+                  <td class="prestasi-cell-type">
+                    <span class="prestasi-type">Nonakademik</span>
+                    <span class="prestasi-level">Tingkat Provinsi</span>
+                  </td>
+                  <td class="prestasi-cell-rank">Juara 3</td>
+                  <td class="prestasi-cell-year">2024</td>
+                  <td class="prestasi-cell-status">
+                    <span class="verify-badge verify-badge--pending">
+                      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="8" cy="8" r="6.2"/>
+                        <path d="M8 4.7v3.7l2.5 1.5"/>
+                      </svg>
+                      diajukan
+                    </span>
+                  </td>
+                  <td class="prestasi-cell-certificate">
+                    <a class="certificate-link" href="../../assets/dokumen/sertifikat-turnamen-catur-jawa-barat-2025.pdf" target="_blank" rel="noopener" aria-label="Buka sertifikat Turnamen Catur Mahasiswa Wilayah Jawa Barat milik Siti Nurhaliza">
+                      <svg viewBox="0 0 20 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M4 1.5h8l4 4V22.5H4z"/>
+                        <path d="M12 1.5v4h4"/>
+                        <path d="M6.8 10.2h6.4M6.8 13.3h6.4M6.8 16.4h4.5"/>
+                      </svg>
+                    </a>
+                  </td>
+                </tr>
+
+                <!-- Baris data prestasi kedelapan milik Dimas Wahyu Pratama. -->
+                <tr class="prestasi-row" data-jenis="akademik" data-status="diverifikasi">
+                  <td class="prestasi-cell-student">
+                    <span class="prestasi-name">Dimas Wahyu Pratama</span>
+                    <span class="prestasi-npm">NPM: 07352411005</span>
+                  </td>
+                  <td class="prestasi-cell-activity">
+                    <span class="prestasi-competition">International Youth AI Innovation Forum 2026</span>
+                    <span class="prestasi-organizer">IEEE Computer Society Chapter</span>
+                  </td>
+                  <td class="prestasi-cell-type">
+                    <span class="prestasi-type">Akademik</span>
+                    <span class="prestasi-level">Tingkat Internasional</span>
+                  </td>
+                  <td class="prestasi-cell-rank">Peserta / Penyaji</td>
+                  <td class="prestasi-cell-year">2025</td>
+                  <td class="prestasi-cell-status">
+                    <span class="verify-badge verify-badge--verified">
+                      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="8" cy="8" r="6.2"/>
+                        <path d="m5.2 8.1 1.8 1.8 3.9-4"/>
+                      </svg>
+                      diverifikasi
+                    </span>
+                  </td>
+                  <td class="prestasi-cell-certificate">
+                    <a class="certificate-link" href="../../assets/dokumen/sertifikat-international-youth-ai-innovation-forum-2026.pdf" target="_blank" rel="noopener" aria-label="Buka sertifikat International Youth AI Innovation Forum 2026 milik Dimas Wahyu Pratama">
+                      <svg viewBox="0 0 20 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M4 1.5h8l4 4V22.5H4z"/>
+                        <path d="M12 1.5v4h4"/>
+                        <path d="M6.8 10.2h6.4M6.8 13.3h6.4M6.8 16.4h4.5"/>
+                      </svg>
+                    </a>
+                  </td>
+                </tr>
+
+                <!-- Baris khusus yang ditampilkan ketika pencarian atau filter tidak menemukan data. -->
+                <!-- Atribut hidden membuat baris ini tidak terlihat pada kondisi normal. -->
+                <tr class="prestasi-empty-row" id="prestasi-empty" hidden>
+                  <td colspan="7">Tidak ada data prestasi yang sesuai dengan pencarian dan filter.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+
+      <!-- Bagian footer yang menampilkan informasi hak cipta sistem. -->
+      <footer class="page-footer">
+        <p>&copy; 2026 SIPRESMA <span class="footer-separator">&middot;</span> Sistem Informasi Prestasi Mahasiswa</p>
+      </footer>
+    </div>
+  </div>
+
+</body>
+</html>
