@@ -5,31 +5,27 @@
     'button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])';
 
   // Modal reusable: buka/tutup, kunci fokus, dan kembalikan fokus ke pemicu.
-  const setupModal = ({ modal, closeSelector, onOpen, onClose, fallbackFocus }) => {
-    if (!modal) return null;
-
-    const dialog = modal.querySelector(".dd-modal__dialog");
+  function setupModal(options) {
+    const modal = options.modal;
+    const dialog = modal ? modal.querySelector(".dd-modal__dialog") : null;
     if (!dialog) return null;
 
     let lastFocusedElement = null;
 
-    const getFocusableElements = () =>
-      Array.from(dialog.querySelectorAll(focusableSelector)).filter(
-        (element) => element.offsetParent !== null
-      );
-
-    const open = (trigger) => {
+    function open(trigger) {
       if (!modal.hidden) return;
 
       lastFocusedElement = trigger instanceof HTMLElement ? trigger : document.activeElement;
-      if (typeof onOpen === "function") onOpen();
+      if (typeof options.onOpen === "function") options.onOpen();
 
       modal.hidden = false;
       document.body.classList.add("dd-modal-open");
-      window.requestAnimationFrame(() => dialog.focus({ preventScroll: true }));
-    };
+      window.requestAnimationFrame(function () {
+        dialog.focus({ preventScroll: true });
+      });
+    }
 
-    const close = ({ restoreFocus = true } = {}) => {
+    function close() {
       if (modal.hidden) return;
 
       modal.hidden = true;
@@ -38,27 +34,24 @@
         document.body.classList.remove("dd-modal-open");
       }
 
-      if (typeof onClose === "function") onClose();
-      if (!restoreFocus) return;
+      if (typeof options.onClose === "function") options.onClose();
 
-      const fallback =
-        fallbackFocus instanceof HTMLElement && fallbackFocus.isConnected ? fallbackFocus : null;
-      const focusTarget =
-        lastFocusedElement instanceof HTMLElement &&
-        lastFocusedElement.isConnected &&
-        lastFocusedElement !== document.body
-          ? lastFocusedElement
-          : fallback;
+      let focusTarget = lastFocusedElement;
+      if (!focusTarget || !focusTarget.isConnected || focusTarget === document.body) {
+        focusTarget = options.fallbackFocus;
+      }
 
-      if (focusTarget) focusTarget.focus({ preventScroll: true });
-    };
+      if (focusTarget && focusTarget.isConnected) {
+        focusTarget.focus({ preventScroll: true });
+      }
+    }
 
-    modal.addEventListener("click", (event) => {
-      if (event.target.closest(closeSelector)) close();
+    modal.addEventListener("click", function (event) {
+      if (event.target.closest(options.closeSelector)) close();
     });
 
     // Esc menutup modal; Tab ditahan agar fokus tetap di dalam modal.
-    document.addEventListener("keydown", (event) => {
+    document.addEventListener("keydown", function (event) {
       if (modal.hidden) return;
 
       if (event.key === "Escape") {
@@ -69,7 +62,11 @@
 
       if (event.key !== "Tab") return;
 
-      const focusableElements = getFocusableElements();
+      const focusableElements = Array.from(dialog.querySelectorAll(focusableSelector)).filter(
+        function (element) {
+          return element.offsetParent !== null;
+        }
+      );
       if (focusableElements.length === 0) {
         event.preventDefault();
         return;
@@ -77,24 +74,22 @@
 
       const firstElement = focusableElements[0];
       const lastElement = focusableElements[focusableElements.length - 1];
-      let nextFocus = null;
 
       if (document.activeElement === dialog) {
-        nextFocus = event.shiftKey ? lastElement : firstElement;
-      } else if (event.shiftKey && document.activeElement === firstElement) {
-        nextFocus = lastElement;
-      } else if (!event.shiftKey && document.activeElement === lastElement) {
-        nextFocus = firstElement;
-      }
-
-      if (nextFocus) {
         event.preventDefault();
-        nextFocus.focus();
+        if (event.shiftKey) lastElement.focus();
+        else firstElement.focus();
+      } else if (event.shiftKey && document.activeElement === firstElement) {
+        event.preventDefault();
+        lastElement.focus();
+      } else if (!event.shiftKey && document.activeElement === lastElement) {
+        event.preventDefault();
+        firstElement.focus();
       }
     });
 
-    return { modal, dialog, open, close };
-  };
+    return { open: open, close: close };
+  }
 
   const tableBody = document.getElementById("dd-table-body");
   const tableScroll = document.querySelector(".dd-table-scroll");
@@ -108,14 +103,15 @@
 
   let currentStatus = "Semua Status";
 
-  const getRows = () => (tableBody ? Array.from(tableBody.querySelectorAll("tr")) : []);
-
   // Tampilkan baris yang cocok dengan kata kunci pencarian dan status terpilih.
-  const applyFilters = () => {
-    const term = (searchInput?.value || "").trim().toLowerCase();
+  function applyFilters() {
+    let term = "";
+    if (searchInput) term = searchInput.value.trim().toLowerCase();
+
+    const rows = tableBody ? Array.from(tableBody.querySelectorAll("tr")) : [];
     let visibleCount = 0;
 
-    getRows().forEach((row) => {
+    rows.forEach(function (row) {
       const matchesSearch =
         !term ||
         (row.dataset.name || "").toLowerCase().includes(term) ||
@@ -132,34 +128,37 @@
     if (emptyState) emptyState.hidden = visibleCount !== 0;
 
     if (tableInfo) {
-      tableInfo.textContent = `Menampilkan ${visibleCount} dari ${getRows().length} dosen Program Studi Teknik Informatika`;
+      tableInfo.textContent = `Menampilkan ${visibleCount} dari ${rows.length} dosen Program Studi Teknik Informatika`;
     }
-  };
+  }
 
   // ==================== FILTER STATUS ====================
   if (statusRoot && statusTrigger && statusValue && statusMenu) {
     const options = Array.from(statusMenu.querySelectorAll(".dd-status-option"));
     let selectedOption =
-      options.find((option) => option.classList.contains("is-selected")) || options[0] || null;
+      options.find(function (option) {
+        return option.classList.contains("is-selected");
+      }) || options[0] || null;
     let isOpen = false;
 
-    const setOpen = (open, focusOption = false) => {
+    function setOpen(open, focusOption) {
       isOpen = open;
       statusRoot.classList.toggle("is-open", open);
       statusTrigger.setAttribute("aria-expanded", String(open));
 
       if (open && focusOption && selectedOption) {
-        window.requestAnimationFrame(() => selectedOption.focus({ preventScroll: true }));
+        window.requestAnimationFrame(function () {
+          selectedOption.focus({ preventScroll: true });
+        });
       }
-    };
+    }
 
-    const selectOption = (option) => {
+    function selectOption(option) {
       if (!option) return;
 
-      options.forEach((item) => {
-        const isSelected = item === option;
-        item.classList.toggle("is-selected", isSelected);
-        item.setAttribute("aria-selected", String(isSelected));
+      options.forEach(function (item) {
+        item.classList.toggle("is-selected", item === option);
+        item.setAttribute("aria-selected", String(item === option));
       });
 
       selectedOption = option;
@@ -168,11 +167,13 @@
       setOpen(false);
       statusTrigger.focus({ preventScroll: true });
       applyFilters();
-    };
+    }
 
-    statusTrigger.addEventListener("click", () => setOpen(!isOpen));
+    statusTrigger.addEventListener("click", function () {
+      setOpen(!isOpen);
+    });
 
-    statusTrigger.addEventListener("keydown", (event) => {
+    statusTrigger.addEventListener("keydown", function (event) {
       if (event.key === "ArrowDown" || event.key === "ArrowUp") {
         event.preventDefault();
 
@@ -187,10 +188,12 @@
       }
     });
 
-    options.forEach((option, index) => {
-      option.addEventListener("click", () => selectOption(option));
+    options.forEach(function (option, index) {
+      option.addEventListener("click", function () {
+        selectOption(option);
+      });
 
-      option.addEventListener("keydown", (event) => {
+      option.addEventListener("keydown", function (event) {
         let nextIndex = null;
 
         if (event.key === "ArrowDown") nextIndex = (index + 1) % options.length;
@@ -218,11 +221,11 @@
       });
     });
 
-    statusRoot.addEventListener("focusout", (event) => {
+    statusRoot.addEventListener("focusout", function (event) {
       if (isOpen && !statusRoot.contains(event.relatedTarget)) setOpen(false);
     });
 
-    document.addEventListener("pointerdown", (event) => {
+    document.addEventListener("pointerdown", function (event) {
       if (isOpen && !statusRoot.contains(event.target)) setOpen(false);
     });
   }
@@ -237,7 +240,7 @@
     modal: document.getElementById("dd-create-modal"),
     closeSelector: "[data-dd-create-close]",
     fallbackFocus: createTrigger,
-    onOpen: () => {
+    onOpen: function () {
       if (createForm) createForm.reset();
     }
   });
@@ -267,7 +270,7 @@
     modal: document.getElementById("dd-edit-modal"),
     closeSelector: "[data-dd-edit-close]",
     fallbackFocus: tableScroll,
-    onClose: () => {
+    onClose: function () {
       editingRow = null;
     }
   });
@@ -280,15 +283,7 @@
       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m9 9 6 6M15 9l-6 6"/></svg>'
   };
 
-  const updateStatusBadge = (row, status) => {
-    const badge = row.querySelector(".dd-status");
-    if (!badge) return;
-
-    badge.className = `dd-status dd-status--${status === "Aktif" ? "active" : "inactive"}`;
-    badge.innerHTML = `${statusIconMarkup[status]}${status}`;
-  };
-
-  const openEditModal = (row, trigger) => {
+  function openEditModal(row, trigger) {
     if (!editModal || !editForm || !row) return;
 
     editingRow = row;
@@ -298,7 +293,7 @@
     editEmail.value = row.dataset.email || "";
     editStatus.value = row.dataset.status || "Aktif";
     editModal.open(trigger);
-  };
+  }
 
   if (editModal && editForm) {
     editForm.addEventListener("submit", (event) => {
@@ -317,6 +312,7 @@
         const emailElement = row.querySelector(".dd-email-cell");
         const editButton = row.querySelector(".dd-icon-button--edit");
         const deleteButton = row.querySelector(".dd-icon-button--delete");
+        const badge = row.querySelector(".dd-status");
 
         row.dataset.nidn = nidn;
         row.dataset.name = name;
@@ -329,7 +325,13 @@
         if (editButton) editButton.setAttribute("aria-label", `Edit data ${name}`);
         if (deleteButton) deleteButton.setAttribute("aria-label", `Hapus akun ${name}`);
 
-        updateStatusBadge(row, status);
+        if (badge) {
+          if (status === "Aktif") badge.className = "dd-status dd-status--active";
+          else badge.className = "dd-status dd-status--inactive";
+
+          badge.innerHTML = statusIconMarkup[status] + status;
+        }
+
         applyFilters();
       }
 
@@ -345,25 +347,24 @@
     modal: document.getElementById("dd-delete-modal"),
     closeSelector: "[data-dd-delete-close]",
     fallbackFocus: tableScroll,
-    onClose: () => {
+    onClose: function () {
       deletingRow = null;
     }
   });
 
-  const openDeleteModal = (row, trigger) => {
+  function openDeleteModal(row, trigger) {
     if (!deleteModal || !row) return;
 
     deletingRow = row;
     deleteModal.open(trigger);
-  };
+  }
 
   if (deleteModal && confirmDeleteButton) {
-    confirmDeleteButton.addEventListener("click", () => {
+    confirmDeleteButton.addEventListener("click", function () {
       const row = deletingRow;
       if (!row) return;
 
       row.remove();
-      deletingRow = null;
       deleteModal.close();
       applyFilters();
     });
@@ -373,7 +374,7 @@
   const table = document.querySelector(".dd-table");
 
   if (table) {
-    table.addEventListener("click", (event) => {
+    table.addEventListener("click", function (event) {
       const editButton = event.target.closest(".dd-icon-button--edit");
       if (editButton) {
         openEditModal(editButton.closest("tr"), editButton);
