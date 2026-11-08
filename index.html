@@ -297,8 +297,11 @@
             </svg>
 
             <!-- Kolom untuk memasukkan username Admin. -->
-            <input class="input-control" type="text" id="identity-admin" name="username" placeholder="Masukkan Username Admin, cth: admin" autocomplete="username" required>
+            <input class="input-control" type="text" id="identity-admin" name="username" placeholder="Masukkan Username Admin, cth: admin" autocomplete="username" aria-describedby="error-identity-admin" required>
           </div>
+
+          <!-- Pesan kesalahan untuk input username Admin. -->
+          <p class="login-error" id="error-identity-admin" role="alert" hidden></p>
 
           <!-- Informasi bahwa akun Admin disediakan oleh pengelola sistem. -->
           <p class="form-hint">Akun Administrator disediakan oleh pengelola sistem.</p>
@@ -317,7 +320,7 @@
             </svg>
 
             <!-- Kolom untuk memasukkan password Admin. -->
-            <input class="input-control" type="password" id="password-admin" name="password" placeholder="Masukkan password Anda" autocomplete="current-password" required>
+            <input class="input-control" type="password" id="password-admin" name="password" placeholder="Masukkan password Anda" autocomplete="current-password" aria-describedby="error-password-admin" required>
 
             <!-- Ikon mata sebagai elemen tampilan password yang bersifat statis. -->
             <span class="password-toggle password-toggle--static" aria-hidden="true">
@@ -327,6 +330,9 @@
               </svg>
             </span>
           </div>
+
+          <!-- Pesan kesalahan untuk input password Admin. -->
+          <p class="login-error" id="error-password-admin" role="alert" hidden></p>
         </div>
 
         <!-- Tombol untuk mengirim formulir login Admin. -->

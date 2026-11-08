@@ -57,6 +57,31 @@
     });
   };
 
+  // Aturan password berlaku sama untuk Mahasiswa, Dosen, dan Admin.
+  const PASSWORD_MIN_LENGTH = 6;
+
+  const validatePassword = (input, error) => {
+    const value = input.value;
+
+    if (!value) {
+      showError(input, error, "Password wajib diisi.");
+      return false;
+    }
+
+    if (!value.trim()) {
+      showError(input, error, "Password tidak boleh hanya berisi spasi.");
+      return false;
+    }
+
+    if (value.length < PASSWORD_MIN_LENGTH) {
+      showError(input, error, `Password minimal ${PASSWORD_MIN_LENGTH} karakter.`);
+      return false;
+    }
+
+    clearError(input, error);
+    return true;
+  };
+
   // 3. VALIDASI LOGIN MAHASISWA
   const NPM_LENGTH = 11;
   const mahasiswaForm = document.querySelector(".login-form--mahasiswa");
@@ -92,22 +117,12 @@
         return true;
       };
 
-      const validatePassword = () => {
-        if (!passwordInput.value) {
-          showError(passwordInput, passwordError, "Password wajib diisi.");
-          return false;
-        }
-
-        clearError(passwordInput, passwordError);
-        return true;
-      };
-
       revalidateOnInput(npmInput, validateNpm);
-      revalidateOnInput(passwordInput, validatePassword);
+      revalidateOnInput(passwordInput, () => validatePassword(passwordInput, passwordError));
 
       mahasiswaForm.addEventListener("submit", (event) => {
         const npmValid = validateNpm();
-        const passwordValid = validatePassword();
+        const passwordValid = validatePassword(passwordInput, passwordError);
 
         event.preventDefault();
 
@@ -171,22 +186,17 @@
         return true;
       };
 
-      const validateDosenPassword = () => {
-        if (!dosenPasswordInput.value) {
-          showError(dosenPasswordInput, dosenPasswordError, "Password wajib diisi.");
-          return false;
-        }
-
-        clearError(dosenPasswordInput, dosenPasswordError);
-        return true;
-      };
-
       revalidateOnInput(nidnInput, validateNidn);
-      revalidateOnInput(dosenPasswordInput, validateDosenPassword);
+      revalidateOnInput(dosenPasswordInput, () =>
+        validatePassword(dosenPasswordInput, dosenPasswordError)
+      );
 
       dosenForm.addEventListener("submit", (event) => {
         const nidnValid = validateNidn();
-        const passwordValid = validateDosenPassword();
+        const passwordValid = validatePassword(
+          dosenPasswordInput,
+          dosenPasswordError
+        );
 
         if (!nidnValid || !passwordValid) {
           event.preventDefault();
@@ -201,7 +211,59 @@
     }
   }
 
-  // 5. RINGKASAN IDENTITAS PEMULIHAN MAHASISWA
+  // 5. VALIDASI LOGIN ADMIN
+  const adminForm = document.querySelector(".login-form--admin");
+
+  if (adminForm) {
+    const adminUsernameInput = adminForm.querySelector("#identity-admin");
+    const adminPasswordInput = adminForm.querySelector("#password-admin");
+    const adminUsernameError = adminForm.querySelector("#error-identity-admin");
+    const adminPasswordError = adminForm.querySelector("#error-password-admin");
+
+    if (
+      adminUsernameInput &&
+      adminPasswordInput &&
+      adminUsernameError &&
+      adminPasswordError
+    ) {
+      adminForm.noValidate = true;
+
+      const validateAdminUsername = () => {
+        if (!adminUsernameInput.value) {
+          showError(adminUsernameInput, adminUsernameError, "Username wajib diisi.");
+          return false;
+        }
+
+        clearError(adminUsernameInput, adminUsernameError);
+        return true;
+      };
+
+      revalidateOnInput(adminUsernameInput, validateAdminUsername);
+      revalidateOnInput(adminPasswordInput, () =>
+        validatePassword(adminPasswordInput, adminPasswordError)
+      );
+
+      adminForm.addEventListener("submit", (event) => {
+        const usernameValid = validateAdminUsername();
+        const passwordValid = validatePassword(
+          adminPasswordInput,
+          adminPasswordError
+        );
+
+        if (!usernameValid || !passwordValid) {
+          event.preventDefault();
+
+          if (!usernameValid) {
+            adminUsernameInput.focus();
+          } else {
+            adminPasswordInput.focus();
+          }
+        }
+      });
+    }
+  }
+
+  // 6. RINGKASAN IDENTITAS PEMULIHAN MAHASISWA
   const forgotIdentityMahasiswa = document.getElementById("forgot-identity-mahasiswa");
   const forgotSummaryIdentityMahasiswa = document.getElementById("forgot-summary-identity-mahasiswa");
   const forgotMahasiswaSuccess = document.getElementById("forgot-mahasiswa-success");
@@ -220,7 +282,7 @@
     );
   }
 
-  // 6. RINGKASAN IDENTITAS PEMULIHAN DOSEN
+  // 7. RINGKASAN IDENTITAS PEMULIHAN DOSEN
   const forgotIdentityDosen = document.getElementById("forgot-identity-dosen");
   const forgotSummaryIdentityDosen = document.getElementById("forgot-summary-identity-dosen");
   const forgotDosenSuccess = document.getElementById("forgot-dosen-success");
