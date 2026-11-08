@@ -666,9 +666,9 @@ body:has(.password-modal:target) {
   color: #bfa25d;
   background: transparent;
   border: 0;
-  border-radius: 6px;
+  border-radius: 50%;
   cursor: pointer;
-  transition: color 0.16s ease, background-color 0.16s ease;
+  transition: color 0.16s ease;
 }
 
 /* Ikon mata statis karena versi HTML/CSS tidak mengubah tipe input */
@@ -679,13 +679,13 @@ body:has(.password-modal:target) {
 
 /* Efek hover pada tombol ikon mata */
 .password-toggle:hover {
-  color: #a98443;
-  background: #f1e7d5;
+  color: #856b44;
+  background: transparent;
 }
 
 /* Indikator fokus tombol ikon mata */
 .password-toggle:focus-visible {
-  outline: 2px solid #b18c4c;
+  outline: 2px solid #b28f4d;
   outline-offset: 1px;
 }
 
@@ -693,21 +693,6 @@ body:has(.password-modal:target) {
 .password-toggle svg {
   width: 18px;
   height: 18px;
-}
-
-/* Menyembunyikan ikon mata tertutup pada kondisi awal */
-.password-toggle .eye-off {
-  display: none;
-}
-
-/* Menyembunyikan ikon mata terbuka ketika password ditampilkan */
-.password-toggle.is-visible .eye-open {
-  display: none;
-}
-
-/* Menampilkan ikon mata tertutup ketika password ditampilkan */
-.password-toggle.is-visible .eye-off {
-  display: block;
 }
 
 /* =========================================================

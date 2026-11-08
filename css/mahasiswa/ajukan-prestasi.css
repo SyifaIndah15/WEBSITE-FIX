@@ -4,8 +4,11 @@
   display: none !important;
 }
 
-/* Mengatur background khusus untuk halaman pengajuan prestasi. */
-body.apply-page {
+/* Mengatur background khusus untuk halaman pengajuan prestasi.
+   Header memakai background yang sama agar tetap menyatu dengan
+   latar halaman ketika menempel di bagian atas saat digulir. */
+body.apply-page,
+body.apply-page .topbar {
   background-color: #f8f3e7;
   background-image:
     /* Efek cahaya lembut di sudut kiri atas. */

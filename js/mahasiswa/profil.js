@@ -57,7 +57,6 @@
       }
 
       input.type = "password";
-      toggle.classList.remove("is-visible");
       toggle.setAttribute("aria-pressed", "false");
       toggle.setAttribute("aria-label", "Tampilkan password");
     });
@@ -94,7 +93,6 @@
       const showPassword = input.type === "password";
 
       input.type = showPassword ? "text" : "password";
-      toggle.classList.toggle("is-visible", showPassword);
       toggle.setAttribute("aria-pressed", String(showPassword));
       toggle.setAttribute("aria-label", showPassword ? "Sembunyikan password" : "Tampilkan password");
     };
