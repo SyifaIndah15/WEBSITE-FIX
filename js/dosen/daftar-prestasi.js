@@ -1,87 +1,115 @@
+
 // Membuat fungsi utama yang langsung dijalankan ketika file JavaScript dibaca.
 (() => {
 
   // Mengambil kolom pencarian berdasarkan ID prestasi-search.
   const searchInput = document.getElementById("prestasi-search");
 
-  // Mengambil seluruh baris data prestasi yang sudah ada di dalam tabel.
-  const rows = document.querySelectorAll("#prestasi-rows .prestasi-row");
+  // Mengambil bagian tbody yang berisi seluruh data prestasi.
+  const tableBody = document.getElementById("prestasi-rows");
 
   // Mengambil baris pemberitahuan ketika data tidak ditemukan.
   const emptyRow = document.getElementById("prestasi-empty");
 
-  // Memeriksa apakah kolom pencarian atau baris data berhasil ditemukan.
-  // Jika tidak ditemukan, hentikan seluruh proses.
-  if (!searchInput || rows.length === 0) {
+  // Memeriksa apakah elemen pencarian dan tabel berhasil ditemukan.
+  if (!searchInput || !tableBody) {
     return;
   }
 
-  // Membuat fungsi untuk menyaring data prestasi berdasarkan kata kunci.
-  const searchPrestasi = () => {
+  // Mengambil seluruh baris data prestasi dari tabel.
+  const rows = Array.from(tableBody.querySelectorAll(".prestasi-row"));
 
-    // Mengambil kata kunci, menghapus spasi di awal dan akhir,
-    // lalu mengubahnya menjadi huruf kecil agar pencarian tidak membedakan
-    // huruf besar dan huruf kecil.
+  // Mengambil seluruh input radio untuk filter jenis dan status.
+  const filterInputs = document.querySelectorAll(
+    'input[name="filter-jenis"], input[name="filter-status"]'
+  );
+
+  // Membuat fungsi untuk mengambil nilai radio yang sedang dipilih.
+  const getCheckedValue = (name) => {
+    const checked = document.querySelector(`input[name="${name}"]:checked`);
+
+    return checked ? checked.value : "all";
+  };
+
+  // Membuat fungsi utama untuk mencari dan menyaring data prestasi.
+  const applyFilters = () => {
+
+    // Mengambil kata kunci pencarian dan mengubahnya menjadi huruf kecil.
     const keyword = searchInput.value.trim().toLowerCase();
 
-    // Menyiapkan penghitung jumlah baris yang cocok.
+    // Mengambil jenis prestasi yang sedang dipilih.
+    const jenis = getCheckedValue("filter-jenis");
+
+    // Mengambil status prestasi yang sedang dipilih.
+    const status = getCheckedValue("filter-status");
+
+    // Menyiapkan penghitung jumlah data yang ditampilkan.
     let visibleCount = 0;
 
     // Memeriksa setiap baris data prestasi.
     rows.forEach((row) => {
 
-      // Mengambil elemen nama mahasiswa pada baris tersebut.
-      const nameElement = row.querySelector(".prestasi-name");
+      // Mengambil elemen nama mahasiswa.
+      const name = row.querySelector(".prestasi-name");
 
-      // Mengambil elemen NPM mahasiswa pada baris tersebut.
-      const npmElement = row.querySelector(".prestasi-npm");
+      // Mengambil elemen NPM mahasiswa.
+      const npm = row.querySelector(".prestasi-npm");
 
-      // Mengambil elemen kegiatan kompetisi pada baris tersebut.
-      const competitionElement = row.querySelector(".prestasi-competition");
+      // Mengambil elemen kegiatan kompetisi.
+      const competition = row.querySelector(".prestasi-competition");
 
-      // Mengambil teks nama mahasiswa dan mengubahnya menjadi huruf kecil.
-      const name = nameElement ? nameElement.textContent.toLowerCase() : "";
+      // Menggabungkan teks nama, NPM, dan kompetisi untuk pencarian.
+      const searchableText = [
+        name ? name.textContent : "",
+        npm ? npm.textContent : "",
+        competition ? competition.textContent : "",
+      ]
+        .join(" ")
+        .toLowerCase();
 
-      // Mengambil teks NPM, menghapus tulisan "NPM:", dan mengubahnya
-      // menjadi huruf kecil agar hanya angka NPM yang ikut dicocokkan.
-      const npm = npmElement
-        ? npmElement.textContent.replace(/NPM\s*:/i, "").trim().toLowerCase()
-        : "";
+      // Memeriksa apakah kata kunci cocok dengan data mahasiswa.
+      const matchesKeyword =
+        !keyword || searchableText.includes(keyword);
 
-      // Mengambil teks kegiatan kompetisi dan mengubahnya menjadi huruf kecil.
-      const competition = competitionElement
-        ? competitionElement.textContent.toLowerCase()
-        : "";
+      // Memeriksa apakah jenis prestasi sesuai dengan filter.
+      const matchesJenis =
+        jenis === "all" || row.dataset.jenis === jenis;
 
-      // Memeriksa apakah kata kunci cocok dengan nama mahasiswa, NPM,
-      // atau kegiatan kompetisi. Jika kata kunci kosong, semua data cocok.
-      const isMatch =
-        keyword === "" ||
-        name.includes(keyword) ||
-        npm.includes(keyword) ||
-        competition.includes(keyword);
+      // Memeriksa apakah status prestasi sesuai dengan filter.
+      const matchesStatus =
+        status === "all" || row.dataset.status === status;
 
-      // Menampilkan baris jika cocok dan menyembunyikannya jika tidak cocok.
-      row.hidden = !isMatch;
+      // Menampilkan data hanya jika seluruh kondisi pencarian terpenuhi.
+      const isVisible =
+        matchesKeyword && matchesJenis && matchesStatus;
 
-      // Menambah jumlah data yang cocok untuk pengecekan baris kosong.
-      if (isMatch) {
+      // Menyembunyikan baris yang tidak sesuai dengan pencarian dan filter.
+      row.hidden = !isVisible;
+
+      // Menghitung jumlah data yang berhasil ditampilkan.
+      if (isVisible) {
         visibleCount += 1;
       }
     });
 
-    // Menampilkan baris pemberitahuan jika tidak ada data yang cocok.
-    // Baris tersebut disembunyikan kembali ketika kata kunci kosong atau
-    // ketika ada data yang cocok.
+    // Menampilkan pemberitahuan jika tidak ada data yang sesuai.
     if (emptyRow) {
-      emptyRow.hidden = keyword === "" || visibleCount > 0;
+      emptyRow.hidden = visibleCount > 0;
     }
   };
 
-  // Menjalankan pencarian secara langsung ketika pengguna mengetik.
-  searchInput.addEventListener("input", searchPrestasi);
+  // Menjalankan pencarian ketika pengguna mengetik.
+  searchInput.addEventListener("input", applyFilters);
 
-  // Menjalankan pencarian ketika tombol hapus (X) pada kolom pencarian dipakai.
-  searchInput.addEventListener("search", searchPrestasi);
+  // Menjalankan pencarian ketika tombol hapus pada kolom pencarian digunakan.
+  searchInput.addEventListener("search", applyFilters);
+
+  // Menjalankan filter ketika pengguna memilih jenis atau status prestasi.
+  filterInputs.forEach((input) => {
+    input.addEventListener("change", applyFilters);
+  });
+
+  // Menampilkan seluruh data sesuai kondisi filter awal.
+  applyFilters();
 
 })();
