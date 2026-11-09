@@ -149,4 +149,121 @@
     );
   }
 
+  // ==========================================
+  // 8. VALIDASI NIDN PADA LUPA PASSWORD DOSEN
+  // ==========================================
+
+  // Menentukan jumlah angka NIDN yang diwajibkan, yaitu 10 angka.
+  const FORGOT_NIDN_LENGTH = 10;
+
+  // Mengambil elemen pesan kesalahan NIDN pada formulir Lupa Password Dosen.
+  const forgotIdentityErrorDosen = document.getElementById("forgot-identity-error-dosen");
+
+  // Mengambil tombol Lanjutkan pada formulir Lupa Password Dosen.
+  const forgotContinueDosen = document.querySelector(
+    "#forgot-dosen .forgot-form .forgot-button--primary"
+  );
+
+  // Membuat fungsi untuk menampilkan pesan kesalahan NIDN Dosen.
+  function showForgotNidnError(message) {
+
+    // Menandai kolom NIDN memiliki kesalahan.
+    forgotIdentityDosen.setAttribute("aria-invalid", "true");
+
+    // Memasukkan pesan kesalahan yang sesuai dengan kondisi NIDN.
+    forgotIdentityErrorDosen.textContent = message;
+
+    // Menampilkan pesan kesalahan di bawah kolom NIDN.
+    forgotIdentityErrorDosen.style.display = "block";
+  }
+
+  // Membuat fungsi untuk menghapus pesan kesalahan NIDN Dosen.
+  function clearForgotNidnError() {
+
+    // Menghapus tanda kesalahan pada kolom NIDN.
+    forgotIdentityDosen.removeAttribute("aria-invalid");
+
+    // Mengosongkan pesan kesalahan.
+    forgotIdentityErrorDosen.textContent = "";
+
+    // Menyembunyikan kembali pesan kesalahan.
+    forgotIdentityErrorDosen.style.display = "none";
+  }
+
+  // Membuat fungsi untuk memeriksa NIDN pada formulir Lupa Password Dosen.
+  function validateForgotIdentityDosen() {
+
+    // Memastikan kolom NIDN dan pesan kesalahan berhasil ditemukan.
+    if (!forgotIdentityDosen || !forgotIdentityErrorDosen) return false;
+
+    // Mengambil isi NIDN yang dimasukkan pengguna.
+    const value = forgotIdentityDosen.value;
+
+    // 1. Memeriksa apakah NIDN kosong atau hanya berisi spasi.
+    if (!value.trim()) {
+
+      // Menampilkan pesan bahwa NIDN Dosen wajib diisi.
+      showForgotNidnError("NIDN Dosen wajib diisi.");
+
+      // Mengembalikan false karena NIDN belum valid.
+      return false;
+    }
+
+    // 2. Memeriksa apakah seluruh karakter NIDN adalah angka 0 sampai 9.
+    if (!/^[0-9]+$/.test(value)) {
+
+      // Menampilkan pesan bahwa NIDN hanya boleh berisi angka.
+      showForgotNidnError("NIDN hanya boleh berisi angka 0–9.");
+
+      // Mengembalikan false karena NIDN mengandung karakter selain angka.
+      return false;
+    }
+
+    // 3. Memeriksa apakah jumlah angka NIDN tepat 10 digit.
+    if (value.length !== FORGOT_NIDN_LENGTH) {
+
+      // Menampilkan pesan bahwa NIDN harus terdiri dari 10 angka.
+      showForgotNidnError("NIDN harus terdiri dari 10 angka.");
+
+      // Mengembalikan false karena jumlah angka NIDN tidak sesuai.
+      return false;
+    }
+
+    // Menghapus pesan kesalahan jika NIDN sudah memenuhi semua aturan.
+    clearForgotNidnError();
+
+    // Mengembalikan true karena NIDN sudah valid.
+    return true;
+  }
+
+  // Menjalankan validasi jika kolom NIDN dan pesan kesalahan berhasil ditemukan.
+  if (forgotIdentityDosen && forgotIdentityErrorDosen) {
+
+    // Memperbarui pesan kesalahan ketika pengguna memperbaiki input.
+    revalidateOnInput(forgotIdentityDosen, validateForgotIdentityDosen);
+
+    // Memeriksa NIDN ketika pengguna selesai mengisi kolom.
+    forgotIdentityDosen.addEventListener("blur", () => {
+
+      // Validasi hanya dijalankan jika kolom NIDN sudah berisi sesuatu.
+      if (forgotIdentityDosen.value !== "") validateForgotIdentityDosen();
+    });
+
+    // Mencegah perpindahan ke tampilan berhasil jika NIDN belum valid.
+    if (forgotContinueDosen) {
+      forgotContinueDosen.addEventListener("click", (event) => {
+
+        // Memeriksa NIDN sebelum pengguna melanjutkan proses.
+        if (!validateForgotIdentityDosen()) {
+
+          // Membatalkan perpindahan tampilan ketika NIDN tidak valid.
+          event.preventDefault();
+
+          // Mengarahkan kursor kembali ke kolom NIDN.
+          forgotIdentityDosen.focus();
+        }
+      });
+    }
+  }
+
 })();

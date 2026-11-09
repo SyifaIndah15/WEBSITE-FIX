@@ -181,4 +181,95 @@
     );
   }
 
+  // ==========================================
+  // 7. VALIDASI NPM PADA LUPA PASSWORD MAHASISWA
+  // ==========================================
+
+  // Menentukan jumlah angka NPM yang diwajibkan, yaitu 11 angka.
+  const FORGOT_NPM_LENGTH = 11;
+
+  // Mengambil elemen pesan kesalahan NPM pada formulir Lupa Password Mahasiswa.
+  const forgotIdentityErrorMahasiswa = document.getElementById("forgot-identity-error-mahasiswa");
+
+  // Mengambil tombol Lanjutkan pada formulir Lupa Password Mahasiswa.
+  const forgotContinueMahasiswa = document.querySelector(
+    "#forgot-mahasiswa .forgot-form .forgot-button--primary"
+  );
+
+  // Membuat fungsi untuk memeriksa NPM pada formulir Lupa Password Mahasiswa.
+  function validateForgotIdentityMahasiswa() {
+
+    // Memastikan kolom NPM dan pesan kesalahan berhasil ditemukan.
+    if (!forgotIdentityMahasiswa || !forgotIdentityErrorMahasiswa) return false;
+
+    // Mengambil isi NPM yang dimasukkan pengguna.
+    const value = forgotIdentityMahasiswa.value;
+
+    // 1. Memeriksa apakah NPM kosong atau hanya berisi spasi.
+    if (!value.trim()) {
+
+      // Menampilkan pesan bahwa NPM wajib diisi.
+      showError(forgotIdentityMahasiswa, forgotIdentityErrorMahasiswa, "NPM wajib diisi.");
+
+      // Mengembalikan false karena NPM belum valid.
+      return false;
+    }
+
+    // 2. Memeriksa apakah seluruh karakter NPM adalah angka 0 sampai 9.
+    if (!/^[0-9]+$/.test(value)) {
+
+      // Menampilkan pesan bahwa NPM hanya boleh berisi angka.
+      showError(forgotIdentityMahasiswa, forgotIdentityErrorMahasiswa, "NPM hanya boleh berisi angka 0–9.");
+
+      // Mengembalikan false karena NPM mengandung karakter selain angka.
+      return false;
+    }
+
+    // 3. Memeriksa apakah jumlah angka NPM tepat 11 digit.
+    if (value.length !== FORGOT_NPM_LENGTH) {
+
+      // Menampilkan pesan bahwa NPM harus terdiri dari 11 angka.
+      showError(forgotIdentityMahasiswa, forgotIdentityErrorMahasiswa, "NPM harus terdiri dari 11 angka.");
+
+      // Mengembalikan false karena jumlah angka NPM tidak sesuai.
+      return false;
+    }
+
+    // Menghapus pesan kesalahan jika NPM sudah memenuhi semua aturan.
+    clearError(forgotIdentityMahasiswa, forgotIdentityErrorMahasiswa);
+
+    // Mengembalikan true karena NPM sudah valid.
+    return true;
+  }
+
+  // Menjalankan validasi jika kolom NPM dan pesan kesalahan berhasil ditemukan.
+  if (forgotIdentityMahasiswa && forgotIdentityErrorMahasiswa) {
+
+    // Memperbarui pesan kesalahan ketika pengguna memperbaiki input.
+    revalidateOnInput(forgotIdentityMahasiswa, validateForgotIdentityMahasiswa);
+
+    // Memeriksa NPM ketika pengguna selesai mengisi kolom.
+    forgotIdentityMahasiswa.addEventListener("blur", () => {
+
+      // Validasi hanya dijalankan jika kolom NPM sudah berisi sesuatu.
+      if (forgotIdentityMahasiswa.value !== "") validateForgotIdentityMahasiswa();
+    });
+
+    // Mencegah perpindahan ke tampilan berhasil jika NPM belum valid.
+    if (forgotContinueMahasiswa) {
+      forgotContinueMahasiswa.addEventListener("click", (event) => {
+
+        // Memeriksa NPM sebelum pengguna melanjutkan proses.
+        if (!validateForgotIdentityMahasiswa()) {
+
+          // Membatalkan perpindahan tampilan ketika NPM tidak valid.
+          event.preventDefault();
+
+          // Mengarahkan kursor kembali ke kolom NPM.
+          forgotIdentityMahasiswa.focus();
+        }
+      });
+    }
+  }
+
 })();
