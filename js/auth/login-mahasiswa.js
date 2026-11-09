@@ -1,10 +1,6 @@
 (() => {
   const { showError, clearError, revalidateOnInput, validatePassword } = window.LoginUtils;
 
-  // ==========================================
-  // 3. VALIDASI LOGIN MAHASISWA
-  // ==========================================
-
   // Menentukan panjang NPM yang diwajibkan, yaitu 11 angka.
   const NPM_LENGTH = 11;
 

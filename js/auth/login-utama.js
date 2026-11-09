@@ -9,7 +9,7 @@ window.LoginUtils = (() => {
   // Mengulangi proses untuk setiap ikon mata yang ditemukan.
   toggles.forEach((toggle) => {
 
-    // Mencari elemen pembungkus terdekat dari ikon mata, yaitu input-field.
+    // Mencari elemen pembung kus terdekat dari ikon mata, yaitu input-field.
     const field = toggle.closest(".input-field");
 
     // Mengambil kolom input password di dalam pembungkus tersebut.
