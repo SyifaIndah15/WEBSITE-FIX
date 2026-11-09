@@ -1,10 +1,7 @@
 (() => {
   const { showError, clearError, revalidateOnInput, validatePassword } = window.LoginUtils;
 
-  // ==========================================
   // 4. VALIDASI LOGIN DOSEN
-  // ==========================================
-
   // Menentukan panjang NIDN yang diwajibkan, yaitu 10 angka.
   const NIDN_LENGTH = 10;
 

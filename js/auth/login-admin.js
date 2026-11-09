@@ -1,10 +1,7 @@
 (() => {
   const { showError, clearError, revalidateOnInput, validatePassword } = window.LoginUtils;
 
-  // ==========================================
   // 5. VALIDASI LOGIN ADMIN
-  // ==========================================
-
   // Mengambil formulir Login Admin berdasarkan class HTML-nya.
   const adminForm = document.querySelector(".login-form--admin");
 
