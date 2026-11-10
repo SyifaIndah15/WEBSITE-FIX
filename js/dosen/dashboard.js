@@ -25,4 +25,49 @@
 
     tableBody.appendChild(row);
   });
+
+  const totalCard = document.querySelector(".stat-card--total");
+  const highCard = document.querySelector(".stat-card--high");
+  const mediumCard = document.querySelector(".stat-card--medium");
+  const lowCard = document.querySelector(".stat-card--low");
+
+  const filterCards = [
+    { card: totalCard, kategori: "Semua" },
+    { card: highCard, kategori: "Tinggi" },
+    { card: mediumCard, kategori: "Sedang" },
+    { card: lowCard, kategori: "Rendah" },
+  ];
+
+  const tampilkanMahasiswa = (kategori) => {
+    let nomor = 0;
+
+    rows.forEach((row) => {
+      const badge = row.querySelector(".result-badge");
+      const hasilKlasifikasi = badge ? badge.textContent.trim() : "";
+      const tampil =
+        kategori === "Semua" || hasilKlasifikasi === kategori;
+
+      row.hidden = !tampil;
+
+      if (tampil) {
+        nomor += 1;
+
+        const rowIndex = row.querySelector(".row-index");
+
+        if (rowIndex) {
+          rowIndex.textContent = `${nomor}.`;
+        }
+      }
+    });
+  };
+
+  filterCards.forEach((item) => {
+    if (item.card) {
+      item.card.addEventListener("click", () => {
+        tampilkanMahasiswa(item.kategori);
+      });
+    }
+  });
+
+  tampilkanMahasiswa("Semua");
 })();
