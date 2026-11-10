@@ -378,38 +378,86 @@
       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m9 9 6 6M15 9l-6 6"/></svg>'
   };
 
-  // Membuat baris tabel baru dari struktur baris yang sudah tersedia.
+  // BUAT AKUN DOSEN
+  // Membuat fungsi untuk menghasilkan baris tabel dosen baru berdasarkan data yang diterima.
   function createLecturerRow(data) {
-    if (!rowTemplate) return null;
+      // Memeriksa apakah template baris tabel tersedia. Jika tidak, hentikan fungsi dan kembalikan null.
+      if (!rowTemplate) return null;
 
-    const status = data.status === "Nonaktif" ? "Nonaktif" : "Aktif";
-    const row = rowTemplate.cloneNode(true);
-    const nameElement = row.querySelector(".dd-lecturer-name");
-    const metaElement = row.querySelector(".dd-lecturer-meta");
-    const emailElement = row.querySelector(".dd-email-cell");
-    const badge = row.querySelector(".dd-status");
-    const editButton = row.querySelector(".dd-icon-button--edit");
-    const deleteButton = row.querySelector(".dd-icon-button--delete");
+      // Menentukan status dosen. Jika status bernilai Nonaktif, gunakan Nonaktif; selain itu gunakan Aktif.
+      const status = data.status === "Nonaktif" ? "Nonaktif" : "Aktif";
 
-    row.hidden = false;
-    row.dataset.nidn = data.nidn;
-    row.dataset.name = data.name;
-    row.dataset.email = data.email;
-    row.dataset.status = status;
+      // Menggandakan struktur baris tabel yang sudah tersedia pada HTML.
+      const row = rowTemplate.cloneNode(true);
 
-    if (nameElement) nameElement.textContent = data.name;
-    if (metaElement) metaElement.textContent = `NIDN: ${data.nidn}`;
-    if (emailElement) emailElement.textContent = data.email;
-    if (editButton) editButton.setAttribute("aria-label", `Edit data ${data.name}`);
-    if (deleteButton) deleteButton.setAttribute("aria-label", `Hapus akun ${data.name}`);
+      // Mengambil elemen HTML yang memiliki class dd-lecturer-name untuk menampilkan nama dosen.
+      const nameElement = row.querySelector(".dd-lecturer-name");
 
-    if (badge) {
-      badge.className =
-        status === "Aktif" ? "dd-status dd-status--active" : "dd-status dd-status--inactive";
-      badge.innerHTML = statusIconMarkup[status] + status;
-    }
+      // Mengambil elemen HTML yang memiliki class dd-lecturer-meta untuk menampilkan informasi NIDN.
+      const metaElement = row.querySelector(".dd-lecturer-meta");
 
-    return row;
+      // Mengambil elemen HTML yang memiliki class dd-email-cell untuk menampilkan email dosen.
+      const emailElement = row.querySelector(".dd-email-cell");
+
+      // Mengambil elemen HTML yang memiliki class dd-status untuk menampilkan status akun dosen.
+      const badge = row.querySelector(".dd-status");
+
+      // Mengambil tombol edit pada baris tabel dosen.
+      const editButton = row.querySelector(".dd-icon-button--edit");
+
+      // Mengambil tombol hapus pada baris tabel dosen.
+      const deleteButton = row.querySelector(".dd-icon-button--delete");
+
+
+      // Memastikan baris tabel yang baru dibuat tidak dalam kondisi tersembunyi.
+      row.hidden = false;
+
+      // Menyimpan NIDN dosen ke dalam atribut data-nidn pada elemen baris tabel.
+      row.dataset.nidn = data.nidn;
+
+      // Menyimpan nama dosen ke dalam atribut data-name pada elemen baris tabel.
+      row.dataset.name = data.name;
+
+      // Menyimpan email dosen ke dalam atribut data-email pada elemen baris tabel.
+      row.dataset.email = data.email;
+
+      // Menyimpan status akun dosen ke dalam atribut data-status pada elemen baris tabel.
+      row.dataset.status = status;
+
+
+      // Memeriksa apakah elemen nama dosen ditemukan. Jika ditemukan, tampilkan nama dosen.
+      if (nameElement) nameElement.textContent = data.name;
+
+      // Memeriksa apakah elemen informasi NIDN ditemukan. Jika ditemukan, tampilkan NIDN dosen.
+      if (metaElement) metaElement.textContent = `NIDN: ${data.nidn}`;
+
+      // Memeriksa apakah elemen email ditemukan. Jika ditemukan, tampilkan alamat email dosen.
+      if (emailElement) emailElement.textContent = data.email;
+
+      // Memberikan keterangan aksesibilitas pada tombol edit sesuai nama dosen.
+      if (editButton) editButton.setAttribute("aria-label", `Edit data ${data.name}`);
+
+      // Memberikan keterangan aksesibilitas pada tombol hapus sesuai nama dosen.
+      if (deleteButton) deleteButton.setAttribute("aria-label", `Hapus akun ${data.name}`);
+
+
+      // Memeriksa apakah elemen badge status berhasil ditemukan.
+      if (badge) {
+
+        // Menentukan class CSS badge berdasarkan status dosen.
+        badge.className =
+
+          // Jika status Aktif, gunakan class dd-status--active; jika tidak, gunakan dd-status--inactive.
+          status === "Aktif" ? "dd-status dd-status--active" : "dd-status dd-status--inactive";
+
+        // Memasukkan ikon dan tulisan status sesuai data status dosen ke dalam badge.
+        badge.innerHTML = statusIconMarkup[status] + status;
+
+      // Menutup blok kondisi pemeriksaan elemen badge status.
+      }
+
+      // Mengembalikan baris tabel yang sudah diisi dengan data dosen agar dapat ditampilkan.
+      return row;
   }
 
   function openEditModal(row, trigger) {

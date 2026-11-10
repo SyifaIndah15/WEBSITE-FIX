@@ -17,7 +17,7 @@
     return (value || "").toLowerCase().replace(/[^a-z0-9]+/g, "");
   }
 
-  // Membaca data penting dari satu baris tabel yang sudah dirender.
+  // Membaca data penting dari satu baris tabel.
   function readRow(row, index) {
     const nameElement = row.querySelector(".dp-student-name");
     const metaElement = row.querySelector(".dp-student-meta");
