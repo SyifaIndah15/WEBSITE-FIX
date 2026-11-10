@@ -103,32 +103,64 @@
 
   let currentStatus = "Semua Status";
 
+  // Menyimpan seluruh data dosen selama halaman masih dibuka.
+  // Data awal diambil dari baris tabel yang sudah tersedia.
+  const lecturerData = tableBody
+    ? Array.from(tableBody.querySelectorAll("tr")).map(function (row) {
+        return {
+          row: row,
+          nidn: row.dataset.nidn || "",
+          name: row.dataset.name || "",
+          email: row.dataset.email || "",
+          status: row.dataset.status || "Aktif"
+        };
+      })
+    : [];
+
+  // Menyimpan contoh struktur baris tabel untuk membuat baris data dosen baru.
+  const rowTemplate = tableBody ? tableBody.querySelector("tr") : null;
+
+  // Mengurutkan data dosen berdasarkan nama lengkap A-Z.
+  function sortLecturerRows() {
+    if (!tableBody) return;
+
+    lecturerData.sort(function (first, second) {
+      return first.name.localeCompare(second.name, "id", {
+        sensitivity: "base"
+      });
+    });
+
+    lecturerData.forEach(function (item) {
+      tableBody.appendChild(item.row);
+    });
+  }
+
   // Tampilkan baris yang cocok dengan kata kunci pencarian dan status terpilih.
+  // Sumber data utama adalah lecturerData, bukan baris tabel yang sudah dirender.
   function applyFilters() {
     let term = "";
     if (searchInput) term = searchInput.value.trim().toLowerCase();
 
-    const rows = tableBody ? Array.from(tableBody.querySelectorAll("tr")) : [];
     let visibleCount = 0;
 
-    rows.forEach(function (row) {
+    lecturerData.forEach(function (item) {
       const matchesSearch =
         !term ||
-        (row.dataset.name || "").toLowerCase().includes(term) ||
-        (row.dataset.nidn || "").includes(term) ||
-        (row.dataset.email || "").toLowerCase().includes(term);
+        item.name.toLowerCase().includes(term) ||
+        item.nidn.toLowerCase().includes(term) ||
+        item.email.toLowerCase().includes(term);
       const matchesStatus =
-        currentStatus === "Semua Status" || row.dataset.status === currentStatus;
+        currentStatus === "Semua Status" || item.status === currentStatus;
       const visible = matchesSearch && matchesStatus;
 
-      row.hidden = !visible;
+      item.row.hidden = !visible;
       if (visible) visibleCount += 1;
     });
 
     if (emptyState) emptyState.hidden = visibleCount !== 0;
 
     if (tableInfo) {
-      tableInfo.textContent = `Menampilkan ${visibleCount} dari ${rows.length} dosen Program Studi Teknik Informatika`;
+      tableInfo.textContent = `Menampilkan ${visibleCount} dari ${lecturerData.length} dosen Program Studi Teknik Informatika`;
     }
   }
 
@@ -236,6 +268,10 @@
   // ==================== MODAL BUAT AKUN ====================
   const createForm = document.getElementById("dd-create-form");
   const createTrigger = document.getElementById("dd-create-account-button");
+  const createNidn = document.getElementById("dd-create-nidn");
+  const createName = document.getElementById("dd-create-name");
+  const createEmail = document.getElementById("dd-create-email");
+  const createStatus = document.getElementById("dd-create-status");
   const createModal = setupModal({
     modal: document.getElementById("dd-create-modal"),
     closeSelector: "[data-dd-create-close]",
@@ -249,10 +285,69 @@
     createTrigger.addEventListener("click", () => createModal.open(createTrigger));
   }
 
+  // Menghapus pesan validasi duplikat ketika pengguna memperbaiki input.
+  [createNidn, createEmail].forEach(function (input) {
+    if (!input) return;
+
+    input.addEventListener("input", function () {
+      input.setCustomValidity("");
+    });
+  });
+
   if (createModal && createForm) {
     createForm.addEventListener("submit", (event) => {
       event.preventDefault();
+
+      if (!createNidn || !createName || !createEmail || !createStatus) return;
+
+      createNidn.setCustomValidity("");
+      createEmail.setCustomValidity("");
+
       if (!createForm.reportValidity()) return;
+
+      const nidn = createNidn.value.trim();
+      const name = createName.value.trim();
+      const email = createEmail.value.trim();
+      const status = createStatus.value || "Aktif";
+
+      const duplicateNidn = lecturerData.some(function (item) {
+        return item.nidn === nidn;
+      });
+      const duplicateEmail = lecturerData.some(function (item) {
+        return item.email.toLowerCase() === email.toLowerCase();
+      });
+
+      if (duplicateNidn || duplicateEmail) {
+        const duplicateInput = duplicateNidn ? createNidn : createEmail;
+        duplicateInput.setCustomValidity(
+          duplicateNidn
+            ? "NIDN sudah terdaftar pada akun dosen lain."
+            : "Email sudah terdaftar pada akun dosen lain."
+        );
+        duplicateInput.reportValidity();
+        return;
+      }
+
+      const row = createLecturerRow({
+        nidn: nidn,
+        name: name,
+        email: email,
+        status: status
+      });
+
+      if (!row) return;
+
+      tableBody.appendChild(row);
+      lecturerData.push({
+        row: row,
+        nidn: nidn,
+        name: name,
+        email: email,
+        status: status
+      });
+
+      sortLecturerRows();
+      applyFilters();
 
       createModal.close();
       createForm.reset();
@@ -282,6 +377,40 @@
     Nonaktif:
       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m9 9 6 6M15 9l-6 6"/></svg>'
   };
+
+  // Membuat baris tabel baru dari struktur baris yang sudah tersedia.
+  function createLecturerRow(data) {
+    if (!rowTemplate) return null;
+
+    const status = data.status === "Nonaktif" ? "Nonaktif" : "Aktif";
+    const row = rowTemplate.cloneNode(true);
+    const nameElement = row.querySelector(".dd-lecturer-name");
+    const metaElement = row.querySelector(".dd-lecturer-meta");
+    const emailElement = row.querySelector(".dd-email-cell");
+    const badge = row.querySelector(".dd-status");
+    const editButton = row.querySelector(".dd-icon-button--edit");
+    const deleteButton = row.querySelector(".dd-icon-button--delete");
+
+    row.hidden = false;
+    row.dataset.nidn = data.nidn;
+    row.dataset.name = data.name;
+    row.dataset.email = data.email;
+    row.dataset.status = status;
+
+    if (nameElement) nameElement.textContent = data.name;
+    if (metaElement) metaElement.textContent = `NIDN: ${data.nidn}`;
+    if (emailElement) emailElement.textContent = data.email;
+    if (editButton) editButton.setAttribute("aria-label", `Edit data ${data.name}`);
+    if (deleteButton) deleteButton.setAttribute("aria-label", `Hapus akun ${data.name}`);
+
+    if (badge) {
+      badge.className =
+        status === "Aktif" ? "dd-status dd-status--active" : "dd-status dd-status--inactive";
+      badge.innerHTML = statusIconMarkup[status] + status;
+    }
+
+    return row;
+  }
 
   function openEditModal(row, trigger) {
     if (!editModal || !editForm || !row) return;
@@ -319,6 +448,17 @@
         row.dataset.email = email;
         row.dataset.status = status;
 
+        const data = lecturerData.find(function (item) {
+          return item.row === row;
+        });
+
+        if (data) {
+          data.nidn = nidn;
+          data.name = name;
+          data.email = email;
+          data.status = status;
+        }
+
         if (nameElement) nameElement.textContent = name;
         if (metaElement) metaElement.textContent = `NIDN: ${nidn}`;
         if (emailElement) emailElement.textContent = email;
@@ -332,6 +472,7 @@
           badge.innerHTML = statusIconMarkup[status] + status;
         }
 
+        sortLecturerRows();
         applyFilters();
       }
 
@@ -365,6 +506,13 @@
       if (!row) return;
 
       row.remove();
+
+      const dataIndex = lecturerData.findIndex(function (item) {
+        return item.row === row;
+      });
+
+      if (dataIndex !== -1) lecturerData.splice(dataIndex, 1);
+
       deleteModal.close();
       applyFilters();
     });
@@ -386,6 +534,7 @@
     });
   }
 
-  // Tampilkan seluruh data saat halaman pertama kali dimuat.
+  // Urutkan data dan tampilkan seluruhnya saat halaman pertama kali dimuat.
+  sortLecturerRows();
   applyFilters();
 })();
