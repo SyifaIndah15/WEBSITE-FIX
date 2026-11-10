@@ -1,4 +1,15 @@
 (() => {
+  // Mengambil NIDN dari parameter URL yang dikirim saat proses login dosen.
+  const nidn = new URLSearchParams(window.location.search).get("nidn");
+
+  // Mengambil elemen teks NIDN pada header banner dashboard.
+  const nidnElement = document.querySelector(".banner-meta span");
+
+  // Menampilkan NIDN dari URL jika tersedia, tanpa mengubah nama dosen.
+  if (nidn && nidnElement) {
+    nidnElement.textContent = `NIDN: ${nidn}`;
+  }
+
   const tableBody = document.querySelector(".achievement-table tbody");
 
   if (!tableBody) {

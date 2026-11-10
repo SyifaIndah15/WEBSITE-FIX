@@ -89,6 +89,10 @@
       // Menjalankan proses ketika formulir Login Dosen dikirim.
       dosenForm.addEventListener("submit", (event) => {
 
+        // Mencegah formulir dikirim otomatis oleh browser.
+        // Pengiriman diatur sendiri agar password tidak masuk ke URL.
+        event.preventDefault();
+
         // Memeriksa apakah NIDN sudah valid.
         const nidnValid = validateNidn();
 
@@ -98,15 +102,30 @@
         // Memeriksa apakah terdapat NIDN atau password yang tidak valid.
         if (!nidnValid || !passwordValid) {
 
-          // Mencegah formulir dikirim jika masih terdapat kesalahan.
-          event.preventDefault();
-
           // Jika NIDN salah, arahkan kursor ke kolom NIDN.
           if (!nidnValid) nidnInput.focus();
 
           // Jika NIDN benar tetapi password salah, arahkan kursor ke kolom password.
           else dosenPasswordInput.focus();
+
+          // Menghentikan proses karena masih ada input yang tidak valid.
+          return;
         }
+
+        // Menyusun parameter URL hanya dari data selain password.
+        const params = new URLSearchParams();
+        const formData = new FormData(dosenForm);
+
+        formData.forEach((value, key) => {
+          if (key !== dosenPasswordInput.name) params.append(key, value);
+        });
+
+        // Mengambil alamat halaman tujuan dari atribut action pada formulir.
+        const action = dosenForm.getAttribute("action") || "";
+
+        // Mengirim NIDN ke dashboard tanpa menyertakan password pada URL.
+        const query = params.toString();
+        window.location.assign(query ? `${action}?${query}` : action);
       });
     }
   }

@@ -1,6 +1,25 @@
 // Membuat fungsi utama yang langsung dijalankan ketika file JavaScript dibaca.
 (() => {
 
+  // Mengambil NPM dari parameter URL yang dikirim saat proses login mahasiswa.
+  const npm = new URLSearchParams(window.location.search).get("npm");
+
+  // Mengambil elemen teks NPM pada header banner dashboard.
+  const npmElement = document.querySelector(".banner-meta span");
+
+  // Menampilkan NPM dari URL jika tersedia, tanpa mengubah nama mahasiswa.
+  if (npm && npmElement) {
+    npmElement.textContent = `NPM: ${npm}`;
+  }
+
+  // Mengambil elemen teks Angkatan pada header banner dashboard.
+  const angkatanElement = document.querySelectorAll(".banner-meta span")[2];
+
+  // Menentukan tahun angkatan dari angka ke-5 dan ke-6 NPM dengan awalan "20".
+  if (npm && npm.length >= 6 && angkatanElement) {
+    angkatanElement.textContent = `Angkatan 20${npm.slice(4, 6)}`;
+  }
+
   // Mengambil objek SIPRESMA yang tersedia secara global pada window.
   const prestasi = window.SIPRESMA; //objek digunakan untuk akses fungsi pengelolaan data prestasi
 
