@@ -1,5 +1,6 @@
 const DATA_ROOT = new URL("../../data/", import.meta.url);
 const SEED_VERSION = 1;
+const STATUS_SYNC_VERSION = 2;
 
 export const KEYS = Object.freeze({
   admin: "sipresma_admin_accounts",
@@ -292,6 +293,174 @@ function normalizeArsip(record, index) {
   });
 }
 
+function conflictRecordKey(nim, competition) {
+  const key = normalize(nim) + "|" + normalize(competition);
+  return key === "|" ? "" : key;
+}
+
+function prestasiRecordKey(item) {
+  if (!isRecord(item)) return "";
+
+  const id = normalize(item.id);
+  if (id) return "id:" + id;
+
+  const key = [
+    normalize(item.nim),
+    normalize(item.namaKompetisi || item.namaPrestasi),
+    normalize(item.tahun)
+  ].join("|");
+
+  return key === "||" ? "" : "record:" + key;
+}
+
+function uniquePrestasiRecords(items) {
+  const seen = new Set();
+
+  return (Array.isArray(items) ? items : []).filter(function (item) {
+    if (!isRecord(item)) return false;
+
+    const key = prestasiRecordKey(item);
+    if (!key) return true;
+    if (seen.has(key)) return false;
+
+    seen.add(key);
+    return true;
+  });
+}
+
+function emptyPrestasiSummary() {
+  return {
+    academic: { count: 0, level: "", rank: 0 },
+    nonAcademic: { count: 0, level: "", rank: 0 },
+    total: 0
+  };
+}
+
+function jenisPrestasiKey(value) {
+  const jenis = normalize(value).toLowerCase();
+  return /non[\s-]*akademik/.test(jenis) ? "nonAcademic" : "academic";
+}
+
+function tingkatPrestasi(value) {
+  const raw = normalize(value);
+  const label = raw.replace(/^tingkat\s+/i, "") || raw;
+  const key = raw.toLowerCase().replace(/[^a-z0-9]+/g, "");
+  let rank = 0;
+
+  if (key.includes("internasional")) rank = 5;
+  else if (key.includes("nasional")) rank = 4;
+  else if (key.includes("provinsi")) rank = 3;
+  else if (key.includes("kabupaten") || key.includes("kota")) rank = 2;
+  else if (key.includes("kampus") || key.includes("internal")) rank = 1;
+
+  return { label: label, rank: rank };
+}
+
+function isVerifiedPrestasi(item) {
+  if (!isRecord(item) || getStatusView(item.status).key !== "verified") return false;
+
+  const sourceStatus = normalize(item.statusSumber);
+  if (!sourceStatus) return true;
+
+  return getStatusView(sourceStatus).key === "verified";
+}
+
+function buildVerifiedPrestasiSummaries(records) {
+  const summaries = new Map();
+
+  uniquePrestasiRecords(records).forEach(function (item) {
+    if (!isVerifiedPrestasi(item)) return;
+
+    const nim = normalize(item.nim);
+    if (!nim) return;
+
+    if (!summaries.has(nim)) summaries.set(nim, emptyPrestasiSummary());
+
+    const summary = summaries.get(nim);
+    const key = jenisPrestasiKey(item.jenis);
+    const level = tingkatPrestasi(item.tingkat);
+
+    summary[key].count += 1;
+    summary.total += 1;
+
+    if (level.rank > summary[key].rank) {
+      summary[key].level = level.label;
+      summary[key].rank = level.rank;
+    }
+  });
+
+  return summaries;
+}
+
+function syncVerifiedPrestasiCounts() {
+  const accounts = readArray(KEYS.mahasiswa);
+  const summaries = buildVerifiedPrestasiSummaries(readArray(KEYS.prestasi));
+  let changed = false;
+
+  const updated = accounts.map(function (student) {
+    const nim = normalize(student.nim || student.username);
+    const summary = summaries.get(nim) || emptyPrestasiSummary();
+    const fields = {
+      jumlahPrestasiAkademik: summary.academic.count,
+      tingkatPrestasiAkademik: summary.academic.level,
+      jumlahPrestasiNonAkademik: summary.nonAcademic.count,
+      tingkatPrestasiNonAkademik: summary.nonAcademic.level,
+      totalPrestasi: summary.total
+    };
+    const needsUpdate = Object.keys(fields).some(function (key) {
+      return student[key] !== fields[key];
+    });
+
+    if (!needsUpdate) return student;
+
+    changed = true;
+    return Object.assign({}, student, fields);
+  });
+
+  if (changed) write(KEYS.mahasiswa, updated);
+  return updated;
+}
+
+function syncSourcePendingStatuses(records, sourceRecords) {
+  if (!Array.isArray(sourceRecords) || sourceRecords.length === 0) return records;
+
+  const pendingIds = new Set();
+  const pendingKeys = new Set();
+
+  sourceRecords.forEach(function (source) {
+    if (!isRecord(source)) return;
+    if (normalizeStatus(source.status || source.statusSumber) !== "Menunggu Verifikasi") return;
+
+    const id = normalize(source.id);
+    if (id) pendingIds.add(id);
+
+    const key = conflictRecordKey(source.nim, source.namaKompetisi || source.namaPrestasi);
+    if (key) pendingKeys.add(key);
+  });
+
+  if (pendingIds.size === 0 && pendingKeys.size === 0) return records;
+
+  return records.map(function (record) {
+    const id = normalize(record.id);
+    const key = conflictRecordKey(record.nim, record.namaKompetisi || record.namaPrestasi);
+    const isSourcePending = (id && pendingIds.has(id)) || (key && pendingKeys.has(key));
+    if (!isSourcePending) return record;
+
+    const statusIsPending = normalizeStatus(record.status) === "Menunggu Verifikasi";
+    const sourceIsPending = normalize(record.statusSumber) &&
+      normalizeStatus(record.statusSumber) === "Menunggu Verifikasi";
+    if (statusIsPending && sourceIsPending) return record;
+
+    const updated = Object.assign({}, record, {
+      status: "Menunggu Verifikasi",
+      statusSumber: "Menunggu Verifikasi"
+    });
+    delete updated.keteranganVerifikasi;
+    delete updated.diverifikasiPada;
+    return updated;
+  });
+}
+
 async function fetchPayload(fileName) {
   const response = await fetch(new URL(fileName, DATA_ROOT), {
     cache: "no-store",
@@ -317,83 +486,120 @@ function hasRequiredStores() {
 async function initializeStore() {
   let meta = read(KEYS.meta, null);
   const metaVersion = meta && Number(meta.seedVersion);
+  const statusSyncVersion = meta && Number(meta.statusSyncVersion);
   const needsSeed = !meta || !Number.isFinite(metaVersion) || metaVersion < SEED_VERSION || !hasRequiredStores();
+  const needsStatusSync = !Number.isFinite(statusSyncVersion) || statusSyncVersion < STATUS_SYNC_VERSION;
 
-  if (!needsSeed) return;
+  if (!needsSeed && !needsStatusSync) return;
 
-  const payloads = await Promise.all([
-    fetchPayload(FILES.admin),
-    fetchPayload(FILES.dosen),
-    fetchPayload(FILES.mahasiswa),
-    fetchPayload(FILES.mahasiswaData),
-    fetchPayload(FILES.prestasi)
-  ]);
+  let prestasi = readArray(KEYS.prestasi);
+  let prestasiPayload = null;
+  let adminAccounts = [];
+  let dosenAccounts = [];
+  let mahasiswaAccounts = [];
 
-  const adminSeeds = payloads[0].data.map(normalizeAdminSeed);
-  const dosenSeeds = payloads[1].data.map(normalizeDosenSeed);
-  const mahasiswaSeeds = buildMahasiswaSeeds(payloads[2], payloads[3]);
-  const prestasiSeeds = payloads[4].data.map(normalizePrestasiSeed);
-  const arsipSeeds = {
-    riwayatNonTarget: Array.isArray(payloads[4].riwayatNonTarget)
-      ? payloads[4].riwayatNonTarget.map(normalizeArsip)
-      : [],
-    pengajuanSumberLain: Array.isArray(payloads[4].pengajuanSumberLain)
-      ? payloads[4].pengajuanSumberLain.map(normalizeArsip)
-      : [],
-    konflikRelasi: Array.isArray(payloads[4].konflikRelasi) ? payloads[4].konflikRelasi : [],
-    konflikStatus: Array.isArray(payloads[4].konflikStatus) ? payloads[4].konflikStatus : []
-  };
+  if (needsSeed) {
+    const payloads = await Promise.all([
+      fetchPayload(FILES.admin),
+      fetchPayload(FILES.dosen),
+      fetchPayload(FILES.mahasiswa),
+      fetchPayload(FILES.mahasiswaData),
+      fetchPayload(FILES.prestasi)
+    ]);
 
-  const existingArsip = getArsip();
-  const arsip = {
-    riwayatNonTarget: Array.isArray(existingArsip.riwayatNonTarget)
-      ? existingArsip.riwayatNonTarget
-      : arsipSeeds.riwayatNonTarget,
-    pengajuanSumberLain: Array.isArray(existingArsip.pengajuanSumberLain)
-      ? existingArsip.pengajuanSumberLain
-      : arsipSeeds.pengajuanSumberLain,
-    konflikRelasi: Array.isArray(existingArsip.konflikRelasi)
-      ? existingArsip.konflikRelasi
-      : arsipSeeds.konflikRelasi,
-    konflikStatus: Array.isArray(existingArsip.konflikStatus)
-      ? existingArsip.konflikStatus
-      : arsipSeeds.konflikStatus
-  };
+    const adminSeeds = payloads[0].data.map(normalizeAdminSeed);
+    const dosenSeeds = payloads[1].data.map(normalizeDosenSeed);
+    const mahasiswaSeeds = buildMahasiswaSeeds(payloads[2], payloads[3]);
+    const prestasiSeeds = payloads[4].data.map(normalizePrestasiSeed);
+    const arsipSeeds = {
+      riwayatNonTarget: Array.isArray(payloads[4].riwayatNonTarget)
+        ? payloads[4].riwayatNonTarget.map(normalizeArsip)
+        : [],
+      pengajuanSumberLain: Array.isArray(payloads[4].pengajuanSumberLain)
+        ? payloads[4].pengajuanSumberLain.map(normalizeArsip)
+        : [],
+      konflikRelasi: Array.isArray(payloads[4].konflikRelasi) ? payloads[4].konflikRelasi : [],
+      konflikStatus: Array.isArray(payloads[4].konflikStatus) ? payloads[4].konflikStatus : []
+    };
 
-  const adminAccounts = mergeCollection(readArray(KEYS.admin), adminSeeds, function (item) {
-    return accountKeyFor("admin", item);
-  });
-  const dosenAccounts = mergeCollection(readArray(KEYS.dosen), dosenSeeds, function (item) {
-    return accountKeyFor("dosen", item);
-  });
-  const mahasiswaAccounts = mergeCollection(readArray(KEYS.mahasiswa), mahasiswaSeeds, function (item) {
-    return accountKeyFor("mahasiswa", item);
-  });
-  const prestasi = mergeCollection(readArray(KEYS.prestasi), prestasiSeeds, function (item) {
-    return normalize(item.id) || normalize(item.nim) + "|" + normalize(item.namaKompetisi);
-  });
+    const existingArsip = getArsip();
+    const arsip = {
+      riwayatNonTarget: Array.isArray(existingArsip.riwayatNonTarget)
+        ? existingArsip.riwayatNonTarget
+        : arsipSeeds.riwayatNonTarget,
+      pengajuanSumberLain: Array.isArray(existingArsip.pengajuanSumberLain)
+        ? existingArsip.pengajuanSumberLain
+        : arsipSeeds.pengajuanSumberLain,
+      konflikRelasi: Array.isArray(existingArsip.konflikRelasi)
+        ? existingArsip.konflikRelasi
+        : arsipSeeds.konflikRelasi,
+      konflikStatus: Array.isArray(existingArsip.konflikStatus)
+        ? existingArsip.konflikStatus
+        : arsipSeeds.konflikStatus
+    };
 
-  write(KEYS.admin, adminAccounts);
-  write(KEYS.dosen, dosenAccounts);
-  write(KEYS.mahasiswa, mahasiswaAccounts);
-  write(KEYS.prestasi, prestasi);
-  write(KEYS.arsip, arsip);
-  write(KEYS.meta, {
-    seedVersion: SEED_VERSION,
-    seededAt: new Date().toISOString(),
-    counts: {
-      admin: adminAccounts.length,
-      dosen: dosenAccounts.length,
-      mahasiswa: mahasiswaAccounts.length,
-      prestasi: prestasi.length
-    },
-    sources: Object.values(FILES)
-  });
+    adminAccounts = mergeCollection(readArray(KEYS.admin), adminSeeds, function (item) {
+      return accountKeyFor("admin", item);
+    });
+    dosenAccounts = mergeCollection(readArray(KEYS.dosen), dosenSeeds, function (item) {
+      return accountKeyFor("dosen", item);
+    });
+    mahasiswaAccounts = mergeCollection(readArray(KEYS.mahasiswa), mahasiswaSeeds, function (item) {
+      return accountKeyFor("mahasiswa", item);
+    });
+    prestasi = mergeCollection(readArray(KEYS.prestasi), prestasiSeeds, function (item) {
+      return normalize(item.id) || normalize(item.nim) + "|" + normalize(item.namaKompetisi);
+    });
+    prestasiPayload = payloads[4];
+
+    write(KEYS.admin, adminAccounts);
+    write(KEYS.dosen, dosenAccounts);
+    write(KEYS.mahasiswa, mahasiswaAccounts);
+    write(KEYS.arsip, arsip);
+  } else if (needsStatusSync) {
+    prestasiPayload = await fetchPayload(FILES.prestasi);
+  }
+
+  if (needsStatusSync) {
+    if (!needsSeed && prestasiPayload) {
+      const prestasiSeeds = Array.isArray(prestasiPayload.data)
+        ? prestasiPayload.data.map(normalizePrestasiSeed)
+        : [];
+      prestasi = mergeCollection(prestasi, prestasiSeeds, function (item) {
+        return normalize(item.id) || normalize(item.nim) + "|" + normalize(item.namaKompetisi);
+      });
+    }
+    prestasi = syncSourcePendingStatuses(prestasi, prestasiPayload && prestasiPayload.data);
+  }
+
+  if (needsSeed || needsStatusSync) {
+    write(KEYS.prestasi, prestasi);
+  }
+
+  if (needsSeed) {
+    write(KEYS.meta, {
+      seedVersion: SEED_VERSION,
+      statusSyncVersion: STATUS_SYNC_VERSION,
+      seededAt: new Date().toISOString(),
+      counts: {
+        admin: adminAccounts.length,
+        dosen: dosenAccounts.length,
+        mahasiswa: mahasiswaAccounts.length,
+        prestasi: prestasi.length
+      },
+      sources: Object.values(FILES)
+    });
+  } else if (needsStatusSync) {
+    write(KEYS.meta, Object.assign({}, isRecord(meta) ? meta : {}, {
+      statusSyncVersion: STATUS_SYNC_VERSION
+    }));
+  }
 }
 
 const ready = initializeStore()
   .then(function () {
     applyDefaultPasswords();
+    syncVerifiedPrestasiCounts();
   })
   .catch(function (error) {
     initializationError = error;
@@ -423,7 +629,7 @@ export function getMahasiswaAccounts() {
 }
 
 export function getPrestasi() {
-  return readArray(KEYS.prestasi);
+  return uniquePrestasiRecords(readArray(KEYS.prestasi));
 }
 
 export function getArsip() {
@@ -579,9 +785,9 @@ export function getMahasiswaPrestasi(nim) {
   const arsip = getArsip();
   const history = Array.isArray(arsip.riwayatNonTarget) ? arsip.riwayatNonTarget : [];
 
-  return main.concat(history.filter(function (item) {
+  return uniquePrestasiRecords(main.concat(history.filter(function (item) {
     return normalize(item.nim) === key;
-  }));
+  })));
 }
 
 export function getStatusView(status) {
@@ -635,7 +841,7 @@ export function getCounts(items) {
     rejected: 0
   };
 
-  (Array.isArray(items) ? items : []).forEach(function (item) {
+  uniquePrestasiRecords(items).forEach(function (item) {
     const view = getStatusView(item.status);
     counts.total += 1;
     counts[view.key] += 1;
@@ -703,6 +909,7 @@ export function savePrestasiStatus(id, status, note) {
   });
 
   write(KEYS.prestasi, records);
+  syncVerifiedPrestasiCounts();
   return records[index];
 }
 
@@ -729,6 +936,7 @@ export function addPrestasi(payload) {
 
   records.push(record);
   write(KEYS.prestasi, records);
+  syncVerifiedPrestasiCounts();
   return record;
 }
 
