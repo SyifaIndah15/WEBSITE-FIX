@@ -205,6 +205,10 @@
     // Mengambil formulir berdasarkan ID yang diberikan pada options.
     const form = document.getElementById(options.formId);
 
+    // Menonaktifkan validasi bawaan browser jika formulir memiliki validasi khusus.
+    // Dengan begitu pesan kesalahan dari JavaScript dapat ditampilkan.
+    if (form && typeof options.onSubmit === "function") form.noValidate = true;
+
     // Mengambil tombol yang digunakan untuk membuka modal.
     const trigger = document.getElementById(options.triggerId);
 
@@ -223,6 +227,18 @@
         // Jika resetOnOpen bernilai true dan formulir tersedia,
         // kosongkan formulir setiap kali modal dibuka.
         if (options.resetOnOpen && form) form.reset();
+
+        // Menghapus pesan kesalahan lama saat modal dibuka kembali.
+        if (form) {
+          form.querySelectorAll(".dm-account-error").forEach(function (error) {
+            error.textContent = "";
+            error.hidden = true;
+          });
+
+          form.querySelectorAll("[aria-invalid='true']").forEach(function (input) {
+            input.removeAttribute("aria-invalid");
+          });
+        }
       }
     });
 
@@ -246,9 +262,15 @@
         // Mencegah formulir dikirim secara otomatis oleh browser.
         event.preventDefault();
 
-        // Memeriksa apakah seluruh input sudah memenuhi aturan validasi HTML.
-        // Jika tidak valid, hentikan proses.
-        if (!form.reportValidity()) return;
+        // Jika formulir memiliki proses simpan khusus, jalankan proses tersebut.
+        // Proses dianggap berhasil jika fungsi mengembalikan nilai true.
+        if (typeof options.onSubmit === "function") {
+          if (!options.onSubmit(form)) return;
+        } else if (!form.reportValidity()) {
+          // Memeriksa apakah seluruh input sudah memenuhi aturan validasi HTML.
+          // Jika tidak valid, hentikan proses.
+          return;
+        }
 
         // Menutup modal jika formulir sudah lolos validasi.
         modal.close();
@@ -267,11 +289,13 @@
   // triggerId adalah ID tombol pembuka modal.
   // modalId adalah ID elemen popup tambah akun.
   // closeSelector adalah selector tombol untuk menutup popup.
+  // onSubmit menjalankan validasi, penyimpanan, dan penambahan baris tabel.
   setupFormModal({
     formId: "dm-account-form",
     triggerId: "dm-create-account-button",
     modalId: "dm-account-modal",
-    closeSelector: "[data-dm-account-close]"
+    closeSelector: "[data-dm-account-close]",
+    onSubmit: submitAccountForm
   });
 
   // Mengatur modal untuk fitur tambah mahasiswa.
@@ -284,7 +308,8 @@
     triggerId: "dm-add-student-button",
     modalId: "dm-student-modal",
     closeSelector: "[data-dm-student-close]",
-    resetOnOpen: true
+    resetOnOpen: true,
+    onSubmit: submitStudentForm
   });
 
   // Membuat variabel untuk menyimpan baris tabel mahasiswa yang sedang diedit.
@@ -424,6 +449,9 @@
       // Mengambil kembali baris tabel mahasiswa yang sedang diedit.
       const row = editingRow;
 
+      // Menyimpan NIM lama sebelum data pada baris diubah.
+      const oldNim = row ? getRowNim(row) : "";
+
       // Memeriksa apakah terdapat baris mahasiswa yang sedang diedit.
       if (row) {
 
@@ -470,7 +498,23 @@
 
         // Jika tombol hapus tersedia, perbarui keterangan aksesibilitasnya.
         if (deleteButton) deleteButton.setAttribute("aria-label", `Hapus data ${name}`);
+
+        // Memperbarui atribut pencarian pada baris tabel.
+        row.dataset.name = name;
+        row.dataset.nim = nim;
+
+        // Memperbarui data akun baru yang tersimpan di localStorage.
+        updateStoredStudent(oldNim, {
+          name: name,
+          nim: nim,
+          year: year,
+          ipk: ipk,
+          password: nim
+        });
       }
+
+      // Menerapkan kembali pencarian dan filter setelah data diperbarui.
+      applyFilters();
 
       // Menutup modal setelah proses perubahan data selesai.
       editModal.close();
@@ -546,8 +590,17 @@
       // Jika tidak tersedia, hentikan proses.
       if (!row) return;
 
+      // Menyimpan NIM sebelum baris dihapus dari tabel.
+      const nim = getRowNim(row);
+
       // Menghapus baris mahasiswa dari tampilan tabel HTML.
       row.remove();
+
+      // Menghapus akun baru dari penyimpanan localStorage jika ada.
+      if (nim) removeStoredStudent(nim);
+
+      // Menerapkan kembali pencarian dan filter setelah data dihapus.
+      applyFilters();
 
       // Mengosongkan kembali variabel baris yang akan dihapus.
       deletingRow = null;
@@ -591,6 +644,631 @@
       if (deleteButton) openDeleteModal(deleteButton.closest("tr"), deleteButton);
     });
   }
+
+  // ==================== AKUN MAHASISWA BARU ====================
+
+  // Kunci penyimpanan akun mahasiswa baru di localStorage.
+  // Kunci ini juga digunakan oleh halaman Login Mahasiswa.
+  const STUDENT_STORAGE_KEY = "sipresma_mahasiswa_accounts";
+
+  // Mengambil formulir Buat Akun Mahasiswa Baru dan seluruh kolom inputnya.
+  const accountNim = document.getElementById("dm-account-nim");
+  const accountYear = document.getElementById("dm-account-year");
+  const accountName = document.getElementById("dm-account-name");
+  const accountEmail = document.getElementById("dm-account-email");
+
+  // Mengambil formulir Tambah Data Mahasiswa dan seluruh kolom inputnya.
+  const studentNim = document.getElementById("dm-student-nim");
+  const studentYear = document.getElementById("dm-student-year");
+  const studentName = document.getElementById("dm-student-name");
+  const studentIpk = document.getElementById("dm-student-ipk");
+
+  // Mengambil tabel mahasiswa dan menyimpan satu baris sebagai contoh struktur.
+  // Baris contoh digunakan untuk membuat baris baru tanpa mengubah struktur HTML.
+  const studentTableBody = document.querySelector(".dm-table tbody");
+  const studentRowTemplate = studentTableBody ? studentTableBody.querySelector("tr") : null;
+
+  // Mengambil daftar akun mahasiswa baru yang tersimpan di localStorage.
+  function getStoredStudents() {
+    try {
+      const stored = window.localStorage.getItem(STUDENT_STORAGE_KEY);
+      const parsed = stored ? JSON.parse(stored) : [];
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (error) {
+      return [];
+    }
+  }
+
+  // Mencari akun mahasiswa berdasarkan NPM pada localStorage.
+  function getStoredStudent(nim) {
+    return getStoredStudents().find(function (student) {
+      return String(student.nim) === String(nim);
+    });
+  }
+
+  // Menyimpan daftar akun mahasiswa baru ke localStorage.
+  function saveStoredStudents(students) {
+    try {
+      window.localStorage.setItem(STUDENT_STORAGE_KEY, JSON.stringify(students));
+    } catch (error) {
+      // Abaikan jika localStorage tidak dapat digunakan oleh browser.
+    }
+  }
+
+  // Memperbarui data akun mahasiswa baru yang tersimpan di localStorage.
+  function updateStoredStudent(oldNim, updatedData) {
+    const students = getStoredStudents();
+    const index = students.findIndex(function (student) {
+      return String(student.nim) === oldNim;
+    });
+
+    if (index === -1) return;
+
+    students[index] = Object.assign({}, students[index], updatedData);
+    saveStoredStudents(students);
+  }
+
+  // Menghapus data akun mahasiswa baru dari localStorage.
+  function removeStoredStudent(nim) {
+    const students = getStoredStudents().filter(function (student) {
+      return String(student.nim) !== nim;
+    });
+
+    saveStoredStudents(students);
+  }
+
+  // Mengambil NIM dari satu baris tabel.
+  function getRowNim(row) {
+    const metaElement = row.querySelector(".dm-student-meta");
+    const meta = metaElement ? metaElement.textContent : "";
+    const match = meta.match(/NIM:\s*([0-9]+)/i);
+
+    return row.dataset.nim || (match ? match[1] : "");
+  }
+
+  // Memeriksa apakah NIM sudah digunakan pada tabel yang sedang ditampilkan.
+  function isNimInTable(nim) {
+    const rows = Array.from(document.querySelectorAll(".dm-table tbody tr"));
+
+    return rows.some(function (row) {
+      return getRowNim(row) === nim;
+    });
+  }
+
+  // Memeriksa apakah NIM sudah terdaftar pada tabel atau data localStorage.
+  function isNimRegistered(nim) {
+    const stored = getStoredStudents();
+
+    return (
+      isNimInTable(nim) ||
+      stored.some(function (student) {
+        return String(student.nim) === nim;
+      })
+    );
+  }
+
+  // Membuat elemen pesan kesalahan pada kolom input terkait.
+  function getFieldError(input) {
+    const field = input.closest(".dm-account-field");
+
+    if (!field) return null;
+
+    let error = field.querySelector(".dm-account-error");
+
+    if (!error) {
+      error = document.createElement("p");
+      error.className = "dm-account-helper dm-account-error";
+      error.setAttribute("role", "alert");
+      error.hidden = true;
+      error.style.color = "#b3261e";
+      field.appendChild(error);
+    }
+
+    return error;
+  }
+
+  // Menampilkan pesan kesalahan pada kolom input.
+  function showFieldError(input, message) {
+    const error = getFieldError(input);
+
+    input.setAttribute("aria-invalid", "true");
+
+    if (error) {
+      error.textContent = message;
+      error.hidden = false;
+    }
+  }
+
+  // Menghapus pesan kesalahan pada kolom input.
+  function clearFieldError(input) {
+    const error = getFieldError(input);
+
+    input.removeAttribute("aria-invalid");
+
+    if (error) {
+      error.textContent = "";
+      error.hidden = true;
+    }
+  }
+
+  // Menghapus pesan kesalahan ketika pengguna memperbaiki isi input.
+  [accountNim, accountYear, accountName, accountEmail, studentNim, studentYear, studentName, studentIpk].forEach(function (input) {
+    if (!input) return;
+
+    input.addEventListener("input", function () {
+      clearFieldError(input);
+    });
+  });
+
+  // Memeriksa seluruh input formulir Buat Akun Mahasiswa Baru.
+  function validateAccountForm() {
+    let isValid = true;
+    let firstInvalidInput = null;
+
+    function markInvalid(input, message) {
+      if (!input) return;
+
+      showFieldError(input, message);
+      isValid = false;
+
+      if (!firstInvalidInput) firstInvalidInput = input;
+    }
+
+    const nim = accountNim ? accountNim.value.trim() : "";
+    const year = accountYear ? accountYear.value.trim() : "";
+    const name = accountName ? accountName.value.trim() : "";
+    const email = accountEmail ? accountEmail.value.trim() : "";
+
+    // Validasi NIM: wajib diisi, hanya angka, 11 digit, dan belum terdaftar.
+    if (!nim) {
+      markInvalid(accountNim, "NIM wajib diisi.");
+    } else if (!/^[0-9]+$/.test(nim)) {
+      markInvalid(accountNim, "NIM hanya boleh berisi angka.");
+    } else if (nim.length !== 11) {
+      markInvalid(accountNim, "NIM harus terdiri dari 11 angka.");
+    } else if (isNimRegistered(nim)) {
+      markInvalid(accountNim, "NIM sudah terdaftar.");
+    } else {
+      clearFieldError(accountNim);
+    }
+
+    // Validasi angkatan: wajib diisi dan terdiri dari 4 angka.
+    if (!year) {
+      markInvalid(accountYear, "Angkatan wajib diisi.");
+    } else if (!/^[0-9]{4}$/.test(year)) {
+      markInvalid(accountYear, "Angkatan harus terdiri dari 4 angka.");
+    } else {
+      clearFieldError(accountYear);
+    }
+
+    // Validasi nama: wajib diisi dan hanya boleh berisi huruf serta spasi.
+    if (!name) {
+      markInvalid(accountName, "Nama lengkap wajib diisi.");
+    } else if (!/^[A-Za-z\u00C0-\u024F\s]+$/.test(name)) {
+      markInvalid(accountName, "Nama lengkap hanya boleh berisi huruf dan spasi.");
+    } else {
+      clearFieldError(accountName);
+    }
+
+    // Validasi email: wajib diisi dan harus memiliki format email yang benar.
+    if (!email) {
+      markInvalid(accountEmail, "Email wajib diisi.");
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      markInvalid(accountEmail, "Masukkan alamat email yang valid.");
+    } else {
+      clearFieldError(accountEmail);
+    }
+
+    // Mengarahkan fokus ke input pertama yang belum valid.
+    if (firstInvalidInput) firstInvalidInput.focus();
+
+    return isValid;
+  }
+
+  // Mengambil akun yang sesuai dengan NPM pada formulir Tambah Data Mahasiswa.
+  function getStudentFormAccount() {
+    const nim = studentNim ? studentNim.value.trim() : "";
+
+    if (!/^[0-9]{11}$/.test(nim)) return null;
+
+    return getStoredStudent(nim) || null;
+  }
+
+  // Mengisi identitas mahasiswa dari data akun yang sudah tersedia.
+  function syncStudentIdentity() {
+    const account = getStudentFormAccount();
+
+    if (studentYear) studentYear.value = account ? String(account.year || "") : "";
+    if (studentName) studentName.value = account ? String(account.name || "") : "";
+  }
+
+  // Menampilkan status akun ketika NPM sudah lengkap diketik.
+  function updateStudentNimStatus() {
+    const nim = studentNim ? studentNim.value.trim() : "";
+
+    if (!/^[0-9]{11}$/.test(nim)) return;
+
+    const account = getStoredStudent(nim);
+
+    if (!account) {
+      showFieldError(studentNim, "Akun mahasiswa belum dibuat. Buat akun terlebih dahulu.");
+    } else if (account.hasAcademicData === true) {
+      showFieldError(studentNim, "Data akademik untuk NPM ini sudah diisi.");
+    } else {
+      clearFieldError(studentNim);
+    }
+  }
+
+  // Memperbarui identitas dan status akun saat NPM diubah.
+  if (studentNim) {
+    studentNim.addEventListener("input", function () {
+      syncStudentIdentity();
+      updateStudentNimStatus();
+    });
+
+    studentNim.addEventListener("blur", updateStudentNimStatus);
+  }
+
+  // Memeriksa seluruh input formulir Tambah Data Mahasiswa.
+  function validateStudentForm() {
+    let isValid = true;
+    let firstInvalidInput = null;
+
+    function markInvalid(input, message) {
+      if (!input) return;
+
+      showFieldError(input, message);
+      isValid = false;
+
+      if (!firstInvalidInput) firstInvalidInput = input;
+    }
+
+    const nim = studentNim ? studentNim.value.trim() : "";
+    const year = studentYear ? studentYear.value.trim() : "";
+    const name = studentName ? studentName.value.trim() : "";
+    const ipk = studentIpk ? studentIpk.value.trim() : "";
+    const account = getStudentFormAccount();
+
+    // Validasi NIM: wajib diisi, hanya angka, 11 digit, dan harus memiliki akun.
+    if (!nim) {
+      markInvalid(studentNim, "NIM wajib diisi.");
+    } else if (!/^[0-9]+$/.test(nim)) {
+      markInvalid(studentNim, "NIM hanya boleh berisi angka.");
+    } else if (nim.length !== 11) {
+      markInvalid(studentNim, "NIM harus terdiri dari 11 angka.");
+    } else if (!account) {
+      markInvalid(studentNim, "Akun mahasiswa belum dibuat. Buat akun terlebih dahulu.");
+    } else if (account.hasAcademicData === true) {
+      markInvalid(studentNim, "Data akademik untuk NPM ini sudah diisi.");
+    } else {
+      clearFieldError(studentNim);
+    }
+
+    // Identitas diambil dari akun, sehingga hanya diperiksa jika akun ditemukan.
+    if (account) {
+      // Validasi angkatan: wajib diisi dan terdiri dari 4 angka.
+      if (!year) {
+        markInvalid(studentYear, "Angkatan wajib diisi.");
+      } else if (!/^[0-9]{4}$/.test(year)) {
+        markInvalid(studentYear, "Angkatan harus terdiri dari 4 angka.");
+      } else {
+        clearFieldError(studentYear);
+      }
+
+      // Validasi nama: wajib diisi dan hanya boleh berisi huruf serta spasi.
+      if (!name) {
+        markInvalid(studentName, "Nama lengkap wajib diisi.");
+      } else if (!/^[A-Za-z\u00C0-\u024F\s]+$/.test(name)) {
+        markInvalid(studentName, "Nama lengkap hanya boleh berisi huruf dan spasi.");
+      } else {
+        clearFieldError(studentName);
+      }
+    } else {
+      clearFieldError(studentYear);
+      clearFieldError(studentName);
+    }
+
+    // Validasi IPK: wajib diisi, berupa angka, maksimal 2 desimal, dan 0.00-4.00.
+    if (!ipk) {
+      markInvalid(studentIpk, "IPK wajib diisi.");
+    } else if (!/^[0-9]+(?:[.,][0-9]{1,2})?$/.test(ipk)) {
+      markInvalid(studentIpk, "IPK harus berupa angka dengan maksimal 2 angka desimal.");
+    } else {
+      const ipkValue = Number(ipk.replace(",", "."));
+
+      if (ipkValue < 0 || ipkValue > 4) {
+        markInvalid(studentIpk, "IPK harus berada di antara 0.00 dan 4.00.");
+      } else {
+        clearFieldError(studentIpk);
+      }
+    }
+
+    // Mengarahkan fokus ke input pertama yang belum valid.
+    if (firstInvalidInput) firstInvalidInput.focus();
+
+    return isValid;
+  }
+
+  // Membuat baris tabel untuk akun mahasiswa baru.
+  function createStudentRow(student) {
+    if (!studentTableBody || !studentRowTemplate) return null;
+
+    const row = studentRowTemplate.cloneNode(true);
+    const nameElement = row.querySelector(".dm-student-name");
+    const metaElement = row.querySelector(".dm-student-meta");
+    const ipkElement = row.querySelector(".dm-ipk");
+    const achievementCells = row.querySelectorAll(".dm-achievement");
+    const badgeElement = row.querySelector(".dm-badge");
+    const editButton = row.querySelector(".dm-icon-button--edit");
+    const deleteButton = row.querySelector(".dm-icon-button--delete");
+
+    // Memastikan baris baru tidak ikut tersembunyi oleh filter sebelumnya.
+    row.hidden = false;
+
+    if (nameElement) nameElement.textContent = student.name;
+    if (metaElement) metaElement.textContent = `NIM: ${student.nim} \u00b7 Angkatan ${student.year}`;
+    if (ipkElement) ipkElement.textContent = student.ipk || "0.00";
+
+    // Mahasiswa baru belum memiliki data prestasi.
+    achievementCells.forEach(function (cell) {
+      const value = cell.querySelector("strong");
+      const label = cell.querySelector("small");
+
+      if (value) value.textContent = "0";
+      if (label) label.textContent = "-";
+    });
+
+    if (badgeElement) {
+      badgeElement.className = "dm-badge";
+      badgeElement.textContent = student.category || "Rendah";
+    }
+
+    // Menyimpan data pencarian pada atribut baris.
+    row.dataset.name = student.name;
+    row.dataset.nim = student.nim;
+    row.dataset.email = student.email;
+    row.dataset.category = student.category || "Rendah";
+
+    if (editButton) editButton.setAttribute("aria-label", `Edit data ${student.name}`);
+    if (deleteButton) deleteButton.setAttribute("aria-label", `Hapus data ${student.name}`);
+
+    return row;
+  }
+
+  // Menambahkan baris akun mahasiswa baru ke tabel.
+  function addStudentRow(student) {
+    const row = createStudentRow(student);
+
+    if (row) studentTableBody.appendChild(row);
+  }
+
+  // Memperbarui baris tabel yang sudah ada berdasarkan data akun terbaru.
+  function updateStudentRow(row, student) {
+    const nameElement = row.querySelector(".dm-student-name");
+    const metaElement = row.querySelector(".dm-student-meta");
+    const ipkElement = row.querySelector(".dm-ipk");
+    const editButton = row.querySelector(".dm-icon-button--edit");
+    const deleteButton = row.querySelector(".dm-icon-button--delete");
+
+    row.hidden = false;
+
+    if (nameElement) nameElement.textContent = student.name;
+    if (metaElement) metaElement.textContent = `NIM: ${student.nim} \u00b7 Angkatan ${student.year}`;
+    if (ipkElement) ipkElement.textContent = student.ipk || "0.00";
+
+    row.dataset.name = student.name;
+    row.dataset.nim = student.nim;
+    row.dataset.email = student.email || "";
+    row.dataset.category = student.category || "Rendah";
+
+    if (editButton) editButton.setAttribute("aria-label", `Edit data ${student.name}`);
+    if (deleteButton) deleteButton.setAttribute("aria-label", `Hapus data ${student.name}`);
+  }
+
+  // Memperbarui baris yang sudah ada atau menambahkan baris baru bila belum ada.
+  function upsertStudentRow(student) {
+    if (!studentTableBody) return;
+
+    const nim = String(student.nim);
+    const rows = Array.from(studentTableBody.querySelectorAll("tr"));
+    const row = rows.find(function (item) {
+      return getRowNim(item) === nim;
+    });
+
+    if (row) {
+      updateStudentRow(row, student);
+    } else {
+      addStudentRow(student);
+    }
+  }
+
+  // Menampilkan kembali akun mahasiswa baru yang tersimpan di localStorage.
+  function loadStoredStudents() {
+    getStoredStudents().forEach(function (student) {
+      if (!student || !student.nim) return;
+
+      const nim = String(student.nim);
+
+      // Melewati data yang sudah tampil di tabel agar tidak terjadi duplikasi.
+      if (isNimInTable(nim)) return;
+
+      addStudentRow({
+        name: student.name || "",
+        nim: nim,
+        year: String(student.year || ""),
+        email: student.email || "",
+        programStudi: student.programStudi || "Teknik Informatika",
+        password: student.password || nim,
+        category: student.category || "Rendah",
+        ipk: student.ipk || "0.00"
+      });
+    });
+  }
+
+  // Menyimpan akun baru dan menambahkannya ke tabel.
+  function submitAccountForm() {
+    if (!validateAccountForm()) return false;
+
+    const student = {
+      name: accountName.value.trim(),
+      nim: accountNim.value.trim(),
+      year: accountYear.value.trim(),
+      email: accountEmail.value.trim(),
+      programStudi: "Teknik Informatika",
+      password: accountNim.value.trim(),
+      category: "Rendah",
+      ipk: "0.00",
+      hasAcademicData: false
+    };
+
+    // Menambahkan baris baru ke tabel agar langsung terlihat.
+    addStudentRow(student);
+
+    // Menyimpan akun agar tetap tersedia setelah halaman dimuat ulang.
+    const students = getStoredStudents();
+    students.push(student);
+    saveStoredStudents(students);
+
+    // Memperbarui hasil pencarian dan filter bila sedang digunakan.
+    applyFilters();
+
+    return true;
+  }
+
+  // Menyimpan data akademik untuk akun mahasiswa yang sudah dibuat.
+  function submitStudentForm() {
+    // Mengambil identitas dari akun sebelum data diperiksa.
+    syncStudentIdentity();
+
+    if (!validateStudentForm()) return false;
+
+    const nim = studentNim.value.trim();
+    const account = getStoredStudent(nim);
+
+    // Memastikan akun masih tersedia dan data akademik belum pernah diisi.
+    if (!account) {
+      showFieldError(studentNim, "Akun mahasiswa belum dibuat. Buat akun terlebih dahulu.");
+      return false;
+    }
+
+    if (account.hasAcademicData === true) {
+      showFieldError(studentNim, "Data akademik untuk NPM ini sudah diisi.");
+      return false;
+    }
+
+    const ipk = Number(studentIpk.value.trim().replace(",", ".")).toFixed(2);
+
+    // Menggabungkan data akademik dengan identitas dari akun yang sama.
+    const student = Object.assign({}, account, {
+      nim: nim,
+      name: String(account.name || "").trim(),
+      year: String(account.year || "").trim(),
+      email: account.email || "",
+      programStudi: account.programStudi || "Teknik Informatika",
+      password: account.password || nim,
+      category: account.category || "Rendah",
+      ipk: ipk,
+      hasAcademicData: true
+    });
+
+    // Memperbarui baris yang sudah ada agar tidak terjadi duplikasi data.
+    upsertStudentRow(student);
+
+    // Memperbarui akun yang sama, bukan menambahkan akun baru.
+    updateStoredStudent(nim, { ipk: ipk, hasAcademicData: true });
+
+    // Memperbarui hasil pencarian dan filter bila sedang digunakan.
+    applyFilters();
+
+    return true;
+  }
+
+  // Menampilkan akun yang sudah tersimpan saat halaman pertama kali dibuka.
+  loadStoredStudents();
+
+  // Mengambil kolom pencarian data mahasiswa.
+  const searchInput = document.querySelector(".dm-search input[type='search']");
+
+  // Menyimpan kategori prestasi yang sedang dipilih.
+  // Nilai awal Semua Kategori berarti seluruh data ditampilkan.
+  let currentCategory = "Semua Kategori";
+
+  // Membuat fungsi untuk menampilkan baris sesuai kata kunci dan kategori.
+  // Pencarian mencakup nama mahasiswa, NIM, dan email.
+  function applyFilters() {
+
+    // Mengambil kata kunci pencarian dan mengubahnya menjadi huruf kecil.
+    // Jika kolom pencarian tidak ditemukan, gunakan teks kosong.
+    const term = searchInput ? searchInput.value.trim().toLowerCase() : "";
+
+    // Mengambil seluruh baris tabel mahasiswa.
+    const rows = Array.from(document.querySelectorAll(".dm-table tbody tr"));
+
+    // Memeriksa setiap baris untuk menentukan apakah baris harus ditampilkan.
+    rows.forEach(function (row) {
+
+      // Mengambil elemen nama mahasiswa pada baris.
+      const nameElement = row.querySelector(".dm-student-name");
+
+      // Mengambil elemen NIM dan angkatan mahasiswa pada baris.
+      const metaElement = row.querySelector(".dm-student-meta");
+
+      // Mengambil elemen email jika tersedia, baik berupa class maupun data-email.
+      const emailElement = row.querySelector(
+        ".dm-student-email, .dm-email, [data-email], a[href^='mailto:']"
+      );
+
+      // Mengambil elemen kategori prestasi pada baris.
+      const categoryElement = row.querySelector(".dm-badge");
+
+      // Mengambil nama dari atribut data atau dari elemen nama.
+      const name = (
+        row.dataset.name || (nameElement ? nameElement.textContent : "")
+      ).toLowerCase();
+
+      // Mengambil NIM dari atribut data atau dari elemen informasi mahasiswa.
+      const nim = (
+        row.dataset.nim || (metaElement ? metaElement.textContent : "")
+      ).toLowerCase();
+
+      // Mengambil email dari atribut data atau dari elemen email.
+      const email = (
+        row.dataset.email ||
+        (emailElement
+          ? emailElement.dataset.email ||
+            emailElement.getAttribute("href") ||
+            emailElement.textContent
+          : "")
+      ).toLowerCase();
+
+      // Mengambil kategori prestasi dari atribut data atau dari elemen kategori.
+      const category = (
+        row.dataset.category ||
+        (categoryElement ? categoryElement.textContent : "")
+      ).trim();
+
+      // Memeriksa apakah baris cocok dengan kata kunci pencarian.
+      // Kata kunci sebagian tetap dianggap cocok karena menggunakan includes().
+      const matchesSearch =
+        !term ||
+        name.includes(term) ||
+        nim.includes(term) ||
+        email.includes(term);
+
+      // Memeriksa apakah baris cocok dengan kategori yang dipilih.
+      const matchesCategory =
+        currentCategory === "Semua Kategori" || category === currentCategory;
+
+      // Menyembunyikan baris yang tidak memenuhi kedua kondisi.
+      row.hidden = !(matchesSearch && matchesCategory);
+    });
+  }
+
+  // Menambahkan event input agar pencarian berjalan langsung saat pengguna mengetik.
+  if (searchInput) searchInput.addEventListener("input", applyFilters);
+
+  // Menerapkan kondisi awal tabel, termasuk jika kata kunci dipulihkan browser.
+  applyFilters();
 
   // Mengambil elemen pembungkus dropdown kategori.
   const categoryRoot = document.getElementById("dm-category-select");
@@ -677,16 +1355,22 @@
       // Menyimpan pilihan kategori yang baru dipilih.
       selectedOption = option;
 
-      // Mengubah teks kategori yang ditampilkan pada dropdown.
+      // Menyimpan kategori yang dipilih untuk proses penyaringan baris tabel.
       // Menggunakan dataset.value jika tersedia.
       // Jika tidak tersedia, gunakan teks dari elemen pilihan.
-      categoryValue.textContent = option.dataset.value || option.textContent.trim();
+      currentCategory = option.dataset.value || option.textContent.trim();
+
+      // Mengubah teks kategori yang ditampilkan pada dropdown.
+      categoryValue.textContent = currentCategory;
 
       // Menutup dropdown setelah kategori dipilih.
       setOpen(false);
 
       // Mengembalikan fokus keyboard ke tombol utama dropdown.
       categoryTrigger.focus({ preventScroll: true });
+
+      // Menampilkan baris tabel sesuai kategori dan kata kunci pencarian.
+      applyFilters();
     }
 
     // Menambahkan event click pada tombol utama dropdown.

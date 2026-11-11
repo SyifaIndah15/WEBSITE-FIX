@@ -4,6 +4,20 @@
   // Menentukan panjang NPM yang diwajibkan, yaitu 11 angka.
   const NPM_LENGTH = 11;
 
+  // Kunci penyimpanan akun mahasiswa baru yang dibuat dari Dashboard Admin.
+  const STUDENT_STORAGE_KEY = "sipresma_mahasiswa_accounts";
+
+  // Mengambil daftar akun mahasiswa baru dari localStorage.
+  function getStoredStudents() {
+    try {
+      const stored = window.localStorage.getItem(STUDENT_STORAGE_KEY);
+      const parsed = stored ? JSON.parse(stored) : [];
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (error) {
+      return [];
+    }
+  }
+
   // Mengambil formulir Login khusus Mahasiswa berdasarkan class HTML-nya.
   const mahasiswaForm = document.querySelector(".login-form--mahasiswa");
 
@@ -111,6 +125,23 @@
 
           // Menghentikan proses karena masih ada input yang tidak valid.
           return;
+        }
+
+        // Mencari akun mahasiswa baru yang tersimpan di localStorage.
+        const npmValue = npmInput.value.trim();
+        const storedAccount = getStoredStudents().find(function (student) {
+          return String(student.nim) === npmValue;
+        });
+
+        // Memeriksa password akun baru menggunakan NPM sebagai password default.
+        if (storedAccount) {
+          const expectedPassword = String(storedAccount.password || storedAccount.nim);
+
+          if (passwordInput.value !== expectedPassword) {
+            showError(passwordInput, passwordError, "Password salah.");
+            passwordInput.focus();
+            return;
+          }
         }
 
         // Membuat tempat untuk menyusun parameter yang akan dimasukkan ke URL.
