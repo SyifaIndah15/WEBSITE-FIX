@@ -1,0 +1,77 @@
+{
+  "metadata": {
+    "judul": "Data Akun Dosen SIPRESMA",
+    "jumlah": 5,
+    "sumber": [
+      "pages/admin/data-dosen.html",
+      "pages/dosen/profil.html"
+    ],
+    "catatan": [
+      "Password dosen tidak tersedia pada sumber data.",
+      "NIDN, nama, email, dan status akun dipertahankan dari halaman Data Dosen.",
+      "Amal Khairan juga tercatat sebagai Dosen Tetap / Kaprodi pada halaman profil dosen."
+    ]
+  },
+  "data": [
+    {
+      "id": "AKD-001",
+      "nidn": "0012058201",
+      "username": "0012058201",
+      "nama": "Amal Khairan",
+      "email": "amal.khairan@univ.ac.id",
+      "role": "Dosen",
+      "jabatan": "Dosen Tetap / Kaprodi",
+      "programStudi": "Teknik Informatika",
+      "fakultas": "Fakultas Teknologi Informasi",
+      "statusAkun": "Aktif"
+    },
+    {
+      "id": "AKD-002",
+      "nidn": "0024098502",
+      "username": "0024098502",
+      "nama": "Dr. Siti Rahmawati, M.Kom.",
+      "email": "siti.rahmawati@univ.ac.id",
+      "role": "Dosen",
+      "jabatan": null,
+      "programStudi": "Teknik Informatika",
+      "fakultas": "Fakultas Teknologi Informasi",
+      "statusAkun": "Aktif"
+    },
+    {
+      "id": "AKD-003",
+      "nidn": "0018117903",
+      "username": "0018117903",
+      "nama": "Prof. Dr. Eng. Agus Priyono, M.Sc.",
+      "email": "agus.priyono@univ.ac.id",
+      "role": "Dosen",
+      "jabatan": null,
+      "programStudi": "Teknik Informatika",
+      "fakultas": "Fakultas Teknologi Informasi",
+      "statusAkun": "Aktif"
+    },
+    {
+      "id": "AKD-004",
+      "nidn": "0005078904",
+      "username": "0005078904",
+      "nama": "Nurul Hidayati, S.T., M.Cs.",
+      "email": "nurul.hidayati@univ.ac.id",
+      "role": "Dosen",
+      "jabatan": null,
+      "programStudi": "Teknik Informatika",
+      "fakultas": "Fakultas Teknologi Informasi",
+      "statusAkun": "Aktif"
+    },
+    {
+      "id": "AKD-005",
+      "nidn": "0019028805",
+      "username": "0019028805",
+      "nama": "Bayu Wicaksono, M.Kom.",
+      "email": "bayu.wicaksono@univ.ac.id",
+      "role": "Dosen",
+      "jabatan": null,
+      "programStudi": "Teknik Informatika",
+      "fakultas": "Fakultas Teknologi Informasi",
+      "statusAkun": "Nonaktif"
+    }
+  ]
+}

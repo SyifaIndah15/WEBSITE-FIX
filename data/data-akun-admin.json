@@ -1,0 +1,27 @@
+{
+  "metadata": {
+    "judul": "Data Akun Admin SIPRESMA",
+    "jumlah": 1,
+    "sumber": [
+      "pages/admin/profil.html"
+    ],
+    "catatan": [
+      "Password admin tidak tersedia pada sumber data.",
+      "Status akun admin tidak ditampilkan pada halaman profil; nilai Aktif dipakai karena akun sedang digunakan pada sistem."
+    ]
+  },
+  "data": [
+    {
+      "id": "AKA-001",
+      "username": "admin",
+      "nama": "Bambang Sudarsono, S.Kom., M.Cs.",
+      "email": "admin@univ.ac.id",
+      "role": "Administrator Sistem",
+      "jabatan": "Administrator Utama",
+      "programStudi": "Teknik Informatika",
+      "fakultas": "Fakultas Teknologi Informasi",
+      "statusAkun": "Aktif",
+      "hakOtorisasi": "Pengelolaan Penuh (Full Control Data & Verifikasi)"
+    }
+  ]
+}
