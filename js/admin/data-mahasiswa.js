@@ -7,6 +7,25 @@
   const focusableSelector =
     'button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])';
 
+  // Menyiapkan akses ke pusat data SIPRESMA.
+  // Seluruh pembacaan dan penyimpanan data mahasiswa dilakukan melalui modul ini.
+  const DATA_STORE_URL = new URL("../core/sipresma-data.js", document.currentScript.src).href;
+  let dataStorePromise = null;
+  let dataStore = null;
+
+  function getDataStore() {
+    if (!dataStorePromise) {
+      dataStorePromise = import(DATA_STORE_URL).then(function (store) {
+        if (store.getInitializationError()) {
+          throw store.getInitializationError();
+        }
+        dataStore = store;
+        return store;
+      });
+    }
+    return dataStorePromise;
+  }
+
   // Membuat fungsi untuk mengatur cara kerja popup (modal).
   // Parameter options berisi pengaturan modal seperti elemen modal dan tombol penutup.
   function setupModal(options) {
@@ -256,16 +275,32 @@
     // Memeriksa apakah modal dan formulir berhasil ditemukan.
     if (modal && form) {
 
+      // Mencegah pengiriman ganda ketika proses penyimpanan sedang berjalan.
+      let isSubmitting = false;
+
       // Menambahkan event submit ketika formulir dikirim.
-      form.addEventListener("submit", function (event) {
+      form.addEventListener("submit", async function (event) {
 
         // Mencegah formulir dikirim secara otomatis oleh browser.
         event.preventDefault();
 
+        // Mengabaikan pengiriman baru selama proses sebelumnya belum selesai.
+        if (isSubmitting) return;
+
         // Jika formulir memiliki proses simpan khusus, jalankan proses tersebut.
         // Proses dianggap berhasil jika fungsi mengembalikan nilai true.
         if (typeof options.onSubmit === "function") {
-          if (!options.onSubmit(form)) return;
+          isSubmitting = true;
+
+          try {
+            const result = await options.onSubmit(form);
+            if (!result) return;
+          } catch (error) {
+            console.error("Form submission failed:", error);
+            return;
+          } finally {
+            isSubmitting = false;
+          }
         } else if (!form.reportValidity()) {
           // Memeriksa apakah seluruh input sudah memenuhi aturan validasi HTML.
           // Jika tidak valid, hentikan proses.
@@ -437,7 +472,7 @@
   if (editModal && editForm) {
 
     // Menambahkan event submit ketika formulir edit dikirim.
-    editForm.addEventListener("submit", (event) => {
+    editForm.addEventListener("submit", async (event) => {
 
       // Mencegah formulir dikirim secara otomatis oleh browser.
       event.preventDefault();
@@ -448,76 +483,50 @@
 
       // Mengambil kembali baris tabel mahasiswa yang sedang diedit.
       const row = editingRow;
+      if (!row) return;
+
+      // Menunggu pusat data SIPRESMA selesai diinisialisasi sebelum menyimpan.
+      try {
+        await getDataStore();
+      } catch (error) {
+        console.error("Data mahasiswa gagal dimuat:", error);
+        return;
+      }
 
       // Menyimpan NIM lama sebelum data pada baris diubah.
-      const oldNim = row ? getRowNim(row) : "";
+      const oldNim = getRowNim(row);
 
-      // Memeriksa apakah terdapat baris mahasiswa yang sedang diedit.
-      if (row) {
+      // Mengambil nilai baru dari formulir edit.
+      const name = editName.value.trim();
+      const nim = editNim.value.trim();
+      const year = editYear.value.trim();
+      const ipk = editIpk.value.trim().replace(",", ".");
 
-        // Mengambil nama baru dan menghapus spasi di awal serta akhir.
-        const name = editName.value.trim();
+      // Mempertahankan password yang sudah diubah, tetapi memperbarui
+      // password default agar tetap sama dengan NIM terbaru.
+      const storedStudent = getStoredStudent(oldNim);
+      const storedPassword = storedStudent ? String(storedStudent.password || "") : "";
+      const password = storedPassword && storedPassword !== oldNim ? storedPassword : nim;
 
-        // Mengambil NIM baru dan menghapus spasi di awal serta akhir.
-        const nim = editNim.value.trim();
+      // Menyimpan perubahan ke pusat data SIPRESMA.
+      // NIM lama dipakai agar perubahan NIM tidak membuat akun baru.
+      const student = updateStoredStudent(oldNim, {
+        name: name,
+        nim: nim,
+        year: year,
+        ipk: ipk,
+        password: password
+      });
 
-        // Mengambil tahun angkatan baru dan menghapus spasi di awal serta akhir.
-        const year = editYear.value.trim();
-
-        // Mengambil nilai IPK baru, menghapus spasi,
-        // kemudian mengganti tanda koma menjadi tanda titik.
-        const ipk = editIpk.value.trim().replace(",", ".");
-
-        // Mengambil elemen nama mahasiswa pada baris tabel yang sedang diedit.
-        const nameElement = row.querySelector(".dm-student-name");
-
-        // Mengambil elemen informasi NIM dan angkatan pada baris tabel.
-        const metaElement = row.querySelector(".dm-student-meta");
-
-        // Mengambil elemen nilai IPK pada baris tabel.
-        const ipkElement = row.querySelector(".dm-ipk");
-
-        // Mengambil tombol untuk mengedit data mahasiswa.
-        const editButton = row.querySelector(".dm-icon-button--edit");
-
-        // Mengambil tombol untuk menghapus data mahasiswa.
-        const deleteButton = row.querySelector(".dm-icon-button--delete");
-
-        // Jika elemen nama tersedia, ubah teksnya dengan nama yang baru.
-        if (nameElement) nameElement.textContent = name;
-
-        // Jika elemen informasi tersedia, perbarui NIM dan tahun angkatan.
-        // \u00b7 digunakan untuk menampilkan simbol titik tengah sebagai pemisah.
-        if (metaElement) metaElement.textContent = `NIM: ${nim} \u00b7 Angkatan ${year}`;
-
-        // Jika elemen IPK tersedia, ubah nilainya dengan IPK yang baru.
-        if (ipkElement) ipkElement.textContent = ipk;
-
-        // Jika tombol edit tersedia, perbarui keterangan aksesibilitasnya.
-        if (editButton) editButton.setAttribute("aria-label", `Edit data ${name}`);
-
-        // Jika tombol hapus tersedia, perbarui keterangan aksesibilitasnya.
-        if (deleteButton) deleteButton.setAttribute("aria-label", `Hapus data ${name}`);
-
-        // Memperbarui atribut pencarian pada baris tabel.
-        row.dataset.name = name;
-        row.dataset.nim = nim;
-
-        // Mempertahankan password yang sudah diubah, tetapi memperbarui
-        // password default agar tetap sama dengan NIM terbaru.
-        const storedStudent = getStoredStudent(oldNim);
-        const storedPassword = storedStudent ? String(storedStudent.password || "") : "";
-        const password = storedPassword && storedPassword !== oldNim ? storedPassword : nim;
-
-        // Memperbarui data akun baru yang tersimpan di localStorage.
-        updateStoredStudent(oldNim, {
-          name: name,
-          nim: nim,
-          year: year,
-          ipk: ipk,
-          password: password
-        });
-      }
+      // Memperbarui baris tabel dengan data yang sudah tersimpan.
+      updateStudentRow(row, student ? toDisplayStudent(student) : {
+        name: name,
+        nim: nim,
+        year: year,
+        ipk: ipk,
+        email: row.dataset.email || "",
+        category: row.dataset.category || "Rendah"
+      });
 
       // Menerapkan kembali pencarian dan filter setelah data diperbarui.
       applyFilters();
@@ -587,7 +596,7 @@
   if (deleteModal && confirmDeleteButton) {
 
     // Menambahkan event click pada tombol konfirmasi hapus.
-    confirmDeleteButton.addEventListener("click", function () {
+    confirmDeleteButton.addEventListener("click", async function () {
 
       // Mengambil baris mahasiswa yang sebelumnya dipilih untuk dihapus.
       const row = deletingRow;
@@ -596,14 +605,22 @@
       // Jika tidak tersedia, hentikan proses.
       if (!row) return;
 
+      // Menunggu pusat data SIPRESMA selesai diinisialisasi sebelum menghapus.
+      try {
+        await getDataStore();
+      } catch (error) {
+        console.error("Data mahasiswa gagal dimuat:", error);
+        return;
+      }
+
       // Menyimpan NIM sebelum baris dihapus dari tabel.
       const nim = getRowNim(row);
 
+      // Menghapus akun mahasiswa melalui pusat data SIPRESMA.
+      if (nim) removeStoredStudent(nim);
+
       // Menghapus baris mahasiswa dari tampilan tabel HTML.
       row.remove();
-
-      // Menghapus akun baru dari penyimpanan localStorage jika ada.
-      if (nim) removeStoredStudent(nim);
 
       // Menerapkan kembali pencarian dan filter setelah data dihapus.
       applyFilters();
@@ -653,10 +670,6 @@
 
   // ==================== AKUN MAHASISWA BARU ====================
 
-  // Kunci penyimpanan akun mahasiswa baru di localStorage.
-  // Kunci ini juga digunakan oleh halaman Login Mahasiswa.
-  const STUDENT_STORAGE_KEY = "sipresma_mahasiswa_accounts";
-
   // Mengambil formulir Buat Akun Mahasiswa Baru dan seluruh kolom inputnya.
   const accountNim = document.getElementById("dm-account-nim");
   const accountYear = document.getElementById("dm-account-year");
@@ -674,53 +687,32 @@
   const studentTableBody = document.querySelector(".dm-table tbody");
   const studentRowTemplate = studentTableBody ? studentTableBody.querySelector("tr") : null;
 
-  // Mengambil daftar akun mahasiswa baru yang tersimpan di localStorage.
+  // Mengambil daftar akun mahasiswa dari pusat data SIPRESMA.
   function getStoredStudents() {
-    try {
-      const stored = window.localStorage.getItem(STUDENT_STORAGE_KEY);
-      const parsed = stored ? JSON.parse(stored) : [];
-      return Array.isArray(parsed) ? parsed : [];
-    } catch (error) {
-      return [];
-    }
+    return dataStore ? dataStore.getMahasiswaAccounts() : [];
   }
 
-  // Mencari akun mahasiswa berdasarkan NPM pada localStorage.
+  // Mencari akun mahasiswa berdasarkan NPM pada pusat data SIPRESMA.
   function getStoredStudent(nim) {
     return getStoredStudents().find(function (student) {
       return String(student.nim) === String(nim);
     });
   }
 
-  // Menyimpan daftar akun mahasiswa baru ke localStorage.
-  function saveStoredStudents(students) {
-    try {
-      window.localStorage.setItem(STUDENT_STORAGE_KEY, JSON.stringify(students));
-    } catch (error) {
-      // Abaikan jika localStorage tidak dapat digunakan oleh browser.
-    }
-  }
-
-  // Memperbarui data akun mahasiswa baru yang tersimpan di localStorage.
+  // Memperbarui data akun mahasiswa melalui pusat data SIPRESMA.
   function updateStoredStudent(oldNim, updatedData) {
-    const students = getStoredStudents();
-    const index = students.findIndex(function (student) {
-      return String(student.nim) === oldNim;
-    });
+    if (!dataStore) return null;
 
-    if (index === -1) return;
+    const existing = getStoredStudent(oldNim);
+    if (!existing) return null;
 
-    students[index] = Object.assign({}, students[index], updatedData);
-    saveStoredStudents(students);
+    return dataStore.saveMahasiswa(Object.assign({}, existing, updatedData), oldNim);
   }
 
-  // Menghapus data akun mahasiswa baru dari localStorage.
+  // Menghapus data akun mahasiswa melalui pusat data SIPRESMA.
   function removeStoredStudent(nim) {
-    const students = getStoredStudents().filter(function (student) {
-      return String(student.nim) !== nim;
-    });
-
-    saveStoredStudents(students);
+    if (!dataStore) return;
+    dataStore.deleteMahasiswa(nim);
   }
 
   // Mengambil NIM dari satu baris tabel.
@@ -741,7 +733,7 @@
     });
   }
 
-  // Memeriksa apakah NIM sudah terdaftar pada tabel atau data localStorage.
+  // Memeriksa apakah NIM sudah terdaftar pada tabel atau pusat data SIPRESMA.
   function isNimRegistered(nim) {
     const stored = getStoredStudents();
 
@@ -882,14 +874,18 @@
 
   // Mengisi identitas mahasiswa dari data akun yang sudah tersedia.
   function syncStudentIdentity() {
+    if (!dataStore) return;
+
     const account = getStudentFormAccount();
 
-    if (studentYear) studentYear.value = account ? String(account.year || "") : "";
-    if (studentName) studentName.value = account ? String(account.name || "") : "";
+    if (studentYear) studentYear.value = account ? String(account.year || account.angkatan || "") : "";
+    if (studentName) studentName.value = account ? String(account.name || account.nama || "") : "";
   }
 
   // Menampilkan status akun ketika NPM sudah lengkap diketik.
   function updateStudentNimStatus() {
+    if (!dataStore) return;
+
     const nim = studentNim ? studentNim.value.trim() : "";
 
     if (!/^[0-9]{11}$/.test(nim)) return;
@@ -993,6 +989,22 @@
     if (firstInvalidInput) firstInvalidInput.focus();
 
     return isValid;
+  }
+
+  // Mengubah data akun dari pusat data menjadi data tampilan tabel.
+  function toDisplayStudent(student) {
+    const ipk = student.ipk == null ? 0 : Number(student.ipk);
+
+    return {
+      name: student.name || student.nama || "",
+      nim: String(student.nim || ""),
+      year: String(student.year || student.angkatan || ""),
+      email: student.email || "",
+      programStudi: student.programStudi || "Teknik Informatika",
+      password: student.password || String(student.nim || ""),
+      category: student.category || student.klasifikasi || "Rendah",
+      ipk: Number.isFinite(ipk) ? ipk.toFixed(2) : "0.00"
+    };
   }
 
   // Membuat baris tabel untuk akun mahasiswa baru.
@@ -1102,7 +1114,7 @@
     });
   }
 
-  // Menampilkan kembali akun mahasiswa baru yang tersimpan di localStorage.
+  // Menampilkan kembali seluruh akun mahasiswa dari pusat data SIPRESMA.
   function loadStoredStudents() {
     getStoredStudents().forEach(function (student) {
       if (!student || !student.nim) return;
@@ -1112,28 +1124,29 @@
       // Melewati data yang sudah tampil di tabel agar tidak terjadi duplikasi.
       if (isNimInTable(nim)) return;
 
-      addStudentRow({
-        name: student.name || "",
-        nim: nim,
-        year: String(student.year || ""),
-        email: student.email || "",
-        programStudi: student.programStudi || "Teknik Informatika",
-        password: student.password || nim,
-        category: student.category || "Rendah",
-        ipk: student.ipk || "0.00"
-      });
+      addStudentRow(toDisplayStudent(student));
     });
   }
 
   // Menyimpan akun baru dan menambahkannya ke tabel.
-  function submitAccountForm() {
+  async function submitAccountForm() {
+    // Menunggu pusat data SIPRESMA selesai diinisialisasi sebelum menyimpan.
+    try {
+      await getDataStore();
+    } catch (error) {
+      console.error("Data mahasiswa gagal dimuat:", error);
+      showFieldError(accountNim, "Data mahasiswa belum siap. Muat ulang halaman.");
+      return false;
+    }
+
     if (!validateAccountForm()) return false;
 
     const nim = accountNim.value.trim();
     const year = accountYear.value.trim();
     const name = accountName.value.trim();
 
-    const student = {
+    // Membuat akun baru tanpa data akademik.
+    const student = dataStore.saveMahasiswa({
       id: "MHS-" + nim,
       nim: nim,
       username: nim,
@@ -1151,15 +1164,10 @@
       klasifikasi: "Rendah",
       ipk: "0.00",
       hasAcademicData: false
-    };
+    });
 
     // Menambahkan baris baru ke tabel agar langsung terlihat.
-    addStudentRow(student);
-
-    // Menyimpan akun agar tetap tersedia setelah halaman dimuat ulang.
-    const students = getStoredStudents();
-    students.push(student);
-    saveStoredStudents(students);
+    upsertStudentRow(toDisplayStudent(student));
 
     // Memperbarui hasil pencarian dan filter bila sedang digunakan.
     applyFilters();
@@ -1168,7 +1176,16 @@
   }
 
   // Menyimpan data akademik untuk akun mahasiswa yang sudah dibuat.
-  function submitStudentForm() {
+  async function submitStudentForm() {
+    // Menunggu pusat data SIPRESMA selesai diinisialisasi sebelum menyimpan.
+    try {
+      await getDataStore();
+    } catch (error) {
+      console.error("Data mahasiswa gagal dimuat:", error);
+      showFieldError(studentNim, "Data mahasiswa belum siap. Muat ulang halaman.");
+      return false;
+    }
+
     // Mengambil identitas dari akun sebelum data diperiksa.
     syncStudentIdentity();
 
@@ -1190,24 +1207,14 @@
 
     const ipk = Number(studentIpk.value.trim().replace(",", ".")).toFixed(2);
 
-    // Menggabungkan data akademik dengan identitas dari akun yang sama.
-    const student = Object.assign({}, account, {
-      nim: nim,
-      name: String(account.name || "").trim(),
-      year: String(account.year || "").trim(),
-      email: account.email || "",
-      programStudi: account.programStudi || "Teknik Informatika",
-      password: account.password || nim,
-      category: account.category || "Rendah",
+    // Memperbarui akun yang sama, bukan menambahkan akun baru.
+    const student = dataStore.saveMahasiswa(Object.assign({}, account, {
       ipk: ipk,
       hasAcademicData: true
-    });
+    }), nim);
 
     // Memperbarui baris yang sudah ada agar tidak terjadi duplikasi data.
-    upsertStudentRow(student);
-
-    // Memperbarui akun yang sama, bukan menambahkan akun baru.
-    updateStoredStudent(nim, { ipk: ipk, hasAcademicData: true });
+    upsertStudentRow(toDisplayStudent(student));
 
     // Memperbarui hasil pencarian dan filter bila sedang digunakan.
     applyFilters();
@@ -1550,10 +1557,17 @@
     });
   }
 
-  import(new URL("../core/sipresma-data.js", document.currentScript.src).href)
+  getDataStore()
     .then(function () {
       removeMissingStoredRows();
       loadStoredStudents();
+
+      // Menyesuaikan kembali formulir jika NPM sudah terisi sebelum data siap.
+      if (studentNim && studentNim.value.trim()) {
+        syncStudentIdentity();
+        updateStudentNimStatus();
+      }
+
       applyFilters();
     })
     .catch(function (error) {
