@@ -19,6 +19,17 @@
   // 1024 * 1024 digunakan untuk menghitung ukuran 1 MB dalam satuan byte.
   const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
+  // Menyiapkan akses ke penyimpanan data bersama SIPRESMA.
+  const DATA_STORE_URL = new URL("../core/sipresma-data.js", document.currentScript.src).href;
+  let dataStorePromise = null;
+
+  function getDataStore() {
+    if (!dataStorePromise) {
+      dataStorePromise = import(DATA_STORE_URL);
+    }
+    return dataStorePromise;
+  }
+
   // Mengambil kolom input nama kompetisi berdasarkan ID HTML.
   const nameInput = form.querySelector("#nama-kompetisi");
 
@@ -280,8 +291,27 @@
     validateEvidence();
   });
 
-  // Menjalankan proses validasi ketika pengguna mengirim formulir pengajuan prestasi.
-  form.addEventListener("submit", (event) => {
+  function selectedValue(name) {
+    const checked = form.querySelector('input[name="' + name + '"]:checked');
+    return checked ? checked.value : "";
+  }
+
+  function showErrorToast() {
+    const toast = document.getElementById("error-toast");
+    if (toast) toast.hidden = false;
+  }
+
+  const errorToastClose = document.getElementById("error-toast-close");
+  if (errorToastClose) {
+    errorToastClose.addEventListener("click", function () {
+      const toast = document.getElementById("error-toast");
+      if (toast) toast.hidden = true;
+    });
+  }
+
+  // Menjalankan proses validasi dan menyimpan pengajuan ketika formulir dikirim.
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
 
     // Memeriksa apakah nama kompetisi sudah diisi dengan benar.
     // Hasil pemeriksaan disimpan dalam variabel nameValid.
@@ -299,30 +329,72 @@
     // Hasil pemeriksaan disimpan dalam variabel evidenceValid.
     const evidenceValid = validateEvidence();
 
-    // Memeriksa apakah ketiga bagian sudah valid.
-    // Jika semuanya benar, proses validasi selesai dan formulir boleh dilanjutkan.
-    if (nameValid && institutionValid && evidenceValid) return;
-
     // Mencegah formulir dikirim jika masih terdapat input yang tidak valid.
-    event.preventDefault();
+    if (!nameValid || !institutionValid || !evidenceValid) {
+      if (!nameValid) {
+        nameInput.focus();
+      } else if (!institutionValid) {
+        institutionInput.focus();
+      } else {
+        evidenceInput.focus();
+      }
+      return;
+    }
 
-    // Memeriksa apakah nama kompetisi masih belum valid.
-    if (!nameValid) {
+    const submitButton = form.querySelector('button[type="submit"]');
+    if (submitButton) submitButton.disabled = true;
 
-      // Mengarahkan kursor ke kolom nama kompetisi agar pengguna dapat memperbaikinya.
-      nameInput.focus();
+    try {
+      const store = await getDataStore();
+      const student = store.resolveMahasiswa();
 
-    // Jika nama kompetisi benar, periksa apakah instansi masih belum valid.
-    } else if (!institutionValid) {
+      if (!student) {
+        showErrorToast();
+        return;
+      }
 
-      // Mengarahkan kursor ke kolom instansi agar pengguna dapat memperbaikinya.
-      institutionInput.focus();
+      const jenis = selectedValue("jenis_prestasi") === "Non-Akademik"
+        ? "Nonakademik"
+        : "Akademik";
+      const tingkat = selectedValue("tingkat_kejuaraan").replace(/^Tingkat\s+/i, "");
+      const peringkat = selectedValue("peringkat");
+      const capaianLainnya = form.querySelector("#capaian-lainnya");
+      const namaKompetisi = nameInput.value.trim();
 
-    // Jika kedua input teks benar, berarti kesalahan terdapat pada dokumen.
-    } else {
+      store.addPrestasi({
+        nim: String(student.nim || ""),
+        namaMahasiswa: student.name || student.nama || "",
+        namaKompetisi: namaKompetisi,
+        namaPrestasi: namaKompetisi,
+        penyelenggara: institutionInput.value.trim(),
+        jenis: jenis,
+        tingkat: tingkat,
+        peringkat: peringkat === "Lainnya" && capaianLainnya
+          ? capaianLainnya.value.trim() || peringkat
+          : peringkat,
+        tahun: selectedValue("tahun_pelaksanaan"),
+        status: "Menunggu Verifikasi",
+        bukti: null,
+        tanggalPengajuan: new Date().toISOString().slice(0, 10)
+      });
 
-      // Mengarahkan fokus ke kolom unggah dokumen agar pengguna dapat memperbaikinya.
-      evidenceInput.focus();
+      const successName = document.getElementById("success-competition-name");
+      if (successName) successName.textContent = namaKompetisi;
+
+      form.reset();
+      window.location.hash = "success-panel";
+
+      const successTitle = document.getElementById("success-title");
+      if (successTitle) {
+        window.requestAnimationFrame(function () {
+          successTitle.focus();
+        });
+      }
+    } catch (error) {
+      console.error("Pengajuan prestasi gagal disimpan:", error);
+      showErrorToast();
+    } finally {
+      if (submitButton) submitButton.disabled = false;
     }
   });
 

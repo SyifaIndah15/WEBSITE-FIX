@@ -5,6 +5,17 @@
   // Mengambil formulir ganti password berdasarkan ID password-form.
   const form = document.getElementById("password-form");
 
+  // Menyiapkan akses ke penyimpanan data bersama SIPRESMA.
+  const DATA_STORE_URL = new URL("../core/sipresma-data.js", document.currentScript.src).href;
+  let dataStorePromise = null;
+
+  function getDataStore() {
+    if (!dataStorePromise) {
+      dataStorePromise = import(DATA_STORE_URL);
+    }
+    return dataStorePromise;
+  }
+
   // Memeriksa apakah formulir berhasil ditemukan.
   // Jika tidak ditemukan, hentikan seluruh proses.
   if (!form) {
@@ -320,17 +331,12 @@
 
     // Memeriksa apakah elemen judul berhasil ditemukan.
     if (title) {
-
-      // Mengubah judul pemberitahuan menjadi Validasi input berhasil.
-      title.textContent = "Validasi input berhasil.";
+      title.textContent = "Password Berhasil Diperbarui!";
     }
 
     // Memeriksa apakah elemen penjelasan berhasil ditemukan.
     if (description) {
-
-      // Menampilkan penjelasan bahwa input sudah lolos validasi frontend.
-      // Verifikasi password lama dan penyimpanan password baru masih memerlukan backend.
-      description.textContent = "Seluruh input telah lolos validasi frontend. Verifikasi password lama dan penyimpanan password baru memerlukan integrasi backend pada tahap berikutnya.";
+      description.textContent = "Password akun Anda telah diperbarui dan dapat digunakan pada proses login berikutnya.";
     }
 
     // Mengubah alamat bagian halaman agar mengarah ke elemen password-success.
@@ -349,35 +355,74 @@
   form.noValidate = true;
 
   // Menjalankan proses ketika pengguna mengirim formulir ganti password.
-  form.addEventListener("submit", (event) => {
-
-    // Mencegah formulir dikirim secara otomatis oleh browser.
-    // Selanjutnya, JavaScript akan melakukan pemeriksaan input sendiri.
+  form.addEventListener("submit", async (event) => {
     event.preventDefault();
 
     // Memanggil fungsi validate() untuk memeriksa ketiga kolom password.
-    // Hasilnya berupa kolom pertama yang salah atau null jika semuanya benar.
     const firstInvalidInput = validate();
 
     // Memeriksa apakah terdapat input yang tidak valid.
     if (firstInvalidInput) {
-
-      // Mengarahkan kursor ke kolom pertama yang mengalami kesalahan.
       firstInvalidInput.focus();
-
-      // Menghentikan proses karena masih ada input yang tidak valid.
       return;
     }
 
-    // Mengosongkan kembali seluruh kolom formulir ke nilai awalnya.
-    form.reset();
+    const oldValue = fields[0].input ? fields[0].input.value : "";
+    const newValue = fields[1].input ? fields[1].input.value : "";
+    const submitButton = form.querySelector('button[type="submit"]');
+    if (submitButton) submitButton.disabled = true;
 
-    // Mengembalikan semua kolom password ke kondisi tersembunyi.
-    resetPasswordVisibility();
+    try {
+      const store = await getDataStore();
+      const student = store.resolveMahasiswa();
 
-    // Menampilkan pemberitahuan bahwa seluruh input berhasil melewati validasi.
-    showValidationNotice();
+      if (!student) {
+        setFieldError(fields[0], "Sesi mahasiswa tidak ditemukan. Silakan login kembali.");
+        return;
+      }
 
+      const result = store.changePassword("mahasiswa", student.nim, oldValue, newValue);
+
+      if (!result.ok) {
+        setFieldError(fields[0], result.message);
+        fields[0].input.focus();
+        return;
+      }
+
+      form.reset();
+      resetPasswordVisibility();
+      showValidationNotice();
+    } catch (error) {
+      console.error("Gagal memperbarui password Mahasiswa:", error);
+      setFieldError(fields[0], "Password gagal diperbarui. Silakan coba lagi.");
+    } finally {
+      if (submitButton) submitButton.disabled = false;
+    }
+  });
+
+  getDataStore().then(function (store) {
+    const student = store.resolveMahasiswa();
+    if (!student) return;
+
+    const name = student.name || student.nama || "";
+    const nim = String(student.nim || "");
+    const year = student.year || student.angkatan || "";
+    const nameElement = document.querySelector(".profile-name");
+    const metaItems = document.querySelectorAll(".profile-meta span:not(.profile-meta-dot)");
+    const emailElement = document.querySelector(".profile-email");
+    const ipkElement = document.querySelector(".profile-ipk");
+    const statusBadge = document.querySelector(".profile-status");
+
+    if (nameElement && name) nameElement.textContent = name;
+    if (metaItems[0] && nim) metaItems[0].textContent = `NPM: ${nim}`;
+    if (metaItems[1] && year) metaItems[1].textContent = `Angkatan ${year}`;
+    if (emailElement && student.email) emailElement.textContent = student.email;
+    if (ipkElement && student.ipk != null) ipkElement.textContent = student.ipk;
+    if (statusBadge && (student.statusAkun || student.status)) {
+      statusBadge.textContent = `Mahasiswa ${student.statusAkun || student.status}`;
+    }
+  }).catch(function (error) {
+    console.error("Identitas profil Mahasiswa gagal dimuat:", error);
   });
 
 // Menutup fungsi utama sekaligus langsung menjalankannya.

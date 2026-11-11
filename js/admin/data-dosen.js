@@ -1,5 +1,7 @@
 // Interaksi halaman data dosen: modal, pencarian, filter status, dan aksi tabel.
 (() => {
+  let dataStore = null;
+
   // Elemen yang dapat menerima fokus di dalam modal.
   const focusableSelector =
     'button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])';
@@ -328,6 +330,19 @@
         return;
       }
 
+      if (dataStore) {
+        dataStore.saveDosen({
+          nidn: nidn,
+          username: nidn,
+          name: name,
+          nama: name,
+          email: email,
+          role: "Dosen",
+          statusAkun: status,
+          password: nidn
+        });
+      }
+
       const row = createLecturerRow({
         nidn: nidn,
         name: name,
@@ -480,6 +495,7 @@
       const row = editingRow;
 
       if (row) {
+        const originalNidn = row.dataset.nidn || "";
         const nidn = editNidn.value.trim();
         const name = editName.value.trim();
         const email = editEmail.value.trim();
@@ -505,6 +521,18 @@
           data.name = name;
           data.email = email;
           data.status = status;
+        }
+
+        if (dataStore) {
+          dataStore.saveDosen({
+            nidn: nidn,
+            username: nidn,
+            name: name,
+            nama: name,
+            email: email,
+            role: "Dosen",
+            statusAkun: status
+          }, originalNidn);
         }
 
         if (nameElement) nameElement.textContent = name;
@@ -553,6 +581,8 @@
       const row = deletingRow;
       if (!row) return;
 
+      if (dataStore) dataStore.deleteDosen(row.dataset.nidn || "");
+
       row.remove();
 
       const dataIndex = lecturerData.findIndex(function (item) {
@@ -582,7 +612,38 @@
     });
   }
 
-  // Urutkan data dan tampilkan seluruhnya saat halaman pertama kali dimuat.
-  sortLecturerRows();
-  applyFilters();
+  function hydrateLecturers() {
+    if (!dataStore || !tableBody || !rowTemplate) return;
+
+    const accounts = dataStore.getDosenAccounts();
+    tableBody.innerHTML = "";
+    lecturerData.length = 0;
+
+    accounts.forEach(function (lecturer) {
+      const data = {
+        nidn: String(lecturer.nidn || lecturer.username || ""),
+        name: lecturer.name || lecturer.nama || "",
+        email: lecturer.email || "",
+        status: lecturer.statusAkun || lecturer.status || "Aktif"
+      };
+      const row = createLecturerRow(data);
+      if (!row) return;
+      tableBody.appendChild(row);
+      lecturerData.push(Object.assign({ row: row }, data));
+    });
+
+    sortLecturerRows();
+    applyFilters();
+  }
+
+  import(new URL("../core/sipresma-data.js", document.currentScript.src).href)
+    .then(function (store) {
+      dataStore = store;
+      hydrateLecturers();
+    })
+    .catch(function (error) {
+      console.error("Data dosen gagal dimuat:", error);
+      sortLecturerRows();
+      applyFilters();
+    });
 })();

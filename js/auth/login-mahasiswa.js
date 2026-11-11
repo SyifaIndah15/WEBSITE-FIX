@@ -4,19 +4,7 @@
   // Menentukan panjang NPM yang diwajibkan, yaitu 11 angka.
   const NPM_LENGTH = 11;
 
-  // Kunci penyimpanan akun mahasiswa baru yang dibuat dari Dashboard Admin.
-  const STUDENT_STORAGE_KEY = "sipresma_mahasiswa_accounts";
-
-  // Mengambil daftar akun mahasiswa baru dari localStorage.
-  function getStoredStudents() {
-    try {
-      const stored = window.localStorage.getItem(STUDENT_STORAGE_KEY);
-      const parsed = stored ? JSON.parse(stored) : [];
-      return Array.isArray(parsed) ? parsed : [];
-    } catch (error) {
-      return [];
-    }
-  }
+  const DATA_STORE_URL = new URL("../core/sipresma-data.js", document.currentScript.src).href;
 
   // Mengambil formulir Login khusus Mahasiswa berdasarkan class HTML-nya.
   const mahasiswaForm = document.querySelector(".login-form--mahasiswa");
@@ -42,6 +30,8 @@
       // Menonaktifkan validasi bawaan browser ketika formulir dikirim.
       // Validasi akan dilakukan menggunakan fungsi JavaScript sendiri.
       mahasiswaForm.noValidate = true;
+
+      let isSubmitting = false;
 
       // Membuat fungsi untuk memeriksa apakah NPM sudah sesuai aturan.
       function validateNpm() {
@@ -104,15 +94,17 @@
       // Menjalankan proses validasi ketika formulir Login Mahasiswa dikirim.
       mahasiswaForm.addEventListener("submit", (event) => {
 
+        // Mencegah formulir dikirim secara otomatis oleh browser.
+        // Pengiriman akan diatur sendiri setelah proses validasi selesai.
+        event.preventDefault();
+
+        if (isSubmitting) return;
+
         // Memanggil fungsi validasi NPM dan menyimpan hasilnya.
         const npmValid = validateNpm();
 
         // Memanggil fungsi validasi password dan menyimpan hasilnya.
         const passwordValid = validateMahasiswaPassword();
-
-        // Mencegah formulir dikirim secara otomatis oleh browser.
-        // Pengiriman akan diatur sendiri setelah proses validasi selesai.
-        event.preventDefault();
 
         // Memeriksa apakah NPM atau password masih memiliki kesalahan.
         if (!npmValid || !passwordValid) {
@@ -127,49 +119,45 @@
           return;
         }
 
-        // Mencari akun mahasiswa baru yang tersimpan di localStorage.
         const npmValue = npmInput.value.trim();
-        const storedAccount = getStoredStudents().find(function (student) {
-          return String(student.nim) === npmValue;
-        });
+        const password = passwordInput.value;
+        isSubmitting = true;
 
-        // Memeriksa password akun baru menggunakan NPM sebagai password default.
-        if (storedAccount) {
-          const expectedPassword = String(storedAccount.password || storedAccount.nim);
+        import(DATA_STORE_URL)
+          .then((store) => {
+            if (store.getInitializationError()) {
+              throw new Error("Data akun Mahasiswa tidak dapat dibaca.");
+            }
 
-          if (passwordInput.value !== expectedPassword) {
-            showError(passwordInput, passwordError, "Password salah.");
+            const result = store.authenticate("mahasiswa", npmValue, password);
+            if (!result.ok) {
+              showError(passwordInput, passwordError, result.message || "NPM atau password salah.");
+              passwordInput.focus();
+              return;
+            }
+
+            store.saveSession("mahasiswa", result.account);
+
+            const params = new URLSearchParams();
+            const formData = new FormData(mahasiswaForm);
+
+            formData.forEach((value, key) => {
+              if (key !== passwordInput.name) params.append(key, value);
+            });
+
+            const action = mahasiswaForm.getAttribute("action") || "";
+            const query = params.toString();
+
+            if (query) window.location.assign(`${action}?${query}`);
+            else window.location.assign(action);
+          })
+          .catch(() => {
+            showError(passwordInput, passwordError, "Login gagal. Data akun Mahasiswa tidak dapat dibaca.");
             passwordInput.focus();
-            return;
-          }
-        }
-
-        // Membuat tempat untuk menyusun parameter yang akan dimasukkan ke URL.
-        const params = new URLSearchParams();
-
-        // Mengambil seluruh data yang memiliki atribut name di dalam formulir.
-        const formData = new FormData(mahasiswaForm);
-
-        // Mengulangi setiap data formulir yang terdiri dari nama dan nilainya.
-        formData.forEach((value, key) => {
-
-          // Memeriksa apakah nama data bukan password.
-          // Jika bukan password, data dimasukkan ke dalam parameter URL.
-          if (key !== passwordInput.name) params.append(key, value);
-        });
-
-        // Mengambil alamat halaman tujuan dari atribut action pada formulir.
-        // Jika action tidak ditemukan, gunakan teks kosong.
-        const action = mahasiswaForm.getAttribute("action") || "";
-
-        // Mengubah seluruh parameter yang sudah disusun menjadi teks URL.
-        const query = params.toString();
-
-        // Memeriksa apakah terdapat parameter yang akan dikirim ke halaman tujuan.
-        if (query) window.location.assign(`${action}?${query}`);
-
-        // Jika tidak ada parameter, langsung menuju halaman tujuan tanpa tambahan URL.
-        else window.location.assign(action);
+          })
+          .finally(() => {
+            isSubmitting = false;
+          });
       });
     }
   }

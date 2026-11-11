@@ -503,13 +503,19 @@
         row.dataset.name = name;
         row.dataset.nim = nim;
 
+        // Mempertahankan password yang sudah diubah, tetapi memperbarui
+        // password default agar tetap sama dengan NIM terbaru.
+        const storedStudent = getStoredStudent(oldNim);
+        const storedPassword = storedStudent ? String(storedStudent.password || "") : "";
+        const password = storedPassword && storedPassword !== oldNim ? storedPassword : nim;
+
         // Memperbarui data akun baru yang tersimpan di localStorage.
         updateStoredStudent(oldNim, {
           name: name,
           nim: nim,
           year: year,
           ipk: ipk,
-          password: nim
+          password: password
         });
       }
 
@@ -1082,6 +1088,20 @@
     }
   }
 
+  // Menghapus baris statis yang akunnya sudah tidak ada di penyimpanan.
+  function removeMissingStoredRows() {
+    if (!studentTableBody) return;
+
+    const storedNims = new Set(getStoredStudents().map(function (student) {
+      return String(student.nim);
+    }));
+
+    Array.from(studentTableBody.querySelectorAll("tr")).forEach(function (row) {
+      const nim = getRowNim(row);
+      if (nim && !storedNims.has(nim)) row.remove();
+    });
+  }
+
   // Menampilkan kembali akun mahasiswa baru yang tersimpan di localStorage.
   function loadStoredStudents() {
     getStoredStudents().forEach(function (student) {
@@ -1109,14 +1129,26 @@
   function submitAccountForm() {
     if (!validateAccountForm()) return false;
 
+    const nim = accountNim.value.trim();
+    const year = accountYear.value.trim();
+    const name = accountName.value.trim();
+
     const student = {
-      name: accountName.value.trim(),
-      nim: accountNim.value.trim(),
-      year: accountYear.value.trim(),
+      id: "MHS-" + nim,
+      nim: nim,
+      username: nim,
+      name: name,
+      nama: name,
+      year: year,
+      angkatan: year ? Number(year) : null,
       email: accountEmail.value.trim(),
       programStudi: "Teknik Informatika",
-      password: accountNim.value.trim(),
+      password: nim,
+      role: "Mahasiswa",
+      status: "Aktif",
+      statusAkun: "Aktif",
       category: "Rendah",
+      klasifikasi: "Rendah",
       ipk: "0.00",
       hasAcademicData: false
     };
@@ -1182,9 +1214,6 @@
 
     return true;
   }
-
-  // Menampilkan akun yang sudah tersimpan saat halaman pertama kali dibuka.
-  loadStoredStudents();
 
   // Mengambil kolom pencarian data mahasiswa.
   const searchInput = document.querySelector(".dm-search input[type='search']");
@@ -1520,6 +1549,16 @@
       if (isOpen && !categoryRoot.contains(event.target)) setOpen(false);
     });
   }
+
+  import(new URL("../core/sipresma-data.js", document.currentScript.src).href)
+    .then(function () {
+      removeMissingStoredRows();
+      loadStoredStudents();
+      applyFilters();
+    })
+    .catch(function (error) {
+      console.error("Data mahasiswa gagal dimuat:", error);
+    });
 
 // Menutup fungsi utama sekaligus langsung menjalankannya.
 })();
