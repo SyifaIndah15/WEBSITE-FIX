@@ -6,7 +6,7 @@
       "pages/admin/profil.html"
     ],
     "catatan": [
-      "Password admin tidak tersedia pada sumber data.",
+      "Password admin tidak tersedia pada sumber data; password simulasi ditambahkan pada atribut password akun.",
       "Status akun admin tidak ditampilkan pada halaman profil; nilai Aktif dipakai karena akun sedang digunakan pada sistem."
     ]
   },
@@ -14,6 +14,7 @@
     {
       "id": "AKA-001",
       "username": "admin",
+      "password": "Sipresma#Admin2026",
       "nama": "Bambang Sudarsono, S.Kom., M.Cs.",
       "email": "admin@univ.ac.id",
       "role": "Administrator Sistem",
