@@ -5,6 +5,8 @@
   // Menentukan panjang NIDN yang diwajibkan, yaitu 10 angka.
   const NIDN_LENGTH = 10;
 
+  const DATA_STORE_URL = new URL("../core/sipresma-data.js", document.currentScript.src).href;
+
   // Mengambil formulir Login khusus Dosen berdasarkan class HTML-nya.
   const dosenForm = document.querySelector(".login-form--dosen");
 
@@ -29,6 +31,8 @@
       // Menonaktifkan validasi bawaan browser ketika formulir dikirim.
       // Pemeriksaan input akan dilakukan menggunakan JavaScript.
       dosenForm.noValidate = true;
+
+      let isSubmitting = false;
 
       // Membuat fungsi untuk memeriksa apakah NIDN sudah sesuai aturan.
       function validateNidn() {
@@ -93,6 +97,8 @@
         // Pengiriman diatur sendiri agar password tidak masuk ke URL.
         event.preventDefault();
 
+        if (isSubmitting) return;
+
         // Memeriksa apakah NIDN sudah valid.
         const nidnValid = validateNidn();
 
@@ -112,20 +118,43 @@
           return;
         }
 
-        // Menyusun parameter URL hanya dari data selain password.
-        const params = new URLSearchParams();
-        const formData = new FormData(dosenForm);
+        const nidn = nidnInput.value.trim();
+        const password = dosenPasswordInput.value;
+        isSubmitting = true;
 
-        formData.forEach((value, key) => {
-          if (key !== dosenPasswordInput.name) params.append(key, value);
-        });
+        import(DATA_STORE_URL)
+          .then((store) => {
+            if (store.getInitializationError()) {
+              throw new Error("Data akun Dosen tidak dapat dibaca.");
+            }
 
-        // Mengambil alamat halaman tujuan dari atribut action pada formulir.
-        const action = dosenForm.getAttribute("action") || "";
+            const result = store.authenticate("dosen", nidn, password);
+            if (!result.ok) {
+              showError(dosenPasswordInput, dosenPasswordError, result.message || "NIDN atau password salah.");
+              dosenPasswordInput.focus();
+              return;
+            }
 
-        // Mengirim NIDN ke dashboard tanpa menyertakan password pada URL.
-        const query = params.toString();
-        window.location.assign(query ? `${action}?${query}` : action);
+            store.saveSession("dosen", result.account);
+
+            const params = new URLSearchParams();
+            const formData = new FormData(dosenForm);
+
+            formData.forEach((value, key) => {
+              if (key !== dosenPasswordInput.name) params.append(key, value);
+            });
+
+            const action = dosenForm.getAttribute("action") || "";
+            const query = params.toString();
+            window.location.assign(query ? `${action}?${query}` : action);
+          })
+          .catch(() => {
+            showError(dosenPasswordInput, dosenPasswordError, "Login gagal. Data akun Dosen tidak dapat dibaca.");
+            dosenPasswordInput.focus();
+          })
+          .finally(() => {
+            isSubmitting = false;
+          });
       });
     }
   }

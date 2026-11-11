@@ -6,6 +6,17 @@
   // Hentikan proses jika formulir tidak ditemukan pada halaman.
   if (!form) return;
 
+  // Menyiapkan akses ke penyimpanan data bersama SIPRESMA.
+  const DATA_STORE_URL = new URL("../core/sipresma-data.js", document.currentScript.src).href;
+  let dataStorePromise = null;
+
+  function getDataStore() {
+    if (!dataStorePromise) {
+      dataStorePromise = import(DATA_STORE_URL);
+    }
+    return dataStorePromise;
+  }
+
   // Mengelompokkan setiap kolom password beserta tempat pesan kesalahannya.
   const oldPassword = {
     input: document.getElementById("old-password"),
@@ -178,13 +189,80 @@
   // Validasi JavaScript menggantikan validasi bawaan browser.
   form.noValidate = true;
 
-  form.addEventListener("submit", (event) => {
+  function showSuccessNotice() {
+    const notice = document.getElementById("password-success");
+    if (!notice) return;
+
+    const title = notice.querySelector(".profile-success-copy strong");
+    const description = notice.querySelector(".profile-success-copy p");
+
+    if (title) title.textContent = "Password Berhasil Diperbarui!";
+    if (description) {
+      description.textContent = "Password akun Administrator Anda telah diperbarui dan dapat digunakan pada proses login berikutnya.";
+    }
+
+    window.location.hash = "password-success";
+    window.requestAnimationFrame(function () {
+      notice.focus({ preventScroll: true });
+    });
+  }
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
     const firstInvalidInput = validateAll();
 
     // Hentikan pengiriman jika masih ada kolom yang tidak valid.
     if (firstInvalidInput) {
-      event.preventDefault();
       firstInvalidInput.focus();
+      return;
+    }
+
+    const oldValue = oldPassword.input ? oldPassword.input.value : "";
+    const newValue = newPassword.input ? newPassword.input.value : "";
+    const submitButton = form.querySelector('button[type="submit"]');
+    if (submitButton) submitButton.disabled = true;
+
+    try {
+      const store = await getDataStore();
+      const session = store.getSession("admin");
+      const username = session && session.username ? session.username : "admin";
+      const result = store.changePassword("admin", username, oldValue, newValue);
+
+      if (!result.ok) {
+        showError(oldPassword, result.message);
+        oldPassword.input.focus();
+        return;
+      }
+
+      form.reset();
+      showSuccessNotice();
+    } catch (error) {
+      console.error("Gagal memperbarui password Admin:", error);
+      showError(oldPassword, "Password gagal diperbarui. Silakan coba lagi.");
+    } finally {
+      if (submitButton) submitButton.disabled = false;
     }
   });
+  getDataStore().then(function (store) {
+    const session = store.getSession("admin");
+    if (!session) return;
+
+    const nameElement = document.querySelector(".profile-name");
+    const metaItems = document.querySelectorAll(".profile-meta span:not(.profile-meta-dot)");
+    const emailElement = document.querySelector(".profile-email");
+
+    if (nameElement && (session.name || session.nama)) {
+      nameElement.textContent = session.name || session.nama;
+    }
+    if (metaItems[0] && session.username) {
+      metaItems[0].textContent = `Username: ${session.username}`;
+    }
+    if (emailElement && session.email) {
+      emailElement.textContent = session.email;
+    }
+  }).catch(function (error) {
+    console.error("Identitas profil Admin gagal dimuat:", error);
+  });
+
 })();

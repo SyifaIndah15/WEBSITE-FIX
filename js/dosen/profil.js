@@ -4,6 +4,17 @@
   // Mengambil formulir ganti password berdasarkan ID password-form.
   const form = document.getElementById("password-form");
 
+  // Menyiapkan akses ke penyimpanan data bersama SIPRESMA.
+  const DATA_STORE_URL = new URL("../core/sipresma-data.js", document.currentScript.src).href;
+  let dataStorePromise = null;
+
+  function getDataStore() {
+    if (!dataStorePromise) {
+      dataStorePromise = import(DATA_STORE_URL);
+    }
+    return dataStorePromise;
+  }
+
   // Memeriksa apakah formulir berhasil ditemukan.
   // Jika tidak ditemukan, hentikan seluruh proses.
   if (!form) {
@@ -236,21 +247,89 @@
   // Menonaktifkan validasi bawaan browser agar pesan diatur oleh JavaScript.
   form.noValidate = true;
 
-  // Menjalankan validasi sebelum formulir diproses lebih lanjut.
-  form.addEventListener("submit", (event) => {
+  function showSuccessNotice() {
+    const notice = document.getElementById("password-success");
+    if (!notice) return;
+
+    const title = notice.querySelector(".profile-success-copy strong");
+    const description = notice.querySelector(".profile-success-copy p");
+
+    if (title) title.textContent = "Password Berhasil Diperbarui!";
+    if (description) {
+      description.textContent = "Password akun Dosen Anda telah diperbarui dan dapat digunakan pada proses login berikutnya.";
+    }
+
+    window.location.hash = "password-success";
+    window.requestAnimationFrame(function () {
+      notice.focus({ preventScroll: true });
+    });
+  }
+
+  // Menjalankan validasi dan penyimpanan saat formulir dikirim.
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
 
     // Memeriksa seluruh input dan menyimpan kolom pertama yang salah.
     const firstInvalidInput = validate();
 
     // Jika ada input yang salah, hentikan proses pengiriman formulir.
     if (firstInvalidInput) {
-
-      // Mencegah formulir diproses dan halaman berpindah ke tampilan berhasil.
-      event.preventDefault();
-
-      // Mengarahkan kursor ke kolom pertama yang mengalami kesalahan.
       firstInvalidInput.focus();
+      return;
     }
+
+    const oldValue = oldPassword.input ? oldPassword.input.value : "";
+    const newValue = newPassword.input ? newPassword.input.value : "";
+    const submitButton = form.querySelector('button[type="submit"]');
+    if (submitButton) submitButton.disabled = true;
+
+    try {
+      const store = await getDataStore();
+      const lecturer = store.resolveDosen();
+
+      if (!lecturer) {
+        showError(oldPassword, "Sesi dosen tidak ditemukan. Silakan login kembali.");
+        return;
+      }
+
+      const result = store.changePassword("dosen", lecturer.nidn, oldValue, newValue);
+
+      if (!result.ok) {
+        showError(oldPassword, result.message);
+        oldPassword.input.focus();
+        return;
+      }
+
+      form.reset();
+      showSuccessNotice();
+    } catch (error) {
+      console.error("Gagal memperbarui password Dosen:", error);
+      showError(oldPassword, "Password gagal diperbarui. Silakan coba lagi.");
+    } finally {
+      if (submitButton) submitButton.disabled = false;
+    }
+  });
+
+  getDataStore().then(function (store) {
+    const lecturer = store.resolveDosen();
+    if (!lecturer) return;
+
+    const name = lecturer.name || lecturer.nama || "";
+    const nidn = String(lecturer.nidn || "");
+    const nameElement = document.querySelector(".profile-name");
+    const nidnElement = document.querySelector(".profile-nidn span");
+    const emailElement = document.querySelector(".profile-email");
+    const roleBadge = document.querySelector(".profile-role-badge");
+    const roleText = roleBadge ? roleBadge.querySelector("span") : null;
+    const jabatan = lecturer.jabatan || "Dosen";
+
+    if (nameElement && name) nameElement.textContent = name;
+    if (nidnElement && nidn) nidnElement.textContent = `NIDN: ${nidn}`;
+    if (emailElement && lecturer.email) emailElement.textContent = lecturer.email;
+    if (roleText) roleText.textContent = jabatan;
+    if (roleBadge) roleBadge.setAttribute("aria-label", `Jabatan: ${jabatan}`);
+  }).catch(function (error) {
+    console.error("Identitas profil Dosen gagal dimuat:", error);
   });
 
 })();
