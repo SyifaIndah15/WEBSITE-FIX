@@ -1003,8 +1003,38 @@
       programStudi: student.programStudi || "Teknik Informatika",
       password: student.password || String(student.nim || ""),
       category: student.category || student.klasifikasi || "Rendah",
-      ipk: Number.isFinite(ipk) ? ipk.toFixed(2) : "0.00"
+      ipk: Number.isFinite(ipk) ? ipk.toFixed(2) : "0.00",
+      jumlahPrestasiAkademik: achievementCount(student.jumlahPrestasiAkademik),
+      tingkatPrestasiAkademik: String(student.tingkatPrestasiAkademik || "").trim(),
+      jumlahPrestasiNonAkademik: achievementCount(student.jumlahPrestasiNonAkademik),
+      tingkatPrestasiNonAkademik: String(student.tingkatPrestasiNonAkademik || "").trim()
     };
+  }
+
+  // Mengubah nilai jumlah prestasi menjadi angka yang aman ditampilkan.
+  function achievementCount(value) {
+    const count = Number(value);
+    return Number.isFinite(count) && count > 0 ? Math.floor(count) : 0;
+  }
+
+  // Menampilkan jumlah dan tingkat prestasi yang sudah terverifikasi pada baris.
+  function updateAchievementCells(row, student) {
+    const cells = row.querySelectorAll(".dm-achievement");
+    const values = [
+      { count: student.jumlahPrestasiAkademik, level: student.tingkatPrestasiAkademik },
+      { count: student.jumlahPrestasiNonAkademik, level: student.tingkatPrestasiNonAkademik }
+    ];
+
+    cells.forEach(function (cell, index) {
+      const entry = values[index] || {};
+      const count = achievementCount(entry.count);
+      const level = String(entry.level || "").trim();
+      const value = cell.querySelector("strong");
+      const label = cell.querySelector("small");
+
+      if (value) value.textContent = String(count);
+      if (label) label.textContent = level || "-";
+    });
   }
 
   // Membuat baris tabel untuk akun mahasiswa baru.
@@ -1015,7 +1045,6 @@
     const nameElement = row.querySelector(".dm-student-name");
     const metaElement = row.querySelector(".dm-student-meta");
     const ipkElement = row.querySelector(".dm-ipk");
-    const achievementCells = row.querySelectorAll(".dm-achievement");
     const badgeElement = row.querySelector(".dm-badge");
     const editButton = row.querySelector(".dm-icon-button--edit");
     const deleteButton = row.querySelector(".dm-icon-button--delete");
@@ -1026,15 +1055,7 @@
     if (nameElement) nameElement.textContent = student.name;
     if (metaElement) metaElement.textContent = `NIM: ${student.nim} \u00b7 Angkatan ${student.year}`;
     if (ipkElement) ipkElement.textContent = student.ipk || "0.00";
-
-    // Mahasiswa baru belum memiliki data prestasi.
-    achievementCells.forEach(function (cell) {
-      const value = cell.querySelector("strong");
-      const label = cell.querySelector("small");
-
-      if (value) value.textContent = "0";
-      if (label) label.textContent = "-";
-    });
+    updateAchievementCells(row, student);
 
     if (badgeElement) {
       badgeElement.className = "dm-badge";
@@ -1073,6 +1094,7 @@
     if (nameElement) nameElement.textContent = student.name;
     if (metaElement) metaElement.textContent = `NIM: ${student.nim} \u00b7 Angkatan ${student.year}`;
     if (ipkElement) ipkElement.textContent = student.ipk || "0.00";
+    updateAchievementCells(row, student);
 
     row.dataset.name = student.name;
     row.dataset.nim = student.nim;
@@ -1119,12 +1141,8 @@
     getStoredStudents().forEach(function (student) {
       if (!student || !student.nim) return;
 
-      const nim = String(student.nim);
-
-      // Melewati data yang sudah tampil di tabel agar tidak terjadi duplikasi.
-      if (isNimInTable(nim)) return;
-
-      addStudentRow(toDisplayStudent(student));
+      // Memperbarui baris yang sudah ada atau menambahkan baris baru.
+      upsertStudentRow(toDisplayStudent(student));
     });
   }
 
@@ -1557,18 +1575,40 @@
     });
   }
 
+  // Memuat ulang baris tabel dari data pusat setelah data berubah.
+  function refreshStoredRows() {
+    if (!dataStore) return;
+
+    removeMissingStoredRows();
+    loadStoredStudents();
+    applyFilters();
+  }
+
+  // Menyegarkan tabel ketika data mahasiswa atau prestasi berubah.
+  function handleDataChange(event) {
+    if (!dataStore) return;
+
+    const key = event.type === "storage"
+      ? event.key
+      : event.detail && event.detail.key;
+
+    if (key && key !== dataStore.KEYS.mahasiswa && key !== dataStore.KEYS.prestasi) return;
+
+    refreshStoredRows();
+  }
+
+  window.addEventListener("storage", handleDataChange);
+  window.addEventListener("sipresma:data-changed", handleDataChange);
+
   getDataStore()
     .then(function () {
-      removeMissingStoredRows();
-      loadStoredStudents();
+      refreshStoredRows();
 
       // Menyesuaikan kembali formulir jika NPM sudah terisi sebelum data siap.
       if (studentNim && studentNim.value.trim()) {
         syncStudentIdentity();
         updateStudentNimStatus();
       }
-
-      applyFilters();
     })
     .catch(function (error) {
       console.error("Data mahasiswa gagal dimuat:", error);

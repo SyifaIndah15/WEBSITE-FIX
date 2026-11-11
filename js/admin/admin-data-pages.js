@@ -1,4 +1,5 @@
 import {
+  KEYS,
   getPrestasi,
   getMahasiswaAccounts,
   getPrestasiCounts,
@@ -14,8 +15,6 @@ const LEVEL_KEYS = [
   { key: "city", label: "Kabupaten/Kota", className: "city" },
   { key: "campus", label: "Kampus", className: "campus" }
 ];
-
-const YEARS = ["2021", "2022", "2023", "2024"];
 
 function normalize(value) {
   return String(value == null ? "" : value).trim();
@@ -40,6 +39,26 @@ function safeHref(value) {
   return href;
 }
 
+function certificateHref(item) {
+  const uploaded = safeHref(item && item.bukti);
+  if (uploaded) return uploaded;
+
+  const id = normalize(item && item.id).toLowerCase();
+  if (!/^prs-\d{3}$/.test(id)) return "";
+  return "../../assets/dokumen/sertifikat-dummy-" + id + ".pdf";
+}
+
+function verificationStatus(item) {
+  const statusView = getStatusView(item.status);
+  const sourceStatus = normalize(item.statusSumber);
+
+  if (statusView.key === "verified" && sourceStatus && getStatusView(sourceStatus).key === "pending") {
+    return "Menunggu Verifikasi";
+  }
+
+  return item.status;
+}
+
 function levelKey(value) {
   const level = normalize(value).toLowerCase();
   if (level.includes("internasional")) return "international";
@@ -62,7 +81,7 @@ function proofIcon() {
 }
 
 function proofCell(item) {
-  const href = safeHref(item.bukti);
+  const href = certificateHref(item);
   const name = escapeHtml(studentName(item));
 
   if (!href) {
@@ -99,26 +118,33 @@ function initializeDashboard() {
 
   const studentsByNim = new Map();
   students.forEach(function (student) {
-    studentsByNim.set(normalize(student.nim), student);
+    const nim = normalize(student.nim);
+    if (nim) studentsByNim.set(nim, student);
   });
 
-  const chartCounts = {};
   const emptyLevel = function () {
     return { international: 0, national: 0, province: 0, city: 0, campus: 0 };
   };
 
-  chartCounts.all = emptyLevel();
-  YEARS.forEach(function (year) {
-    chartCounts[year] = emptyLevel();
-  });
+  const chartCounts = { all: emptyLevel() };
 
   prestasi.forEach(function (item) {
-    const key = levelKey(item.tingkat);
-    chartCounts.all[key] += 1;
+    if (getStatusView(item.status).key !== "verified") return;
 
     const student = studentsByNim.get(normalize(item.nim));
     const year = studentYear(student);
-    if (chartCounts[year]) chartCounts[year][key] += 1;
+    if (!student || !year) return;
+
+    const key = levelKey(item.tingkat);
+    chartCounts.all[key] += 1;
+
+    if (!chartCounts[year]) chartCounts[year] = emptyLevel();
+    chartCounts[year][key] += 1;
+  });
+
+  students.forEach(function (student) {
+    const year = studentYear(student);
+    if (year && !chartCounts[year]) chartCounts[year] = emptyLevel();
   });
 
   const chartNumbers = document.querySelectorAll(".chart-number");
@@ -128,7 +154,7 @@ function initializeDashboard() {
     });
     if (!modeClass) return;
     const mode = modeClass.replace("chart-number--", "");
-    const values = chartCounts[mode] || chartCounts.all;
+    const values = chartCounts[mode] || emptyLevel();
     const level = LEVEL_KEYS.find(function (entry) {
       return element.closest(".chart-card") &&
         element.closest(".chart-card").querySelector(".chart-bar--" + entry.className);
@@ -142,7 +168,7 @@ function initializeDashboard() {
     if (!chartGrid) return;
     const selected = document.querySelector('input[name="angkatan"]:checked');
     const mode = selected ? selected.id.replace("angkatan-", "") : "all";
-    const values = chartCounts[mode] || chartCounts.all;
+    const values = chartCounts[mode] || emptyLevel();
     const maxValue = Math.max(1, values.international, values.national, values.province, values.city, values.campus);
     const denominator = Math.max(30, maxValue);
 
@@ -182,46 +208,33 @@ function initializeDashboard() {
 }
 
 function initializeClassification() {
-  const students = getMahasiswaAccounts();
-  const categories = getClassificationCounts();
   const summaryValues = document.querySelectorAll(".hk-summary-value");
-
-  if (summaryValues.length >= 3) {
-    summaryValues[0].textContent = (categories.Tinggi || 0) + " Mahasiswa";
-    summaryValues[1].textContent = (categories.Sedang || 0) + " Mahasiswa";
-    summaryValues[2].textContent = (categories.Rendah || 0) + " Mahasiswa";
-  }
-
   const tbody = document.querySelector(".hk-table tbody");
   if (!tbody) return;
 
-  const categoryOrder = { Tinggi: 0, Sedang: 1, Rendah: 2 };
-  const ordered = students.slice().sort(function (left, right) {
-    const leftCategory = normalize(left.klasifikasi || left.category) || "Rendah";
-    const rightCategory = normalize(right.klasifikasi || right.category) || "Rendah";
-    return (categoryOrder[leftCategory] == null ? 3 : categoryOrder[leftCategory]) -
-      (categoryOrder[rightCategory] == null ? 3 : categoryOrder[rightCategory]) ||
-      normalize(left.name || left.nama).localeCompare(normalize(right.name || right.nama));
-  });
-
-  tbody.innerHTML = ordered.map(function (student) {
-    const category = normalize(student.klasifikasi || student.category) || "Rendah";
-    const categoryClass = category.toLowerCase() === "tinggi"
-      ? "high"
-      : category.toLowerCase() === "sedang"
-        ? "medium"
-        : "low";
-    const ipk = student.ipk == null ? "-" : Number(student.ipk).toFixed(2);
-
-    return "<tr data-category=\"" + escapeHtml(category) + "\">" +
-      "<td><span class=\"hk-student-name\">" + escapeHtml(student.name || student.nama) + "</span><span class=\"hk-student-nim\">NIM: " + escapeHtml(student.nim) + "</span></td>" +
-      "<td class=\"hk-ipk\">" + escapeHtml(ipk) + "</td>" +
-      "<td><span class=\"hk-category hk-category--" + categoryClass + "\">" + escapeHtml(category) + "</span></td>" +
-      "</tr>";
-  }).join("");
-
   const search = document.querySelector(".hk-search input");
   const footer = document.querySelector(".hk-table-bottom span");
+  let ordered = [];
+
+  function updateSummary() {
+    const categories = getClassificationCounts();
+
+    if (summaryValues.length >= 3) {
+      summaryValues[0].textContent = (categories.Tinggi || 0) + " Mahasiswa";
+      summaryValues[1].textContent = (categories.Sedang || 0) + " Mahasiswa";
+      summaryValues[2].textContent = (categories.Rendah || 0) + " Mahasiswa";
+    }
+  }
+
+  function orderedStudents() {
+    return getMahasiswaAccounts().slice().sort(function (left, right) {
+      const leftName = normalize(left.name || left.nama);
+      const rightName = normalize(right.name || right.nama);
+      const byName = leftName.localeCompare(rightName, "id", { sensitivity: "base" });
+      if (byName !== 0) return byName;
+      return normalize(left.nim).localeCompare(normalize(right.nim));
+    });
+  }
 
   function applyFilter() {
     const selected = document.querySelector('input[name="hk-kategori"]:checked');
@@ -234,10 +247,49 @@ function initializeClassification() {
       const matchesCategory = category === "all" || rowCategory === category;
       const matchesSearch = !query || normalize(row.textContent).toLowerCase().includes(query);
       row.hidden = !(matchesCategory && matchesSearch);
-      if (!row.hidden) visible += 1;
+
+      if (row.hidden) return;
+
+      visible += 1;
+      row.dataset.number = String(visible);
+      const rowNumber = row.querySelector(".row-index");
+      if (rowNumber) rowNumber.textContent = visible + ".";
     });
 
     if (footer) footer.textContent = "Menampilkan " + visible + " dari " + ordered.length + " mahasiswa";
+  }
+
+  function renderRows() {
+    ordered = orderedStudents();
+    updateSummary();
+
+    tbody.innerHTML = ordered.map(function (student, index) {
+      const category = normalize(student.klasifikasi || student.category) || "Rendah";
+      const categoryClass = category.toLowerCase() === "tinggi"
+        ? "high"
+        : category.toLowerCase() === "sedang"
+          ? "medium"
+          : "low";
+      const ipk = student.ipk == null ? "-" : Number(student.ipk).toFixed(2);
+      const number = index + 1;
+
+      return "<tr data-category=\"" + escapeHtml(category) + "\" data-number=\"" + number + "\">" +
+        "<td><span class=\"hk-student-name\">" + escapeHtml(student.name || student.nama) + "</span><span class=\"hk-student-nim\"><span class=\"row-index\" aria-hidden=\"true\">" + number + ".</span> NIM: " + escapeHtml(student.nim) + "</span></td>" +
+        "<td class=\"hk-ipk\">" + escapeHtml(ipk) + "</td>" +
+        "<td><span class=\"hk-category hk-category--" + categoryClass + "\">" + escapeHtml(category) + "</span></td>" +
+        "</tr>";
+    }).join("");
+
+    applyFilter();
+  }
+
+  function handleDataChange(event) {
+    const key = event.type === "storage"
+      ? event.key
+      : event.detail && event.detail.key;
+
+    if (key && key !== KEYS.mahasiswa) return;
+    renderRows();
   }
 
   document.querySelectorAll('input[name="hk-kategori"]').forEach(function (input) {
@@ -245,7 +297,10 @@ function initializeClassification() {
   });
 
   if (search) search.addEventListener("input", applyFilter);
-  applyFilter();
+  window.addEventListener("storage", handleDataChange);
+  window.addEventListener("sipresma:data-changed", handleDataChange);
+
+  renderRows();
 }
 
 function verificationStatusMarkup(status) {
@@ -280,7 +335,7 @@ function verificationDecisionMarkup(status) {
 }
 
 function verificationDocumentMarkup(item) {
-  const href = safeHref(item.bukti);
+  const href = certificateHref(item);
   const icon = "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z\"/><path d=\"M14 3v5h5\"/><path d=\"M9 13h6M9 17h6\"/></svg>";
 
   if (!href) return "<span class=\"vs-document-empty\">Tidak tersedia</span>";
@@ -306,53 +361,51 @@ function initializeVerification() {
     let visibleHistory = 0;
 
     tbody.querySelectorAll(".vs-row").forEach(function (row) {
-      const matches = !query || normalize(row.textContent).toLowerCase().includes(query);
+      const matches = !query || normalize(row.dataset.search).toLowerCase().includes(query);
       row.hidden = !matches;
       if (!matches) return;
       if (row.classList.contains("vs-row--pending")) visiblePending += 1;
-      if (row.classList.contains("vs-row--history")) visibleHistory += 1;
+      visibleHistory += 1;
     });
 
     if (pendingFooter) pendingFooter.textContent = "Menampilkan " + visiblePending + " pengajuan yang menunggu verifikasi";
-    if (historyFooter) historyFooter.textContent = "Menampilkan " + visibleHistory + " riwayat pengajuan";
+    if (historyFooter) {
+      const totalHistory = tbody.querySelectorAll(".vs-row").length;
+      historyFooter.textContent = "Menampilkan " + visibleHistory + " dari " + totalHistory + " pengajuan";
+    }
+  }
+
+  function compareStudentName(left, right) {
+    return normalize(studentName(left)).localeCompare(normalize(studentName(right)), "id", { sensitivity: "base" }) ||
+      normalize(left.nim).localeCompare(normalize(right.nim)) ||
+      normalize(left.id).localeCompare(normalize(right.id));
   }
 
   function render() {
     const records = getPrestasi();
-    const pending = records.filter(function (item) {
-      return getStatusView(item.status).key === "pending";
-    }).sort(function (left, right) {
-      return normalize(right.tanggalPengajuan).localeCompare(normalize(left.tanggalPengajuan));
-    });
-    const history = records.filter(function (item) {
-      return getStatusView(item.status).key !== "pending";
-    }).sort(function (left, right) {
-      return normalize(right.tanggalPengajuan).localeCompare(normalize(left.tanggalPengajuan));
+    const sorted = records.slice().sort(compareStudentName);
+    const pending = sorted.filter(function (item) {
+      return getStatusView(verificationStatus(item)).key === "pending";
     });
 
-    const pendingRows = pending.map(function (item) {
-      return "<tr class=\"vs-row vs-row--pending\" data-id=\"" + escapeHtml(item.id) + "\">" +
+    tbody.innerHTML = sorted.map(function (item) {
+      const status = verificationStatus(item);
+      const isPending = getStatusView(status).key === "pending";
+      const rowClass = isPending ? "vs-row vs-row--pending" : "vs-row vs-row--history";
+      const decision = isPending
+        ? "<div class=\"vs-actions\"><label class=\"vs-action vs-action--approve\" for=\"vs-modal-approve\" data-id=\"" + escapeHtml(item.id) + "\">Setujui</label><label class=\"vs-action vs-action--revision\" for=\"vs-modal-revision\" data-id=\"" + escapeHtml(item.id) + "\">Minta Perbaikan</label><label class=\"vs-action vs-action--reject\" for=\"vs-modal-reject\" data-id=\"" + escapeHtml(item.id) + "\">Tolak</label></div>"
+        : verificationDecisionMarkup(status);
+      const searchText = [studentName(item), item.nim, item.namaKompetisi || item.namaPrestasi].join(" ");
+
+      return "<tr class=\"" + rowClass + "\" data-id=\"" + escapeHtml(item.id) + "\" data-search=\"" + escapeHtml(searchText) + "\">" +
         "<td><span class=\"vs-student-name\">" + escapeHtml(studentName(item)) + "</span><span class=\"vs-student-npm\">NPM: " + escapeHtml(item.nim) + "</span></td>" +
         "<td><span class=\"vs-competition-name\">" + escapeHtml(item.namaKompetisi || item.namaPrestasi) + "</span><span class=\"vs-competition-org\">" + escapeHtml(item.penyelenggara) + "</span><span class=\"vs-competition-date\">Tgl Pengajuan: " + escapeHtml(item.tanggalPengajuan || "-") + "</span></td>" +
         "<td><span class=\"vs-rank\">" + escapeHtml(item.peringkat) + "</span><span class=\"vs-level\">" + escapeHtml(item.jenis) + " &middot; " + escapeHtml(item.tingkat) + "</span></td>" +
         "<td class=\"vs-document-cell\">" + verificationDocumentMarkup(item) + "</td>" +
-        "<td class=\"vs-status-cell\">" + verificationStatusMarkup(item.status) + "</td>" +
-        "<td class=\"vs-decision-cell\"><div class=\"vs-actions\"><label class=\"vs-action vs-action--approve\" for=\"vs-modal-approve\" data-id=\"" + escapeHtml(item.id) + "\">Setujui</label><label class=\"vs-action vs-action--revision\" for=\"vs-modal-revision\" data-id=\"" + escapeHtml(item.id) + "\">Minta Perbaikan</label><label class=\"vs-action vs-action--reject\" for=\"vs-modal-reject\" data-id=\"" + escapeHtml(item.id) + "\">Tolak</label></div></td>" +
+        "<td class=\"vs-status-cell\">" + verificationStatusMarkup(status) + "</td>" +
+        "<td class=\"vs-decision-cell\">" + decision + "</td>" +
         "</tr>";
     }).join("");
-
-    const historyRows = history.map(function (item) {
-      return "<tr class=\"vs-row vs-row--history\" data-id=\"" + escapeHtml(item.id) + "\">" +
-        "<td><span class=\"vs-student-name\">" + escapeHtml(studentName(item)) + "</span><span class=\"vs-student-npm\">NPM: " + escapeHtml(item.nim) + "</span></td>" +
-        "<td><span class=\"vs-competition-name\">" + escapeHtml(item.namaKompetisi || item.namaPrestasi) + "</span><span class=\"vs-competition-org\">" + escapeHtml(item.penyelenggara) + "</span><span class=\"vs-competition-date\">Tgl Pengajuan: " + escapeHtml(item.tanggalPengajuan || "-") + "</span></td>" +
-        "<td><span class=\"vs-rank\">" + escapeHtml(item.peringkat) + "</span><span class=\"vs-level\">" + escapeHtml(item.jenis) + " &middot; " + escapeHtml(item.tingkat) + "</span></td>" +
-        "<td class=\"vs-document-cell\">" + verificationDocumentMarkup(item) + "</td>" +
-        "<td class=\"vs-status-cell\">" + verificationStatusMarkup(item.status) + "</td>" +
-        "<td class=\"vs-decision-cell\">" + verificationDecisionMarkup(item.status) + "</td>" +
-        "</tr>";
-    }).join("");
-
-    tbody.innerHTML = pendingRows + historyRows;
 
     if (pendingSummary) pendingSummary.textContent = pending.length + " Menunggu Verifikasi";
     if (pendingTab) pendingTab.textContent = "Menunggu Verifikasi (" + pending.length + ")";
