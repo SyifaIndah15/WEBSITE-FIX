@@ -344,6 +344,22 @@ async function initializeStore() {
     konflikStatus: Array.isArray(payloads[4].konflikStatus) ? payloads[4].konflikStatus : []
   };
 
+  const existingArsip = getArsip();
+  const arsip = {
+    riwayatNonTarget: Array.isArray(existingArsip.riwayatNonTarget)
+      ? existingArsip.riwayatNonTarget
+      : arsipSeeds.riwayatNonTarget,
+    pengajuanSumberLain: Array.isArray(existingArsip.pengajuanSumberLain)
+      ? existingArsip.pengajuanSumberLain
+      : arsipSeeds.pengajuanSumberLain,
+    konflikRelasi: Array.isArray(existingArsip.konflikRelasi)
+      ? existingArsip.konflikRelasi
+      : arsipSeeds.konflikRelasi,
+    konflikStatus: Array.isArray(existingArsip.konflikStatus)
+      ? existingArsip.konflikStatus
+      : arsipSeeds.konflikStatus
+  };
+
   const adminAccounts = mergeCollection(readArray(KEYS.admin), adminSeeds, function (item) {
     return accountKeyFor("admin", item);
   });
@@ -361,7 +377,7 @@ async function initializeStore() {
   write(KEYS.dosen, dosenAccounts);
   write(KEYS.mahasiswa, mahasiswaAccounts);
   write(KEYS.prestasi, prestasi);
-  write(KEYS.arsip, arsipSeeds);
+  write(KEYS.arsip, arsip);
   write(KEYS.meta, {
     seedVersion: SEED_VERSION,
     seededAt: new Date().toISOString(),
@@ -375,12 +391,19 @@ async function initializeStore() {
   });
 }
 
-try {
-  await initializeStore();
-  applyDefaultPasswords();
-} catch (error) {
-  initializationError = error;
-  console.error("SIPRESMA data initialization failed:", error);
+const ready = initializeStore()
+  .then(function () {
+    applyDefaultPasswords();
+  })
+  .catch(function (error) {
+    initializationError = error;
+    console.error("SIPRESMA data initialization failed:", error);
+  });
+
+await ready;
+
+export function whenReady() {
+  return ready;
 }
 
 export function getInitializationError() {
