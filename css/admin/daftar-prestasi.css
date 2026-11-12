@@ -587,6 +587,15 @@
   outline-offset: 2px;
 }
 
+.dp-proof-link--empty,
+.dp-proof-link--empty:hover {
+  color: #b8a583;
+  background: #f4eee2;
+  border-color: #e3d8c1;
+  transform: none;
+  cursor: default;
+}
+
 .dp-table-bottom {
   display: flex;
   min-height: 38px;

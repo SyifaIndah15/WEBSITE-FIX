@@ -274,19 +274,68 @@
       if (forgotIdentityMahasiswa.value !== "") validateForgotIdentityMahasiswa();
     });
 
-    // Mencegah perpindahan ke tampilan berhasil jika NPM belum valid.
+    // Mengirim permintaan reset password dan menampilkan status terbarunya.
     if (forgotContinueMahasiswa) {
+      let isForgotSubmitting = false;
+
       forgotContinueMahasiswa.addEventListener("click", (event) => {
+
+        // Membatalkan perpindahan tampilan bawaan label radio.
+        event.preventDefault();
 
         // Memeriksa NPM sebelum pengguna melanjutkan proses.
         if (!validateForgotIdentityMahasiswa()) {
 
-          // Membatalkan perpindahan tampilan ketika NPM tidak valid.
-          event.preventDefault();
-
           // Mengarahkan kursor kembali ke kolom NPM.
           forgotIdentityMahasiswa.focus();
+          return;
         }
+
+        if (isForgotSubmitting) return;
+        isForgotSubmitting = true;
+
+        const npmValue = forgotIdentityMahasiswa.value.trim();
+
+        import(DATA_STORE_URL)
+          .then((store) => {
+            if (store.getInitializationError()) {
+              throw new Error("Data tidak dapat dibaca.");
+            }
+
+            const result = store.submitResetRequest("Mahasiswa", npmValue);
+            if (!result.ok) {
+              showError(
+                forgotIdentityMahasiswa,
+                forgotIdentityErrorMahasiswa,
+                result.message || "NPM tidak terdaftar pada basis data resmi."
+              );
+              forgotIdentityMahasiswa.focus();
+              return;
+            }
+
+            updateForgotSummaryIdentityMahasiswa();
+
+            const statusElement = document.getElementById("forgot-status-mahasiswa");
+            if (statusElement) {
+              statusElement.textContent = window.LoginUtils.resetStatusLabel(result.request.status);
+            }
+
+            if (forgotMahasiswaSuccess) forgotMahasiswaSuccess.checked = true;
+
+            const successTitle = document.getElementById("forgot-success-title-mahasiswa");
+            if (successTitle) successTitle.focus();
+          })
+          .catch(() => {
+            showError(
+              forgotIdentityMahasiswa,
+              forgotIdentityErrorMahasiswa,
+              "Permintaan gagal dikirim. Data tidak dapat dibaca."
+            );
+            forgotIdentityMahasiswa.focus();
+          })
+          .finally(() => {
+            isForgotSubmitting = false;
+          });
       });
     }
   }

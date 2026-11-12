@@ -1,6 +1,13 @@
 const DATA_ROOT = new URL("../../data/", import.meta.url);
-const SEED_VERSION = 1;
+const SEED_VERSION = 5;
 const STATUS_SYNC_VERSION = 2;
+
+const LEGACY_SHARED_BUKTI = Object.freeze([
+  "../../assets/dokumen/sertifikat-gemastik-xvi-smart-city.pdf",
+  "../../assets/dokumen/sertifikat-international-youth-ai-innovation-forum-2026.pdf",
+  "../../assets/dokumen/sertifikat-national-hackathon-data-science-2025.pdf",
+  "../../assets/dokumen/sertifikat-turnamen-catur-jawa-barat-2025.pdf"
+]);
 
 export const KEYS = Object.freeze({
   admin: "sipresma_admin_accounts",
@@ -8,6 +15,7 @@ export const KEYS = Object.freeze({
   mahasiswa: "sipresma_mahasiswa_accounts",
   prestasi: "sipresma_prestasi",
   arsip: "sipresma_prestasi_arsip",
+  reset: "sipresma_reset_password",
   meta: "sipresma_data_meta",
   adminSession: "sipresma_admin_session",
   dosenSession: "sipresma_dosen_session",
@@ -19,7 +27,8 @@ const FILES = Object.freeze({
   dosen: "data-akun-dosen.json",
   mahasiswa: "data-akun-mahasiswa.json",
   mahasiswaData: "data-mahasiswa.json",
-  prestasi: "data-prestasi.json"
+  prestasi: "data-prestasi.json",
+  reset: "data-reset-password.json"
 });
 
 let initializationError = null;
@@ -101,6 +110,48 @@ function mergeCollection(existing, seeds, keySelector) {
   });
 
   return result;
+}
+
+function repairSharedBukti(records, seeds) {
+  const seedBukti = new Map();
+  seeds.forEach(function (seed) {
+    seedBukti.set(normalize(seed.id), normalize(seed.bukti));
+  });
+
+  let changed = false;
+  const repaired = records.map(function (item) {
+    const current = normalize(item.bukti);
+    if (LEGACY_SHARED_BUKTI.indexOf(current) === -1) return item;
+
+    const canonical = seedBukti.get(normalize(item.id));
+    if (!canonical || canonical === current) return item;
+
+    changed = true;
+    return Object.assign({}, item, { bukti: canonical });
+  });
+
+  return changed ? repaired : records;
+}
+
+function arsipKey(item) {
+  return normalize(item.nim) + "|" + normalize(item.namaKompetisi || item.namaPrestasi);
+}
+
+function repairArsipBukti(items, seeds) {
+  const seedBukti = new Map();
+  seeds.forEach(function (seed) {
+    seedBukti.set(arsipKey(seed), normalize(seed.bukti));
+  });
+
+  let changed = false;
+  const repaired = items.map(function (item) {
+    const canonical = seedBukti.get(arsipKey(item));
+    if (!canonical || normalize(item.bukti) === canonical) return item;
+    changed = true;
+    return Object.assign({}, item, { bukti: canonical });
+  });
+
+  return changed ? repaired : items;
 }
 
 function isActiveStatus(status) {
@@ -293,6 +344,7 @@ function normalizeArsip(record, index) {
   });
 }
 
+
 function conflictRecordKey(nim, competition) {
   const key = normalize(nim) + "|" + normalize(competition);
   return key === "|" ? "" : key;
@@ -461,6 +513,36 @@ function syncSourcePendingStatuses(records, sourceRecords) {
   });
 }
 
+function normalizeResetSeed(record, index) {
+  const role = normalize(record.role) || "Mahasiswa";
+  const isDosen = role.toLowerCase().indexOf("dosen") !== -1;
+  return {
+    id: normalize(record.id) || "RST-" + String(index + 1).padStart(3, "0"),
+    role: isDosen ? "Dosen" : "Mahasiswa",
+    identifier: normalize(record.identifier || (isDosen ? record.nidn : record.nim)),
+    nama: normalize(record.nama),
+    email: normalize(record.email),
+    tanggalPengajuan: normalize(record.tanggalPengajuan),
+    waktuPengajuan: normalize(record.waktuPengajuan),
+    status: normalize(record.status) || "Menunggu",
+    catatan: normalize(record.catatan),
+    statusChangedAt: record.statusChangedAt || null,
+    createdAt: record.createdAt || null
+  };
+}
+
+function padNumber(value) {
+  return String(value).padStart(2, "0");
+}
+
+function formatResetDate(date) {
+  return date.getFullYear() + "-" + padNumber(date.getMonth() + 1) + "-" + padNumber(date.getDate());
+}
+
+function formatResetTime(date) {
+  return padNumber(date.getHours()) + ":" + padNumber(date.getMinutes()) + " WIB";
+}
+
 async function fetchPayload(fileName) {
   const response = await fetch(new URL(fileName, DATA_ROOT), {
     cache: "no-store",
@@ -478,7 +560,7 @@ async function fetchPayload(fileName) {
 }
 
 function hasRequiredStores() {
-  return [KEYS.admin, KEYS.dosen, KEYS.mahasiswa, KEYS.prestasi, KEYS.arsip].every(function (key) {
+  return [KEYS.admin, KEYS.dosen, KEYS.mahasiswa, KEYS.prestasi, KEYS.arsip, KEYS.reset].every(function (key) {
     return window.localStorage.getItem(key) != null;
   });
 }
@@ -492,11 +574,13 @@ async function initializeStore() {
 
   if (!needsSeed && !needsStatusSync) return;
 
+
   let prestasi = readArray(KEYS.prestasi);
   let prestasiPayload = null;
   let adminAccounts = [];
   let dosenAccounts = [];
   let mahasiswaAccounts = [];
+  let resetRequests = readArray(KEYS.reset);
 
   if (needsSeed) {
     const payloads = await Promise.all([
@@ -504,13 +588,18 @@ async function initializeStore() {
       fetchPayload(FILES.dosen),
       fetchPayload(FILES.mahasiswa),
       fetchPayload(FILES.mahasiswaData),
-      fetchPayload(FILES.prestasi)
+      fetchPayload(FILES.prestasi),
+      fetchPayload(FILES.reset)
     ]);
 
     const adminSeeds = payloads[0].data.map(normalizeAdminSeed);
     const dosenSeeds = payloads[1].data.map(normalizeDosenSeed);
     const mahasiswaSeeds = buildMahasiswaSeeds(payloads[2], payloads[3]);
     const prestasiSeeds = payloads[4].data.map(normalizePrestasiSeed);
+    const resetSeeds = Array.isArray(payloads[5].data)
+      ? payloads[5].data.map(normalizeResetSeed)
+      : [];
+
     const arsipSeeds = {
       riwayatNonTarget: Array.isArray(payloads[4].riwayatNonTarget)
         ? payloads[4].riwayatNonTarget.map(normalizeArsip)
@@ -518,18 +607,29 @@ async function initializeStore() {
       pengajuanSumberLain: Array.isArray(payloads[4].pengajuanSumberLain)
         ? payloads[4].pengajuanSumberLain.map(normalizeArsip)
         : [],
-      konflikRelasi: Array.isArray(payloads[4].konflikRelasi) ? payloads[4].konflikRelasi : [],
-      konflikStatus: Array.isArray(payloads[4].konflikStatus) ? payloads[4].konflikStatus : []
+      konflikRelasi: Array.isArray(payloads[4].konflikRelasi)
+        ? payloads[4].konflikRelasi
+        : [],
+      konflikStatus: Array.isArray(payloads[4].konflikStatus)
+        ? payloads[4].konflikStatus
+        : []
     };
 
     const existingArsip = getArsip();
+
     const arsip = {
-      riwayatNonTarget: Array.isArray(existingArsip.riwayatNonTarget)
-        ? existingArsip.riwayatNonTarget
-        : arsipSeeds.riwayatNonTarget,
-      pengajuanSumberLain: Array.isArray(existingArsip.pengajuanSumberLain)
-        ? existingArsip.pengajuanSumberLain
-        : arsipSeeds.pengajuanSumberLain,
+      riwayatNonTarget: repairArsipBukti(
+        Array.isArray(existingArsip.riwayatNonTarget)
+          ? existingArsip.riwayatNonTarget
+          : arsipSeeds.riwayatNonTarget,
+        arsipSeeds.riwayatNonTarget
+      ),
+      pengajuanSumberLain: repairArsipBukti(
+        Array.isArray(existingArsip.pengajuanSumberLain)
+          ? existingArsip.pengajuanSumberLain
+          : arsipSeeds.pengajuanSumberLain,
+        arsipSeeds.pengajuanSumberLain
+      ),
       konflikRelasi: Array.isArray(existingArsip.konflikRelasi)
         ? existingArsip.konflikRelasi
         : arsipSeeds.konflikRelasi,
@@ -538,24 +638,59 @@ async function initializeStore() {
         : arsipSeeds.konflikStatus
     };
 
-    adminAccounts = mergeCollection(readArray(KEYS.admin), adminSeeds, function (item) {
-      return accountKeyFor("admin", item);
-    });
-    dosenAccounts = mergeCollection(readArray(KEYS.dosen), dosenSeeds, function (item) {
-      return accountKeyFor("dosen", item);
-    });
-    mahasiswaAccounts = mergeCollection(readArray(KEYS.mahasiswa), mahasiswaSeeds, function (item) {
-      return accountKeyFor("mahasiswa", item);
-    });
-    prestasi = mergeCollection(readArray(KEYS.prestasi), prestasiSeeds, function (item) {
-      return normalize(item.id) || normalize(item.nim) + "|" + normalize(item.namaKompetisi);
-    });
+    adminAccounts = mergeCollection(
+      readArray(KEYS.admin),
+      adminSeeds,
+      function (item) {
+        return accountKeyFor("admin", item);
+      }
+    );
+
+    dosenAccounts = mergeCollection(
+      readArray(KEYS.dosen),
+      dosenSeeds,
+      function (item) {
+        return accountKeyFor("dosen", item);
+      }
+    );
+
+    mahasiswaAccounts = mergeCollection(
+      readArray(KEYS.mahasiswa),
+      mahasiswaSeeds,
+      function (item) {
+        return accountKeyFor("mahasiswa", item);
+      }
+    );
+
+    prestasi = repairSharedBukti(
+      mergeCollection(
+        readArray(KEYS.prestasi),
+        prestasiSeeds,
+        function (item) {
+          return normalize(item.id) ||
+            normalize(item.nim) + "|" + normalize(item.namaKompetisi);
+        }
+      ),
+      prestasiSeeds
+    );
+
+    resetRequests = mergeCollection(
+      readArray(KEYS.reset),
+      resetSeeds,
+      function (item) {
+        return normalize(item.id) ||
+          normalize(item.role) + "|" + normalize(item.identifier);
+      }
+    );
+
     prestasiPayload = payloads[4];
 
     write(KEYS.admin, adminAccounts);
     write(KEYS.dosen, dosenAccounts);
     write(KEYS.mahasiswa, mahasiswaAccounts);
     write(KEYS.arsip, arsip);
+    write(KEYS.reset, resetRequests);
+
   } else if (needsStatusSync) {
     prestasiPayload = await fetchPayload(FILES.prestasi);
   }
@@ -565,11 +700,24 @@ async function initializeStore() {
       const prestasiSeeds = Array.isArray(prestasiPayload.data)
         ? prestasiPayload.data.map(normalizePrestasiSeed)
         : [];
-      prestasi = mergeCollection(prestasi, prestasiSeeds, function (item) {
-        return normalize(item.id) || normalize(item.nim) + "|" + normalize(item.namaKompetisi);
-      });
+
+      prestasi = repairSharedBukti(
+        mergeCollection(
+          prestasi,
+          prestasiSeeds,
+          function (item) {
+            return normalize(item.id) ||
+              normalize(item.nim) + "|" + normalize(item.namaKompetisi);
+          }
+        ),
+        prestasiSeeds
+      );
     }
-    prestasi = syncSourcePendingStatuses(prestasi, prestasiPayload && prestasiPayload.data);
+
+    prestasi = syncSourcePendingStatuses(
+      prestasi,
+      prestasiPayload && prestasiPayload.data
+    );
   }
 
   if (needsSeed || needsStatusSync) {
@@ -585,7 +733,8 @@ async function initializeStore() {
         admin: adminAccounts.length,
         dosen: dosenAccounts.length,
         mahasiswa: mahasiswaAccounts.length,
-        prestasi: prestasi.length
+        prestasi: prestasi.length,
+        reset: resetRequests.length
       },
       sources: Object.values(FILES)
     });
@@ -1091,4 +1240,121 @@ export function changePassword(role, identifier, oldPassword, newPassword) {
   else write(KEYS.mahasiswa, accounts);
 
   return { ok: true, message: "Password berhasil diperbarui." };
+}
+
+export function getResetRequests() {
+  return readArray(KEYS.reset);
+}
+
+export function getResetRequestCounts() {
+  const requests = getResetRequests();
+  const counts = { total: requests.length, Menunggu: 0, Diproses: 0, Selesai: 0, Ditolak: 0 };
+
+  requests.forEach(function (item) {
+    const status = normalize(item.status) || "Menunggu";
+    if (counts[status] == null) counts[status] = 0;
+    counts[status] += 1;
+  });
+
+  return counts;
+}
+
+export function saveResetRequestStatus(id, status, note) {
+  const requests = getResetRequests();
+  const index = requests.findIndex(function (item) {
+    return normalize(item.id) === normalize(id);
+  });
+
+  if (index === -1) return { ok: false, message: "Permintaan reset tidak ditemukan." };
+
+  const record = Object.assign({}, requests[index], {
+    status: normalize(status) || requests[index].status,
+    statusChangedAt: new Date().toISOString()
+  });
+
+  if (note != null) record.catatan = normalize(note);
+
+  requests[index] = record;
+  write(KEYS.reset, requests);
+
+  return { ok: true, request: record };
+}
+
+export function resetAccountPassword(role, identifier) {
+  const key = normalize(identifier);
+  const isDosen = normalize(role).toLowerCase().indexOf("dosen") !== -1;
+  const accounts = isDosen ? getDosenAccounts() : getMahasiswaAccounts();
+  const index = accounts.findIndex(function (item) {
+    return isDosen
+      ? normalize(item.nidn || item.username) === key
+      : normalize(item.nim || item.username) === key;
+  });
+
+  if (index === -1) return { ok: false, message: "Akun tidak ditemukan." };
+
+  const password = defaultPasswordFor(isDosen ? "dosen" : "mahasiswa", accounts[index]) || key;
+  accounts[index] = Object.assign({}, accounts[index], {
+    password: password,
+    passwordChangedAt: new Date().toISOString()
+  });
+
+  write(isDosen ? KEYS.dosen : KEYS.mahasiswa, accounts);
+
+  return { ok: true, password: password };
+}
+
+export function getLatestResetRequest(role, identifier) {
+  const roleLabel = normalize(role).toLowerCase().indexOf("dosen") !== -1 ? "Dosen" : "Mahasiswa";
+  const key = normalize(identifier);
+  const matches = getResetRequests().filter(function (item) {
+    return normalize(item.role) === roleLabel && normalize(item.identifier) === key;
+  });
+  return matches.length ? matches[matches.length - 1] : null;
+}
+
+export function submitResetRequest(role, identifier) {
+  const isDosen = normalize(role).toLowerCase().indexOf("dosen") !== -1;
+  const roleLabel = isDosen ? "Dosen" : "Mahasiswa";
+  const idLabel = isDosen ? "NIDN" : "NPM";
+  const key = normalize(identifier);
+
+  if (!key) return { ok: false, message: idLabel + " wajib diisi." };
+
+  const account = isDosen ? findDosen(key) : findMahasiswa(key);
+  if (!account) {
+    return { ok: false, message: idLabel + " tidak terdaftar pada basis data resmi." };
+  }
+
+  const requests = getResetRequests();
+  const existing = requests.find(function (item) {
+    return normalize(item.role) === roleLabel && normalize(item.identifier) === key;
+  });
+
+  if (existing) return { ok: true, request: existing, reused: true };
+
+  let max = 0;
+  requests.forEach(function (item) {
+    const match = /^RST-(\d+)$/.exec(normalize(item.id));
+    if (match) max = Math.max(max, Number(match[1]));
+  });
+
+  const now = new Date();
+  const request = {
+    id: "RST-" + String(max + 1).padStart(3, "0"),
+    role: roleLabel,
+    identifier: key,
+    nama: normalize(account.nama || account.name),
+    email: normalize(account.email),
+    tanggalPengajuan: formatResetDate(now),
+    waktuPengajuan: formatResetTime(now),
+    status: "Menunggu",
+    catatan: "",
+    statusChangedAt: null,
+    createdAt: now.toISOString()
+  };
+
+  requests.push(request);
+  write(KEYS.reset, requests);
+
+  return { ok: true, request: request, reused: false };
 }

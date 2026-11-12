@@ -186,11 +186,30 @@ window.LoginUtils = (() => {
     return true;
   }
 
+  // ==========================================
+  // 3. LABEL STATUS PERMINTAAN RESET PASSWORD
+  // ==========================================
+
+  // Pemetaan status permintaan reset password ke teks yang ditampilkan ke pengguna.
+  const RESET_STATUS_LABELS = {
+    Menunggu: "Menunggu Konfirmasi Admin",
+    Diproses: "Sedang Diproses Admin",
+    Selesai: "Selesai - Password Telah Direset",
+    Ditolak: "Ditolak - Hubungi Admin"
+  };
+
+  // Mengubah kode status menjadi label yang mudah dipahami pengguna.
+  function resetStatusLabel(status) {
+    const value = String(status == null ? "" : status).trim();
+    return RESET_STATUS_LABELS[value] || "Menunggu Konfirmasi Admin";
+  }
+
   return {
     showError: showError,
     clearError: clearError,
     revalidateOnInput: revalidateOnInput,
     validatePassword: validatePassword,
+    resetStatusLabel: resetStatusLabel,
     PASSWORD_MIN_LENGTH: PASSWORD_MIN_LENGTH
   };
 })();
