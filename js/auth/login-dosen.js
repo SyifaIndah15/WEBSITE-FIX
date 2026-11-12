@@ -297,19 +297,60 @@
       if (forgotIdentityDosen.value !== "") validateForgotIdentityDosen();
     });
 
-    // Mencegah perpindahan ke tampilan berhasil jika NIDN belum valid.
+    // Mengirim permintaan reset password dan menampilkan status terbarunya.
     if (forgotContinueDosen) {
+      let isForgotSubmitting = false;
+
       forgotContinueDosen.addEventListener("click", (event) => {
+
+        // Membatalkan perpindahan tampilan bawaan label radio.
+        event.preventDefault();
 
         // Memeriksa NIDN sebelum pengguna melanjutkan proses.
         if (!validateForgotIdentityDosen()) {
 
-          // Membatalkan perpindahan tampilan ketika NIDN tidak valid.
-          event.preventDefault();
-
           // Mengarahkan kursor kembali ke kolom NIDN.
           forgotIdentityDosen.focus();
+          return;
         }
+
+        if (isForgotSubmitting) return;
+        isForgotSubmitting = true;
+
+        const nidnValue = forgotIdentityDosen.value.trim();
+
+        import(DATA_STORE_URL)
+          .then((store) => {
+            if (store.getInitializationError()) {
+              throw new Error("Data tidak dapat dibaca.");
+            }
+
+            const result = store.submitResetRequest("Dosen", nidnValue);
+            if (!result.ok) {
+              showForgotNidnError(result.message || "NIDN tidak terdaftar pada basis data resmi.");
+              forgotIdentityDosen.focus();
+              return;
+            }
+
+            updateForgotSummaryIdentityDosen();
+
+            const statusElement = document.getElementById("forgot-status-dosen");
+            if (statusElement) {
+              statusElement.textContent = window.LoginUtils.resetStatusLabel(result.request.status);
+            }
+
+            if (forgotDosenSuccess) forgotDosenSuccess.checked = true;
+
+            const successTitle = document.getElementById("forgot-success-title-dosen");
+            if (successTitle) successTitle.focus();
+          })
+          .catch(() => {
+            showForgotNidnError("Permintaan gagal dikirim. Data tidak dapat dibaca.");
+            forgotIdentityDosen.focus();
+          })
+          .finally(() => {
+            isForgotSubmitting = false;
+          });
       });
     }
   }
